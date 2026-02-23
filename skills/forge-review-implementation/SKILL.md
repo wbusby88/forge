@@ -60,6 +60,27 @@ Use section header:
 Ask one user-facing question per message and wait for reply before asking the next question.
 
 Do not bundle multiple decision questions into one message.
+Do not skip directly to profile selection.
+
+Each decision question message must include:
+
+- an issue summary between 450 and 900 characters
+- at least one concrete example tied to current implementation/tests
+- one explicit decision question at the end
+
+### Decision State Gate (Hard Rule)
+
+Decision order is mandatory:
+
+1. Ask apply-improvements `yes/no`.
+2. Ask profile (`minimal|hardening|custom`) only if user replied `yes`.
+
+Invalid behavior:
+
+- asking "which profile?" before apply-improvements `yes`
+- combining yes/no and profile in one question
+- inferring `yes` from user enthusiasm without explicit confirmation
+- asking a bare decision question without contextual summary/example
 
 ### Interview Sequence
 
@@ -72,8 +93,10 @@ Present:
 
 Then ask questions one-by-one:
 
-1. "Do you want to apply the suggested implementation improvements? (yes/no)"
-2. If yes: "Which improvement profile should I apply: minimal, hardening, or custom?"
+1. Explain top implementation gap cluster with one concrete code/test example, then ask:
+   "Do you want to apply the suggested implementation improvements? (yes/no)"
+2. If yes, explain profile tradeoffs with one concrete impact example, then ask:
+   "Which improvement profile should I apply: minimal, hardening, or custom?"
 
 If `custom`, ask one scoped question at a time until change boundaries are clear.
 
@@ -154,5 +177,7 @@ Do not declare completion.
 
 - converting review into user-led analysis instead of agent-led critique
 - asking multiple decision questions in one message
+- asking profile selection before explicit apply-improvements `yes`
+- asking decision questions without medium-length context and an example
 - suggesting improvements without plan/todo synchronization
 - skipping residual-risk logging when user declines improvements

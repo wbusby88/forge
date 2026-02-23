@@ -61,6 +61,27 @@ After agent-led interrogation, run a user decision interview focused on mitigati
 Ask one user-facing question per message and wait for reply before asking the next question.
 
 Do not bundle multiple decision questions into one message.
+Do not skip directly to profile selection.
+
+Each decision question message must include:
+
+- an issue summary between 450 and 900 characters
+- at least one concrete example tied to current plan risks/tasks
+- one explicit decision question at the end
+
+### Decision State Gate (Hard Rule)
+
+Decision order is mandatory:
+
+1. Ask apply-mitigations `yes/no`.
+2. Ask patch profile (`minimal|hardening|custom`) only if user replied `yes`.
+
+Invalid behavior:
+
+- asking "which profile?" before apply-mitigations `yes`
+- combining yes/no and profile in one question
+- inferring `yes` from user enthusiasm without explicit confirmation
+- asking a bare decision question without contextual summary/example
 
 ### Interview Sequence
 
@@ -73,8 +94,10 @@ Present:
 
 Then ask questions one-by-one:
 
-1. "Do you want to apply suggested mitigation patches to the plan? (yes/no)"
-2. If yes: "Which patch profile should I apply: minimal, hardening, or custom?"
+1. Explain top risk cluster with one concrete plan/task example, then ask:
+   "Do you want to apply suggested mitigation patches to the plan? (yes/no)"
+2. If yes, explain tradeoffs between profiles with one concrete impact example, then ask:
+   "Which patch profile should I apply: minimal, hardening, or custom?"
 
 If `custom`, ask one scoped question at a time until patch boundaries are clear.
 
@@ -154,5 +177,7 @@ Do not implement in this skill.
 
 - turning review into a generic discussion instead of evidence-backed critique
 - asking user discovery questions the agent should answer itself
+- asking profile selection before explicit apply-mitigations `yes`
+- asking decision questions without medium-length context and an example
 - updating `todo.json` without updating `plan.md` and `research.md`
 - recording no durable learnings in `memory.md` when recurring patterns are found

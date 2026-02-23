@@ -10,4 +10,6 @@
 - asks exactly one decision question per message
 - waits for user reply before asking the next decision question
 - does not collapse decision sequence into a single multi-part prompt
+- each decision question includes a 450-900 character issue summary and a concrete example
 - updates `research.md` as user clarifies custom mitigation boundaries
+- treats asking profile before explicit yes as invalid behavior
