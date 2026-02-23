@@ -33,8 +33,8 @@
 
 - `memory.md` is always at project root.
 - No implementation before plan/quick approval gate.
-- Full-path implementation requires plan review (`forge-review-plan`) before `forge-implement`.
-- Full-path verification requires implementation review (`forge-review-implementation`) before `forge-verify`.
+- Full-path implementation requires either plan review (`forge-review-plan`) or an explicit recorded skip decision before `forge-implement`.
+- Full-path verification requires either implementation review (`forge-review-implementation`) or an explicit recorded skip decision before `forge-verify`.
 - No completion claim before verification evidence.
 - Every new planning cycle appends durable learnings to `memory.md`.
 - Quick mode is for low-risk scoped changes only.
@@ -45,14 +45,22 @@
 ## Gate Questions
 
 - Planning gate: "Do you approve this plan before implementation?"
+- Plan handoff choice gate: "`todo.json` is validated. Choose next step: invoke `forge-review-plan` (recommended) or skip to `forge-implement`."
+- Plan skip confirmation gate: "You chose to skip plan review. Confirm skip and continue to `forge-implement`? (yes/no)"
 - Review patch decision (question 1): "Do you want to apply suggested mitigation patches to the plan? (yes/no)"
 - Review patch decision (question 2 if yes): "Which patch profile should I apply: minimal, hardening, or custom?"
 - Review approval gate: "Do you approve this reviewed plan before implementation?"
+- Review-plan handoff gate: "Review-plan is complete and validated. Do you want to invoke `forge-implement` now?"
 - Implementation gate: direct `forge-implement` invocation acts as confirmation; otherwise ask "Do you confirm implementation should begin?"
+- Implementation handoff choice gate: "Implementation tasks are complete. Choose next step: invoke `forge-review-implementation` (recommended) or skip to `forge-verify`."
+- Implementation skip confirmation gate: "You chose to skip implementation review. Confirm skip and continue to `forge-verify`? (yes/no)"
 - Implementation review decision (question 1): "Do you want to apply the suggested implementation improvements? (yes/no)"
 - Implementation review decision (question 2 if yes): "Which improvement profile should I apply: minimal, hardening, or custom?"
 - Implementation review approval gate: "Do you approve this reviewed implementation state before verification?"
+- Implementation-review handoff gate (verify): "Implementation review is approved. Do you want to invoke `forge-verify` now?"
+- Implementation-review handoff gate (iterate): "Implementation improvements were selected. Do you want to invoke `forge-iterate` now to synchronize and apply them?"
 - Quick gate: "Do you confirm quick implementation should begin?"
 - Iterate gate: "Do you confirm iteration implementation should begin?"
+- Iterate handoff gate: "Iteration artifacts are synchronized. Do you want to invoke `forge-implement` now using the updated `todo.json`?"
 - Completion gate (full): "Do you confirm this is complete based on verification evidence?"
 - Completion gate (quick): "Do you confirm this quick change is complete based on recorded verification evidence?"

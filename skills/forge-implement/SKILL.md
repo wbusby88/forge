@@ -111,7 +111,21 @@ Use task `memory_update_candidate` as starting point.
 
 ## Handoff Rule
 
-After all implementation tasks complete, instruct transition to `forge-review-implementation`.
+After all implementation tasks complete, ask:
+
+"Implementation tasks are complete. Choose next step: invoke `forge-review-implementation` (recommended) or skip to `forge-verify`."
+
+If user chooses skip:
+
+- ask explicit confirmation:
+  "You chose to skip implementation review. Confirm skip and continue to `forge-verify`? (yes/no)"
+- if confirmed, create or update `implementation-review.md` with:
+  - decision: skipped
+  - user rationale
+  - residual risks acknowledged
+  - note that no adversarial implementation review was performed
+
+Do not auto-invoke the next skill.
 
 Do not declare final completion.
 
@@ -122,6 +136,7 @@ Do not declare final completion.
 - No skipping per-task logical commits
 - No execution when required fields are missing
 - No final completion claim
+- No skipping implementation review without explicit user confirmation and recorded skip decision
 
 ## Stop Conditions
 

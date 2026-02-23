@@ -161,8 +161,12 @@ Do not add transient noise.
 
 ## Exit Rule
 
-- If approved with no improvement implementation required: route to `forge-verify`.
-- If improvements are accepted: route to `forge-iterate` for synchronized rework, then back through implementation flow.
+- If approved with no improvement implementation required, ask:
+  "Implementation review is approved. Do you want to invoke `forge-verify` now?"
+- If improvements are accepted, ask:
+  "Implementation improvements were selected. Do you want to invoke `forge-iterate` now to synchronize and apply them?"
+
+Do not auto-invoke the next skill.
 
 Do not declare completion.
 

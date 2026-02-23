@@ -78,7 +78,8 @@ Do not proceed without explicit yes.
 
 ## Execution Rules
 
-- route execution to `forge-implement` using updated `todo.json`
+- after artifact sync and confirmation, ask:
+  "Iteration artifacts are synchronized. Do you want to invoke `forge-implement` now using the updated `todo.json`?"
 - keep TDD as default unless explicitly overridden
 - enforce one commit per logical task
 - block on scope expansion and require re-iteration planning
@@ -95,7 +96,11 @@ If no durable update is needed, record that decision in `iteration.md`.
 
 ## Exit Rule
 
-After iteration tasks are implemented, route to `forge-verify`.
+If iteration execution has completed and verification is next, ask:
+
+"Iteration changes are implemented. Do you want to invoke `forge-review-implementation` now?"
+
+Do not auto-invoke the next skill.
 
 No completion claim is allowed in this skill.
 

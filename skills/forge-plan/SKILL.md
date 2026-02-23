@@ -147,7 +147,22 @@ If validation fails:
 
 Handoff is allowed only after this check passes.
 
-After successful validation, route to `forge-review-plan` for adversarial pre-implementation review.
+After successful validation, ask:
+
+"`todo.json` is validated. Choose next step: invoke `forge-review-plan` (recommended) or skip to `forge-implement`."
+
+If user chooses skip:
+
+- ask explicit confirmation:
+  "You chose to skip plan review. Confirm skip and continue to `forge-implement`? (yes/no)"
+- if confirmed, append skip decision in `plan.md` under:
+  `## Review Plan Decision - <YYYY-MM-DD>`
+  including:
+  - decision: skipped
+  - user rationale
+  - known residual risks acknowledged
+
+Do not auto-invoke the next skill.
 
 ## Todo v2 Requirements (Hard Rules)
 
@@ -186,6 +201,7 @@ Before handoff, append to root `memory.md`:
 - No test execution for implementation completion
 - No completion claim
 - No direct handoff to `forge-implement` in full-plan mode
+- No skipping review without explicit user confirmation and recorded skip decision
 
 ## Common Mistakes
 
@@ -197,4 +213,4 @@ Before handoff, append to root `memory.md`:
 - Creating `todo.json` before plan approval
 - Skipping non-functional requirements
 - Failing to append key learnings to `memory.md`
-- Routing directly to implementation without running `forge-review-plan`
+- skipping review without recording explicit skip rationale and acknowledged risks

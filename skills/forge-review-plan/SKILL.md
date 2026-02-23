@@ -162,7 +162,11 @@ Do not add transient or one-off noise.
 
 ## Exit Rule
 
-After approval and successful todo validation, direct flow to `forge-implement`.
+After approval and successful todo validation, ask:
+
+"Review-plan is complete and validated. Do you want to invoke `forge-implement` now?"
+
+Do not auto-invoke the next skill.
 
 Do not implement in this skill.
 

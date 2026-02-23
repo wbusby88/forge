@@ -30,6 +30,8 @@ Read these artifacts in order:
    - review markers:
      - `## Review Pass - <date>` in `research.md`
      - `## Review Mitigation Deltas` in `plan.md`
+     - or skip marker:
+       - `## Review Plan Decision - <date>` in `plan.md` with `decision: skipped`
 4. quick-mode artifacts in that folder (if present):
    - `quick.md`
    - `quick-todo.json`
@@ -45,7 +47,7 @@ Read these artifacts in order:
   - ask user which path to use
 - If `memory.md` exists but no approved plan artifacts: route to `forge-plan`
 - If full plan exists and `todo.json` exists:
-  - if review markers are missing, route to `forge-review-plan`
+  - if both review markers and valid skip marker are missing, route to `forge-review-plan`
   - if `schema_version` is not `2.0`, route to `forge-plan` for todo regeneration
   - if pending or in-progress tasks exist, route to `forge-implement`
 - If implementation exists and user requests post-implement change/refactor/redo before verify:
@@ -55,7 +57,7 @@ Read these artifacts in order:
 - If quick artifacts exist and `quick-todo.json` exists:
   - if `schema_version` is not `2.0`, route to `forge-quick` for todo regeneration
   - if pending or in-progress tasks exist, route to `forge-quick`
-- If implementation review exists and verification evidence is missing or stale: route to `forge-verify`
+- If implementation review exists (including explicit skip record) and verification evidence is missing or stale: route to `forge-verify`
 
 ## Quick Eligibility Signals
 
@@ -88,7 +90,7 @@ Always output:
 - Guessing phase from conversation instead of artifacts
 - Auto-routing quick mode without explicit user choice when eligible
 - Routing to implementation before v2 canonical todo is present
-- Routing to implementation before full-plan review markers exist
+- Routing to implementation when review markers are missing and no explicit skip decision is recorded
 - Routing to verify before implementation-review evidence exists
 - Skipping `forge-iterate` when post-implement corrections are requested before verify
 - Treating router as a monolithic lifecycle executor
