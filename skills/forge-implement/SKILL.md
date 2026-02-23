@@ -42,13 +42,17 @@ If validation fails:
 
 Do not improvise missing fields.
 
-## Confirmation Gate
+## Invocation-Aware Confirmation Gate
 
-Ask explicitly:
+Determine how `forge-implement` was entered:
 
-"Do you confirm implementation should begin?"
+- Direct invocation (`forge-implement` explicitly requested): treat invocation as implementation confirmation.
+- Routed or implicit handoff (for example, from `forge-plan` summary): ask explicitly:
+  "Do you confirm implementation should begin?"
 
-Do not proceed without explicit confirmation.
+If explicit confirmation is required and missing, do not proceed.
+
+When direct invocation is used, still run all preflight checks and then start task 1 without asking a duplicate confirmation question.
 
 ## Preflight Context Review
 

@@ -38,7 +38,7 @@
 ## Gate Questions
 
 - Planning gate: "Do you approve this plan before implementation?"
-- Implementation gate: "Do you confirm implementation should begin?"
+- Implementation gate: direct `forge-implement` invocation acts as confirmation; otherwise ask "Do you confirm implementation should begin?"
 - Quick gate: "Do you confirm quick implementation should begin?"
 - Iterate gate: "Do you confirm iteration implementation should begin?"
 - Completion gate (full): "Do you confirm this is complete based on verification evidence?"
