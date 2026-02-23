@@ -147,6 +147,8 @@ If validation fails:
 
 Handoff is allowed only after this check passes.
 
+After successful validation, route to `forge-review-plan` for adversarial pre-implementation review.
+
 ## Todo v2 Requirements (Hard Rules)
 
 Every `todo.json` task must include:
@@ -183,6 +185,7 @@ Before handoff, append to root `memory.md`:
 - No implementation code
 - No test execution for implementation completion
 - No completion claim
+- No direct handoff to `forge-implement` in full-plan mode
 
 ## Common Mistakes
 
@@ -194,3 +197,4 @@ Before handoff, append to root `memory.md`:
 - Creating `todo.json` before plan approval
 - Skipping non-functional requirements
 - Failing to append key learnings to `memory.md`
+- Routing directly to implementation without running `forge-review-plan`

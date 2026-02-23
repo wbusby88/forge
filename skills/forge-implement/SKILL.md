@@ -111,7 +111,7 @@ Use task `memory_update_candidate` as starting point.
 
 ## Handoff Rule
 
-After all implementation tasks complete, instruct transition to `forge-verify`.
+After all implementation tasks complete, instruct transition to `forge-review-implementation`.
 
 Do not declare final completion.
 

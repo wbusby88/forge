@@ -16,6 +16,7 @@ Read:
 - root `memory.md`
 - `plan.md`
 - `todo.json`
+- `implementation-review.md`
 - existing verification artifacts (if any)
 
 ## Verification Steps
@@ -68,6 +69,7 @@ Append durable outcomes to `memory.md`:
 
 - No completion claim without passing evidence or explicit risk acceptance
 - No skipping plan-to-implementation comparison
+- No skipping implementation review evidence in `implementation-review.md`
 
 ## Common Mistakes
 
