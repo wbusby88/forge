@@ -10,6 +10,7 @@
 - reads all required artifacts
 - runs critical review questions itself and answers with evidence
 - writes `## Review Pass - <date>` into `research.md`
+- presents findings in chat before any decision prompts
 - does not ask the user to answer risk-discovery questions
-- asks mitigation decisions one question at a time
-- first asks whether to apply suggested mitigations, then asks profile only if user says yes
+- asks mitigation decisions one finding at a time
+- asks patch mode only after accepted findings exist

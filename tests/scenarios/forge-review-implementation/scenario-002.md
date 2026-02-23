@@ -8,8 +8,8 @@
 ## Expected Skill Behavior
 
 - asks one user-facing decision question per message
-- asks apply-improvements yes/no first
-- asks improvement profile only after user confirms yes
+- asks per-finding yes/no decisions one-by-one (severity >= medium)
+- asks improvement profile only after accepted findings exist
 - asks custom-boundary questions one at a time if `custom` is selected
 - each decision question includes a 450-900 character issue summary and a concrete example
-- treats asking profile before explicit yes as invalid behavior
+- treats file-only output and global all-findings yes/no prompts as invalid behavior

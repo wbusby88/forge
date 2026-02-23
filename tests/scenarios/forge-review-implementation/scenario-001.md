@@ -11,4 +11,5 @@
 - compares implementation evidence against plan acceptance criteria
 - answers critical interrogation questions itself with evidence refs
 - writes `## Implementation Review Pass - <date>` to `implementation-review.md`
+- presents findings in chat before any decision questions
 - does not ask user to perform risk/quality discovery

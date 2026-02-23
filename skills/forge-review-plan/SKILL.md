@@ -56,12 +56,24 @@ Use section header:
 
 After agent-led interrogation, run a user decision interview focused on mitigation selection, not risk discovery.
 
+### In-Chat Evidence First (Hard Rule)
+
+Before asking any decision question, present the findings in chat.
+
+`research.md` is the system of record, but it cannot be the only place findings are shown.
+
+Invalid behavior:
+
+- saying "I wrote the review to file" without presenting findings in chat
+- asking a decision question before showing the specific finding details in chat
+
 ### Question Cadence Rule (Hard Rule)
 
 Ask one user-facing question per message and wait for reply before asking the next question.
 
 Do not bundle multiple decision questions into one message.
-Do not skip directly to profile selection.
+Do not bundle multiple findings into one decision prompt.
+Do not skip directly to a global profile decision.
 
 Each decision question message must include:
 
@@ -73,37 +85,41 @@ Each decision question message must include:
 
 Decision order is mandatory:
 
-1. Ask apply-mitigations `yes/no`.
-2. Ask patch profile (`minimal|hardening|custom`) only if user replied `yes`.
+1. Ask one finding-level decision at a time: apply this finding's mitigation set `yes/no`.
+2. Repeat for each actionable finding (`severity >= medium`) in descending severity order.
+3. Ask for global patch mode (`minimal|hardening|custom`) only after finding-level decisions are complete, and only if at least one finding was accepted.
 
 Invalid behavior:
 
-- asking "which profile?" before apply-mitigations `yes`
-- combining yes/no and profile in one question
-- inferring `yes` from user enthusiasm without explicit confirmation
+- asking for global profile before any finding-level decisions
+- combining multiple findings into one yes/no question
+- inferring acceptance without explicit per-finding confirmation
 - asking a bare decision question without contextual summary/example
 
 ### Interview Sequence
 
-Present:
+Present in chat:
 
-- ranked risks and rationale
-- minimum patch set (velocity-first)
-- hardening patch set (risk-first)
-- tradeoffs and expected implementation impact
+- ranked findings with severity and evidence refs
+- mitigation options and recommended option for each finding
 
-Then ask questions one-by-one:
+Then ask one finding at a time:
 
-1. Explain top risk cluster with one concrete plan/task example, then ask:
-   "Do you want to apply suggested mitigation patches to the plan? (yes/no)"
-2. If yes, explain tradeoffs between profiles with one concrete impact example, then ask:
-   "Which patch profile should I apply: minimal, hardening, or custom?"
+1. Provide finding `Fxx` summary (450-900 chars) + at least one concrete plan/task example.
+2. Ask:
+   "Apply the mitigation set for `Fxx`? (yes/no)"
+3. Wait for reply and record result before moving to the next finding.
 
-If `custom`, ask one scoped question at a time until patch boundaries are clear.
+After all finding-level decisions:
+
+1. If at least one finding is accepted, explain execution tradeoffs and ask:
+   "Which patch mode should I apply for accepted findings: minimal, hardening, or custom?"
+2. If `custom`, ask one scoped question at a time until patch boundaries are clear.
+3. If no findings are accepted, skip patch mode and continue with residual risk recording.
 
 ## Artifact Patch Protocol
 
-If user selects `minimal`, `hardening`, or `custom`, update artifacts in this order:
+If user accepts one or more findings and selects `minimal`, `hardening`, or `custom`, update artifacts in this order:
 
 1. `research.md`
    - append final mitigation choices
@@ -116,7 +132,7 @@ If user selects `minimal`, `hardening`, or `custom`, update artifacts in this or
    - maintain schema `2.0`
    - ensure one logical-task commit specification per task
 
-If user declines patching, still log the decision and residual risk acceptance in `research.md`.
+If user declines a specific finding or all findings, log the decision and residual risk acceptance in `research.md`.
 
 ## Updated Plan Review Packet (Hard Gate)
 
@@ -129,6 +145,10 @@ Before handoff, provide deterministic in-chat summary:
 5. residual risks accepted by user
 
 Include traceable refs to anchors in `research.md`, `plan.md`, and task ids.
+
+Also include:
+
+6. finding decision ledger (`Fxx -> yes/no`) and the final patch mode used (or `none`)
 
 ## Final Approval Gate
 
@@ -181,7 +201,9 @@ Do not implement in this skill.
 
 - turning review into a generic discussion instead of evidence-backed critique
 - asking user discovery questions the agent should answer itself
-- asking profile selection before explicit apply-mitigations `yes`
+- writing findings only to file without showing them in chat
+- asking global profile selection before per-finding decisions
+- asking one global yes/no instead of one-by-one finding decisions
 - asking decision questions without medium-length context and an example
 - updating `todo.json` without updating `plan.md` and `research.md`
 - recording no durable learnings in `memory.md` when recurring patterns are found

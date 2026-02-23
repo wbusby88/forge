@@ -55,12 +55,24 @@ Use section header:
 
 ## User Improvement Decision (Interview Style)
 
+### In-Chat Evidence First (Hard Rule)
+
+Before asking any decision question, present findings in chat.
+
+`implementation-review.md` is the durable record, but it cannot replace in-chat presentation.
+
+Invalid behavior:
+
+- saying "review is written to file" without showing findings in chat
+- asking for decisions before presenting the specific finding details in chat
+
 ### Question Cadence Rule (Hard Rule)
 
 Ask one user-facing question per message and wait for reply before asking the next question.
 
 Do not bundle multiple decision questions into one message.
-Do not skip directly to profile selection.
+Do not bundle multiple findings into one decision prompt.
+Do not skip directly to a global profile decision.
 
 Each decision question message must include:
 
@@ -72,37 +84,43 @@ Each decision question message must include:
 
 Decision order is mandatory:
 
-1. Ask apply-improvements `yes/no`.
-2. Ask profile (`minimal|hardening|custom`) only if user replied `yes`.
+1. Ask one finding-level decision at a time: apply this finding's improvement set `yes/no`.
+2. Repeat for each actionable finding (`severity >= medium`) in descending severity order.
+3. Ask profile (`minimal|hardening|custom`) only after finding-level decisions are complete, and only if at least one finding was accepted.
 
 Invalid behavior:
 
-- asking "which profile?" before apply-improvements `yes`
-- combining yes/no and profile in one question
-- inferring `yes` from user enthusiasm without explicit confirmation
+- asking "which profile?" before any finding-level decisions
+- combining multiple finding decisions in one prompt
+- inferring acceptance from user sentiment without explicit per-finding confirmation
 - asking a bare decision question without contextual summary/example
 
 ### Interview Sequence
 
-Present:
+Present in chat:
 
 - ranked implementation issues and rationale
 - minimum improvement set (fastest risk reduction)
 - hardening improvement set (higher confidence)
 - expected impact on scope/timeline/tests
 
-Then ask questions one-by-one:
+Then ask finding-level questions one-by-one:
 
-1. Explain top implementation gap cluster with one concrete code/test example, then ask:
-   "Do you want to apply the suggested implementation improvements? (yes/no)"
-2. If yes, explain profile tradeoffs with one concrete impact example, then ask:
-   "Which improvement profile should I apply: minimal, hardening, or custom?"
+1. Provide finding `Fxx` summary (450-900 chars) + at least one concrete code/test example.
+2. Ask:
+   "Apply the improvement set for `Fxx`? (yes/no)"
+3. Wait for reply and record result before moving to the next finding.
 
-If `custom`, ask one scoped question at a time until change boundaries are clear.
+After all finding-level decisions:
+
+1. If at least one finding is accepted, explain profile tradeoffs with one concrete impact example, then ask:
+   "Which improvement profile should I apply for accepted findings: minimal, hardening, or custom?"
+2. If `custom`, ask one scoped question at a time until change boundaries are clear.
+3. If no findings are accepted, skip profile selection and continue with residual-risk logging.
 
 ## Improvement Patch Protocol
 
-If user chooses `minimal`, `hardening`, or `custom`, update artifacts in this order:
+If user accepts one or more findings and chooses `minimal`, `hardening`, or `custom`, update artifacts in this order:
 
 1. `research.md`
    - append implementation-review findings and selected improvements
@@ -114,7 +132,7 @@ If user chooses `minimal`, `hardening`, or `custom`, update artifacts in this or
    - preserve completed history and supersede changed tasks with reason
    - include one logical-task commit specification per task
 
-If user chooses `no`, log accepted residual risk in `implementation-review.md`.
+If user declines one or more findings, log accepted residual risk per finding in `implementation-review.md`.
 
 ## Updated Review Packet (Hard Gate)
 
@@ -127,6 +145,10 @@ Before handoff, provide deterministic in-chat summary:
 5. residual risks accepted by user
 
 Include traceable refs to anchors and task ids.
+
+Also include:
+
+6. finding decision ledger (`Fxx -> yes/no`) and final profile used (or `none`)
 
 ## Final Approval Gate
 
@@ -180,8 +202,10 @@ Do not declare completion.
 ## Common Mistakes
 
 - converting review into user-led analysis instead of agent-led critique
+- writing findings only to file without showing them in chat
 - asking multiple decision questions in one message
-- asking profile selection before explicit apply-improvements `yes`
+- asking profile selection before per-finding decisions
+- asking one global yes/no instead of one-by-one finding decisions
 - asking decision questions without medium-length context and an example
 - suggesting improvements without plan/todo synchronization
 - skipping residual-risk logging when user declines improvements
