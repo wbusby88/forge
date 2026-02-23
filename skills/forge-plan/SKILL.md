@@ -89,14 +89,63 @@ After understanding confirmation:
    - test strategy
    - anchor labels used for task references (for example `#task-t01`, `#acceptance-ac1`)
 
+## Structured Review Packet (Hard Gate)
+
+Before asking for plan approval, present a deterministic in-chat review packet so the user can review without opening files.
+
+### Required Packet Sections (in order)
+
+1. objective and success criteria
+2. scope in / scope out
+3. constraints and non-functional requirements
+4. key decisions with rejected alternatives
+5. risks and mitigations
+6. acceptance criteria checklist
+7. todo preview table:
+   - task id
+   - dependencies
+   - file targets
+   - verification checks
+   - commit intent
+8. unresolved items requiring a user decision
+
+Use a draft task set for this preview. Final `todo.json` is generated only after approval.
+
+### Traceability Requirement
+
+For each packet section, include references to relevant anchors in:
+
+- `research.md`
+- `plan.md`
+- generated task ids in `todo.json` preview
+
+Do not ask for approval unless all required packet sections are present.
+
 ## Todo v2 Generation Gate
 
-After presenting plan summary, ask:
+After presenting the structured review packet, ask:
 
 "Do you approve this plan before implementation?"
 
 - If no: revise `research.md` and `plan.md`
-- If yes: generate `todo.json` using schema `2.0`
+- If yes: generate finalized `todo.json` using schema `2.0`
+
+## Post-Approval Finalization Check (Hard Gate)
+
+After writing finalized `todo.json`, validate it before handoff:
+
+- `schema_version` exists and equals `2.0`
+- required top-level fields exist
+- `items` is non-empty
+- each item includes required v2 fields
+
+If validation fails:
+
+- do not hand off to implementation
+- correct `todo.json` immediately
+- re-run validation and report result
+
+Handoff is allowed only after this check passes.
 
 ## Todo v2 Requirements (Hard Rules)
 
@@ -138,6 +187,8 @@ Before handoff, append to root `memory.md`:
 ## Common Mistakes
 
 - Holding brainstorming in context only without writing `research.md`
+- Asking for approval without a full in-chat structured review packet
+- Generating `todo.json` but skipping post-write schema validation
 - Generating tracker-only `todo.json` without executable details
 - Missing task references back to `plan.md` and `research.md`
 - Creating `todo.json` before plan approval

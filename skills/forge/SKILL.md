@@ -1,6 +1,6 @@
 ---
 name: forge
-description: Use when an agent needs to determine the correct project lifecycle phase and route to forge-init, forge-plan, forge-quick, forge-implement, or forge-verify.
+description: Use when an agent needs to determine the correct project lifecycle phase and route to forge-init, forge-plan, forge-quick, forge-implement, forge-iterate, or forge-verify.
 ---
 
 # Forge Router
@@ -31,6 +31,7 @@ Read these artifacts in order:
    - `quick.md`
    - `quick-todo.json`
 5. `verification.md` for current task (if present)
+6. `iteration.md` for current task (if present)
 
 ## Routing Rules
 
@@ -42,6 +43,8 @@ Read these artifacts in order:
 - If full plan exists and `todo.json` exists:
   - if `schema_version` is not `2.0`, route to `forge-plan` for todo regeneration
   - if pending or in-progress tasks exist, route to `forge-implement`
+- If implementation exists and user requests post-implement change/refactor/redo before verify:
+  - route to `forge-iterate` (manual user-invoked loop)
 - If quick artifacts exist and `quick-todo.json` exists:
   - if `schema_version` is not `2.0`, route to `forge-quick` for todo regeneration
   - if pending or in-progress tasks exist, route to `forge-quick`
@@ -78,4 +81,5 @@ Always output:
 - Guessing phase from conversation instead of artifacts
 - Auto-routing quick mode without explicit user choice when eligible
 - Routing to implementation before v2 canonical todo is present
+- Skipping `forge-iterate` when post-implement corrections are requested before verify
 - Treating router as a monolithic lifecycle executor

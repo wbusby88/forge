@@ -7,6 +7,7 @@
 - `planned`: `research.md`, `plan.md`, and `todo.json` (schema `2.0`) exist in chosen plans folder
 - `quick-planned`: `quick.md` and `quick-todo.json` (schema `2.0`) exist for an eligible low-risk task
 - `implemented`: `todo.json` tasks complete for current scope
+- `iterating`: post-implement deltas are being synchronized in `research.md`, `plan.md`, `todo.json`, and `iteration.md`
 - `quick-implemented`: `quick-todo.json` tasks complete for current quick scope
 - `verified`: `verification.md` confirms evidence and coverage
 - `quick-verified`: `quick.md` includes full-suite verification evidence and completion confirmation
@@ -16,10 +17,12 @@
 1. `uninitialized -> initialized` via `forge-init`
 2. `initialized -> planned` via `forge-plan`
 3. `planned -> implemented` via `forge-implement`
-4. `implemented -> verified` via `forge-verify`
-5. `initialized -> quick-planned` via `forge-quick` (eligible task only)
-6. `quick-planned -> quick-implemented` via `forge-quick`
-7. `quick-implemented -> quick-verified` via `forge-quick`
+4. `implemented -> iterating` via `forge-iterate` (manual user-invoked correction loop)
+5. `iterating -> implemented` via `forge-implement` using updated todo tasks
+6. `implemented -> verified` via `forge-verify`
+7. `initialized -> quick-planned` via `forge-quick` (eligible task only)
+8. `quick-planned -> quick-implemented` via `forge-quick`
+9. `quick-implemented -> quick-verified` via `forge-quick`
 
 ## Invariants
 
@@ -30,11 +33,13 @@
 - Quick mode is for low-risk scoped changes only.
 - Canonical execution source is todo v2 (`todo.json` / `quick-todo.json`).
 - Missing required todo fields or unresolved refs causes hard fail and stop.
+- Iteration changes must update `research.md`, `plan.md`, and `todo.json` before new implementation begins.
 
 ## Gate Questions
 
 - Planning gate: "Do you approve this plan before implementation?"
 - Implementation gate: "Do you confirm implementation should begin?"
 - Quick gate: "Do you confirm quick implementation should begin?"
+- Iterate gate: "Do you confirm iteration implementation should begin?"
 - Completion gate (full): "Do you confirm this is complete based on verification evidence?"
 - Completion gate (quick): "Do you confirm this quick change is complete based on recorded verification evidence?"

@@ -11,6 +11,7 @@ Forge intentionally aligns behavior with three reference styles while staying or
 - mandatory non-functional requirement clarification
 - understanding lock before final design
 - decision log during design
+- deterministic in-chat review packet before approval
 
 ## Writing-Plans Alignment
 
@@ -20,6 +21,7 @@ Forge intentionally aligns behavior with three reference styles while staying or
 - exact files and commands where possible
 - atomic execution tasks
 - TDD-first steps in task definitions
+- explicit review payload for fast approve/revise loops
 
 ## Executing-Plans Alignment
 
@@ -37,3 +39,4 @@ Forge intentionally aligns behavior with three reference styles while staying or
 - Cross-plan learnings are appended to root `memory.md` after each planning and verification cycle.
 - `todo.json` is canonical executable spec, not a status-only tracker.
 - Task-level references back to `plan.md` and `research.md` are mandatory for deterministic handoff.
+- Post-implementation corrections before verify use `forge-iterate`, which requires synchronized `research.md`, `plan.md`, and `todo.json` updates before resumed execution.

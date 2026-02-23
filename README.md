@@ -6,7 +6,8 @@ Forge is a project lifecycle skill system for agents:
 2. `forge-plan`
 3. `forge-quick`
 4. `forge-implement`
-5. `forge-verify`
+5. `forge-iterate`
+6. `forge-verify`
 
 Optional router: `forge`.
 
@@ -27,6 +28,7 @@ Optional router: `forge`.
 - `forge-plan`: runs brainstorming interview, records Q/A + research to `research.md`, writes `plan.md`, then emits canonical `todo.json` v2
 - `forge-quick`: handles low-risk ad hoc changes with `quick.md` and canonical `quick-todo.json` v2
 - `forge-implement`: executes canonical todo v2 in batches with checkpoints
+- `forge-iterate`: handles post-implement change/refactor/redo loops by synchronizing `research.md`, `plan.md`, `todo.json`, and `iteration.md` before resumed execution
 - `forge-verify`: validates coverage and test evidence before completion
 
 ## Runtime Artifact Contract
@@ -37,6 +39,7 @@ Optional router: `forge`.
   - `research.md`: running research + interview record
   - `plan.md`: narrative architecture and decision context
   - `todo.json`: canonical executable task specification (schema `2.0`)
+  - `iteration.md`: post-implement change/refactor/redo delta record (when iteration is used)
   - `verification.md`: verification evidence, plan coverage, residual risks
 - Quick path artifacts:
   - `quick.md`: lightweight scoped plan, execution notes, and verification evidence
@@ -48,6 +51,7 @@ Optional router: `forge`.
 - Every task must reference `plan.md` and `research.md` (full mode) for context traceability.
 - Missing required todo fields trigger hard fail and stop.
 - One commit per logical task is mandatory.
+- `forge-plan` must present a deterministic in-chat review packet before asking for plan approval.
 
 ## Install/Use
 

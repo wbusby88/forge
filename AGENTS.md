@@ -9,6 +9,7 @@ This repository contains forge lifecycle skills.
 - forge-plan: Run brainstorming-style planning and produce canonical `todo.json` v2 with task-level references (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-plan/SKILL.md`)
 - forge-quick: Handle low-risk ad hoc changes with canonical `quick-todo.json` v2 and full-suite verification (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-quick/SKILL.md`)
 - forge-implement: Execute canonical todo v2 in checkpoints with TDD defaults and hard-fail validation (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-implement/SKILL.md`)
+- forge-iterate: Handle post-implement change/refactor/redo by syncing plan artifacts before resumed execution (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-iterate/SKILL.md`)
 - forge-verify: Verify evidence and plan coverage before completion claims (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-verify/SKILL.md`)
 
 ## Core Contract
@@ -20,6 +21,7 @@ This repository contains forge lifecycle skills.
 - Full-mode tasks must include `plan_refs` and `research_refs`
 - Quick changes must use canonical `quick.md` + `quick-todo.json` (`schema_version: 2.0`)
 - Missing required todo fields cause hard fail and stop
+- Post-implement corrections before verify should route through `forge-iterate`
 - Completion requires verification evidence (`verification.md` for full path, `quick.md` for quick path)
 
 ## Testing
