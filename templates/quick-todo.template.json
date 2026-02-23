@@ -1,0 +1,137 @@
+{
+  "schema_version": "2.0",
+  "task_id": "quick-fix-navbar-overflow",
+  "mode": "quick",
+  "context": {
+    "memory_path": "memory.md",
+    "plan_path": "plans/quick.md",
+    "research_path": null,
+    "verification_artifact_path": "plans/quick.md"
+  },
+  "global_constraints": [
+    "Quick mode is low-risk only",
+    "Escalate to forge-plan if scope expands"
+  ],
+  "execution_policy": {
+    "batch_size": 1,
+    "parallelism": "none",
+    "on_missing_required_field": "hard_fail",
+    "on_scope_expansion": "stop_and_replan",
+    "commit_policy": "one_commit_per_logical_task",
+    "required_checks": [
+      "full-test-suite"
+    ]
+  },
+  "items": [
+    {
+      "id": "Q01",
+      "title": "Fix navbar overflow on mobile widths",
+      "status": "pending",
+      "depends_on": [],
+      "objective": "Prevent horizontal scrolling at <= 375px viewport",
+      "scope_in": [
+        "Mobile navbar CSS"
+      ],
+      "scope_out": [
+        "Desktop navigation redesign"
+      ],
+      "file_targets": {
+        "create": [],
+        "modify": [
+          "src/ui/navbar.css"
+        ],
+        "test": [
+          "tests/ui/navbar.test.ts"
+        ]
+      },
+      "plan_refs": [
+        "quick.md#objective",
+        "quick.md#scope"
+      ],
+      "research_refs": [],
+      "steps": [
+        {
+          "step_id": "Q01-S1",
+          "kind": "tdd_red",
+          "instruction": "Write failing test for overflow scenario",
+          "command_ref": "C1",
+          "expected_result_ref": "E1"
+        },
+        {
+          "step_id": "Q01-S2",
+          "kind": "tdd_green",
+          "instruction": "Implement minimal style fix",
+          "command_ref": "C2",
+          "expected_result_ref": "E2"
+        },
+        {
+          "step_id": "Q01-S3",
+          "kind": "verify",
+          "instruction": "Run full suite as required by quick mode",
+          "command_ref": "C3",
+          "expected_result_ref": "E3"
+        },
+        {
+          "step_id": "Q01-S4",
+          "kind": "commit",
+          "instruction": "Commit logical task",
+          "command_ref": "C4",
+          "expected_result_ref": "E4"
+        }
+      ],
+      "commands": [
+        {
+          "id": "C1",
+          "run": "npm test -- tests/ui/navbar.test.ts -t \"mobile overflow\""
+        },
+        {
+          "id": "C2",
+          "run": "npm test -- tests/ui/navbar.test.ts"
+        },
+        {
+          "id": "C3",
+          "run": "npm test"
+        },
+        {
+          "id": "C4",
+          "run": "git commit -m \"fix(ui): prevent mobile navbar overflow\""
+        }
+      ],
+      "expected_results": [
+        {
+          "id": "E1",
+          "expect": "FAIL for expected overflow assertion"
+        },
+        {
+          "id": "E2",
+          "expect": "PASS for targeted navbar tests"
+        },
+        {
+          "id": "E3",
+          "expect": "PASS full suite"
+        },
+        {
+          "id": "E4",
+          "expect": "Commit contains only declared file_targets"
+        }
+      ],
+      "verification": {
+        "checks": [
+          "npm test"
+        ],
+        "acceptance_criteria_ids": [
+          "QAC1"
+        ]
+      },
+      "commit": {
+        "message_template": "fix(ui): <quick-task-summary>",
+        "paths": [
+          "src/ui/navbar.css",
+          "tests/ui/navbar.test.ts"
+        ]
+      },
+      "handoff_notes": "Keep viewport breakpoint constant for consistency.",
+      "memory_update_candidate": ""
+    }
+  ]
+}

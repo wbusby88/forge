@@ -1,0 +1,134 @@
+{
+  "schema_version": "2.0",
+  "task_id": "feature-auth-refresh-token",
+  "mode": "full",
+  "context": {
+    "memory_path": "memory.md",
+    "plan_path": "plans/plan.md",
+    "research_path": "plans/research.md",
+    "verification_artifact_path": "plans/verification.md"
+  },
+  "global_constraints": [
+    "Do not edit files outside declared file_targets unless task is blocked and replanned",
+    "No scope expansion without explicit replan approval"
+  ],
+  "execution_policy": {
+    "batch_size": 3,
+    "parallelism": "none",
+    "on_missing_required_field": "hard_fail",
+    "on_scope_expansion": "stop_and_replan",
+    "commit_policy": "one_commit_per_logical_task",
+    "required_checks": [
+      "unit-tests",
+      "integration-tests"
+    ]
+  },
+  "items": [
+    {
+      "id": "T01",
+      "title": "Add failing test for expired token refresh",
+      "status": "pending",
+      "depends_on": [],
+      "objective": "Prove current refresh logic fails when token is expired",
+      "scope_in": [
+        "Auth refresh path"
+      ],
+      "scope_out": [
+        "Session revocation feature"
+      ],
+      "file_targets": {
+        "create": [],
+        "modify": [
+          "src/auth/refresh.ts"
+        ],
+        "test": [
+          "tests/auth/refresh.test.ts"
+        ]
+      },
+      "plan_refs": [
+        "plan.md#task-t01",
+        "plan.md#acceptance-ac1"
+      ],
+      "research_refs": [
+        "research.md#entry-3",
+        "research.md#decision-2"
+      ],
+      "steps": [
+        {
+          "step_id": "T01-S1",
+          "kind": "tdd_red",
+          "instruction": "Write failing test for expired refresh token behavior",
+          "command_ref": "C1",
+          "expected_result_ref": "E1"
+        },
+        {
+          "step_id": "T01-S2",
+          "kind": "tdd_green",
+          "instruction": "Implement minimal refresh behavior to satisfy test",
+          "command_ref": "C2",
+          "expected_result_ref": "E2"
+        },
+        {
+          "step_id": "T01-S3",
+          "kind": "commit",
+          "instruction": "Commit logical task",
+          "command_ref": "C3",
+          "expected_result_ref": "E3"
+        },
+        {
+          "step_id": "T01-S4",
+          "kind": "update_todo",
+          "instruction": "Update this item status to completed",
+          "command_ref": "",
+          "expected_result_ref": ""
+        }
+      ],
+      "commands": [
+        {
+          "id": "C1",
+          "run": "npm test -- tests/auth/refresh.test.ts -t \"expired refresh token\""
+        },
+        {
+          "id": "C2",
+          "run": "npm test -- tests/auth/refresh.test.ts"
+        },
+        {
+          "id": "C3",
+          "run": "git commit -m \"feat(auth): handle expired refresh token\""
+        }
+      ],
+      "expected_results": [
+        {
+          "id": "E1",
+          "expect": "FAIL for expected expired-token assertion"
+        },
+        {
+          "id": "E2",
+          "expect": "PASS for targeted test and no regression in auth suite"
+        },
+        {
+          "id": "E3",
+          "expect": "Commit created with only declared file_targets changes"
+        }
+      ],
+      "verification": {
+        "checks": [
+          "npm test -- tests/auth/refresh.test.ts",
+          "npm test -- tests/auth"
+        ],
+        "acceptance_criteria_ids": [
+          "AC1"
+        ]
+      },
+      "commit": {
+        "message_template": "feat(auth): <logical-task-summary>",
+        "paths": [
+          "src/auth/refresh.ts",
+          "tests/auth/refresh.test.ts"
+        ]
+      },
+      "handoff_notes": "Next task depends on this test fixture name remaining stable.",
+      "memory_update_candidate": "Refresh-token expiration pitfall discovered in legacy parser."
+    }
+  ]
+}

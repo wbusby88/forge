@@ -1,0 +1,89 @@
+{
+  "schema_version": "2.0",
+  "task_id": "example-feature",
+  "mode": "full",
+  "context": {
+    "memory_path": "memory.md",
+    "plan_path": "plans/plan.md",
+    "research_path": "plans/research.md",
+    "verification_artifact_path": "verification/verification.md"
+  },
+  "global_constraints": [
+    "Keep implementation within declared file targets"
+  ],
+  "execution_policy": {
+    "batch_size": 2,
+    "parallelism": "none",
+    "on_missing_required_field": "hard_fail",
+    "on_scope_expansion": "stop_and_replan",
+    "commit_policy": "one_commit_per_logical_task",
+    "required_checks": [
+      "targeted-tests"
+    ]
+  },
+  "items": [
+    {
+      "id": "T01",
+      "title": "Capture research interview summary",
+      "status": "completed",
+      "depends_on": [],
+      "objective": "Persist interview results in durable artifact",
+      "scope_in": [
+        "research artifact updates"
+      ],
+      "scope_out": [
+        "implementation code changes"
+      ],
+      "file_targets": {
+        "create": [],
+        "modify": [
+          "plans/research.md"
+        ],
+        "test": []
+      },
+      "plan_refs": [
+        "plan.md#task-t01"
+      ],
+      "research_refs": [
+        "research.md#entry-1"
+      ],
+      "steps": [
+        {
+          "step_id": "T01-S1",
+          "kind": "verify",
+          "instruction": "Review research entry completeness",
+          "command_ref": "C1",
+          "expected_result_ref": "E1"
+        }
+      ],
+      "commands": [
+        {
+          "id": "C1",
+          "run": "echo reviewed"
+        }
+      ],
+      "expected_results": [
+        {
+          "id": "E1",
+          "expect": "reviewed"
+        }
+      ],
+      "verification": {
+        "checks": [
+          "manual review"
+        ],
+        "acceptance_criteria_ids": [
+          "AC1"
+        ]
+      },
+      "commit": {
+        "message_template": "docs(plan): persist research summary",
+        "paths": [
+          "plans/research.md"
+        ]
+      },
+      "handoff_notes": "T02 may proceed once research summary is accepted.",
+      "memory_update_candidate": "Structured interview log improves repeatability."
+    }
+  ]
+}
