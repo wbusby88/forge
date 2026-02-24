@@ -55,9 +55,17 @@ Before design output, write in `research.md`:
 - assumptions
 - open questions
 
-Then ask for confirmation:
+Then present an **Understanding Lock Summary** in chat (not just in `research.md`) with:
 
-"Does this accurately reflect your intent? Please confirm or correct before design."
+- understanding summary
+- assumptions
+- open questions
+
+Then ask for confirmation using this exact prompt:
+
+"Does this Understanding Lock Summary accurately reflect your intent? Please confirm or correct before design."
+
+Do not ask a bare confirmation question (for example "is this correct?") without the summary shown first.
 
 Do not proceed to design until confirmed.
 
