@@ -156,6 +156,25 @@ If new discoveries expand scope during major mode:
 
 If user declines, stop and request scope boundary correction before execution.
 
+## Iteration Understanding Summary Gate (Hard Gate)
+
+Before implementation confirmation, present a concise understanding summary for both `standard` and `major` lanes.
+
+The summary must be `300-500` words and include:
+
+- requested outcome in plain language
+- current vs desired behavior
+- proposed artifact/file deltas (`research.md`, `plan.md`, `todo.json`, `iteration.md`, plus key implementation file groups if known)
+- task-level impact (new/superseded/changed task ids)
+- top risks and mitigations
+- what will happen immediately after confirmation
+
+Ask explicitly after the summary:
+
+"Does this iteration understanding summary accurately reflect your request and proposed changes? (yes/no + corrections)"
+
+Do not ask for implementation confirmation until this understanding summary is acknowledged.
+
 ## Confirmation Gate
 
 Ask explicitly:
@@ -197,6 +216,7 @@ No completion claim is allowed in this skill.
 - no implementation before artifact sync gate passes
 - no skipping iteration classification before sync
 - no entering major mode without explicit user confirmation
+- no implementation confirmation before the understanding summary gate is acknowledged
 - no silent todo changes without corresponding `plan.md` and `research.md` updates
 - no memory updates without durable value
 - no completion claim without verification
@@ -206,6 +226,7 @@ No completion claim is allowed in this skill.
 - treating iteration as ad hoc coding without artifact updates
 - skipping major-mode classification for large refactors
 - auto-running heavy re-planning for every minor change
+- asking a bare implementation confirmation without first summarizing proposed changes
 - updating todo tasks without updating plan/research anchors
 - rewriting completed task history instead of superseding with reason
 - skipping explicit memory decision
