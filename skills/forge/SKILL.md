@@ -52,6 +52,7 @@ Read these artifacts in order:
   - if pending or in-progress tasks exist, route to `forge-implement`
 - If implementation exists and user requests post-implement change/refactor/redo before verify:
   - route to `forge-iterate` (manual user-invoked loop)
+  - `forge-iterate` handles standard-vs-major classification internally; do not reroute to `forge-plan` by default
 - If implementation appears complete and implementation review evidence is missing or stale:
   - route to `forge-review-implementation`
 - If quick artifacts exist and `quick-todo.json` exists:
@@ -93,4 +94,5 @@ Always output:
 - Routing to implementation when review markers are missing and no explicit skip decision is recorded
 - Routing to verify before implementation-review evidence exists
 - Skipping `forge-iterate` when post-implement corrections are requested before verify
+- Rerouting major post-implementation changes to `forge-plan` instead of using `forge-iterate` classification
 - Treating router as a monolithic lifecycle executor

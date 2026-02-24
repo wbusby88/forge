@@ -9,7 +9,12 @@ description: Use when post-implementation changes, refactors, or rework are need
 
 Apply controlled iteration after initial implementation when behavior, quality, or scope details need correction before final verification.
 
-This skill updates planning artifacts first, then routes back to implementation execution.
+This skill has two lanes:
+
+- standard iteration (default, lower risk)
+- major iteration (targeted re-discovery and re-planning)
+
+`forge-iterate` remains the owner for both lanes. Do not auto-route major iteration to `forge-plan`.
 
 ## When to Use
 
@@ -36,7 +41,45 @@ Then summarize:
 - what is changing and why
 - acceptance criteria affected
 
-## Iteration Sync Gate (Hard Gate)
+## Iteration Classification Gate (Hard Gate)
+
+Classify the iteration before planning updates.
+
+### Hard Triggers (Any One => Major Candidate)
+
+- public API contract change
+- database/schema migration or data backfill
+- architecture boundary change (module/service ownership or cross-cutting abstractions)
+- multi-phase rollout requirement
+- cross-cutting refactor across multiple subsystems
+- acceptance criteria rewrite affecting multiple completed tasks
+
+### Weighted Risk Score (0-10)
+
+Use this when hard triggers are absent or ambiguous:
+
+- `+3` multi-subsystem touch
+- `+2` uncertain root cause
+- `+2` non-trivial test strategy rewrite
+- `+2` rollback/release complexity
+- `+1` performance/reliability/security uncertainty
+
+Cap total score at `10`.
+
+### Classification Rules
+
+- if any hard trigger exists: major candidate
+- else if risk score is `>= 7`: major candidate
+- else: standard iteration
+
+For major candidates, ask explicitly:
+
+"Risk threshold met for major iteration. Enter major iteration mode? (yes/no)"
+
+- if `yes`: run major iteration lane
+- if `no`: continue standard lane only after logging accepted residual risk and rationale in `iteration.md`
+
+## Standard Iteration Sync Gate (Hard Gate)
 
 Before any new implementation work, update these artifacts:
 
@@ -55,6 +98,34 @@ Before any new implementation work, update these artifacts:
 
 If any required artifact update is missing, stop and request correction.
 
+## Major Iteration Lane (Hard Gate)
+
+If major mode is confirmed, complete this flow before implementation:
+
+1. Targeted interview/investigation cycle (3-7 questions, one at a time)
+   - changed objective and desired outcome
+   - constraints and non-goals
+   - affected users/stakeholders
+   - acceptance criteria deltas
+   - rollout/rollback constraints
+2. Update `research.md`
+   - interview Q&A records
+   - new findings and updated risks
+3. Update `plan.md`
+   - add `## Iteration Major Deltas`
+   - scope/architecture/data-flow deltas
+   - acceptance criteria and test strategy deltas
+   - updated risks and mitigations
+4. Update `todo.json` (schema `2.0`)
+   - regenerate/patch affected tasks
+   - preserve completed history
+   - supersede replaced tasks with reason
+5. Validate major sync
+   - required major deltas and refs present
+   - `todo.json` v2 required fields valid
+
+If any major-lane requirement is missing, stop and request correction.
+
 ## Iteration Record
 
 Maintain `iteration.md` in the active plan folder with:
@@ -64,9 +135,26 @@ Maintain `iteration.md` in the active plan folder with:
 - root-cause hypothesis and evidence
 - impacted files and acceptance criteria ids
 - task ids added/changed/superseded
+- lane classification (`standard` or `major`)
+- hard triggers found (or `none`)
+- weighted risk score breakdown and final total
+- major-mode confirmation decision (`yes/no`) and rationale
+- residual-risk acceptance log when major mode is declined
+- re-score checkpoint results when scope changes
 - memory decision:
   - update `memory.md` now, or
   - no durable memory update needed
+
+## Major Drift Re-Score Gate
+
+If new discoveries expand scope during major mode:
+
+1. recompute weighted risk score
+2. log new score and scope delta in `iteration.md`
+3. if risk remains `>= 7`, ask:
+   "Major iteration risk remains high after replanning. Continue in major mode? (yes/no)"
+
+If user declines, stop and request scope boundary correction before execution.
 
 ## Confirmation Gate
 
@@ -82,7 +170,7 @@ Do not proceed without explicit yes.
   "Iteration artifacts are synchronized. Do you want to invoke `forge-implement` now using the updated `todo.json`?"
 - keep TDD as default unless explicitly overridden
 - enforce one commit per logical task
-- block on scope expansion and require re-iteration planning
+- block on unmanaged scope expansion and require re-iteration planning
 
 ## Memory Update Rule
 
@@ -107,6 +195,8 @@ No completion claim is allowed in this skill.
 ## Strict Prohibitions
 
 - no implementation before artifact sync gate passes
+- no skipping iteration classification before sync
+- no entering major mode without explicit user confirmation
 - no silent todo changes without corresponding `plan.md` and `research.md` updates
 - no memory updates without durable value
 - no completion claim without verification
@@ -114,6 +204,8 @@ No completion claim is allowed in this skill.
 ## Common Mistakes
 
 - treating iteration as ad hoc coding without artifact updates
+- skipping major-mode classification for large refactors
+- auto-running heavy re-planning for every minor change
 - updating todo tasks without updating plan/research anchors
 - rewriting completed task history instead of superseding with reason
 - skipping explicit memory decision
