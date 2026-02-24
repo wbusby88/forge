@@ -101,13 +101,18 @@ Before asking for plan approval, present a deterministic in-chat review packet s
 4. key decisions with rejected alternatives
 5. risks and mitigations
 6. acceptance criteria checklist
-7. todo preview table:
+7. proposed file change inventory:
+   - files to create
+   - files to modify
+   - files to add/modify tests
+   - one-line reason per file
+8. todo preview table:
    - task id
    - dependencies
    - file targets
    - verification checks
    - commit intent
-8. unresolved items requiring a user decision
+9. unresolved items requiring a user decision
 
 Use a draft task set for this preview. Final `todo.json` is generated only after approval.
 
@@ -119,7 +124,7 @@ For each packet section, include references to relevant anchors in:
 - `plan.md`
 - generated task ids in `todo.json` preview
 
-Do not ask for approval unless all required packet sections are present.
+Do not ask for approval unless all required packet sections are present, including the complete file change inventory.
 
 ## Todo v2 Generation Gate
 
@@ -207,6 +212,7 @@ Before handoff, append to root `memory.md`:
 
 - Holding brainstorming in context only without writing `research.md`
 - Asking for approval without a full in-chat structured review packet
+- omitting a complete proposed add/modify/test file inventory before approval
 - Generating `todo.json` but skipping post-write schema validation
 - Generating tracker-only `todo.json` without executable details
 - Missing task references back to `plan.md` and `research.md`
