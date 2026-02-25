@@ -80,6 +80,7 @@ Before executing batch:
 
 - confirm task references resolve in `plan.md` and `research.md`
 - confirm `memory_refs` ids exist in `memory.index.json` (when any are present)
+- if a task has empty `memory_refs`, confirm it includes a short “no applicable memory ids” rationale in `handoff_notes`
 - identify ambiguity or contradictions
 - identify mismatched acceptance criteria
 
@@ -90,6 +91,16 @@ For each task, read the indexed memory entries referenced by `memory_refs` and t
 If a referenced memory entry is unclear or contradicts the plan, stop and ask for clarification rather than guessing.
 
 If blockers exist, stop and ask for clarification. Do not guess.
+
+## Memory Continuation (Hard Rule)
+
+During long or multi-agent implementations, keep memory coupled to the executable plan:
+
+- If you discover a new durable constraint/pitfall/decision/learning:
+  - add/update an entry in `memory.index.json` as `status: candidate`
+  - add full details to `memory.archive.md`
+  - update `memory_refs` on any remaining `pending` tasks in `todo.json` where the new memory item applies
+- Do not bloat `memory.md` working set during implementation; leave promotion/compaction for verification unless the user explicitly requests otherwise.
 
 ## Execution Model
 
@@ -123,6 +134,7 @@ After each batch, report:
 - completed and blocked tasks
 - command outputs vs expected results
 - verification evidence
+- memory drift (new `memory.index.json` candidates and any `memory_refs` updates applied to remaining tasks)
 - deviations or issues
 
 Then wait for feedback before next batch.

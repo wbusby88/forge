@@ -31,6 +31,7 @@ Do not use as the first planning step for new work.
 Read first:
 
 - root `memory.md`
+- `memory.index.json` (when present; prefer `todo.json.context.memory_index_path`)
 - `research.md`
 - `plan.md`
 - `todo.json` (schema v2.0)
@@ -101,6 +102,9 @@ Before any new implementation work, update these artifacts:
    - regenerate or patch affected tasks using schema `2.0`
    - preserve completed task history
    - mark replaced tasks as superseded with reason (see “Supersede Representation”)
+   - ensure each new/changed task includes `memory_refs`:
+     - if non-empty: ids must exist in `memory.index.json`
+     - if empty: `handoff_notes` must include a short “no applicable memory ids” rationale
 
 If any required artifact update is missing, stop and request correction.
 
@@ -140,6 +144,7 @@ If major mode is confirmed, complete this flow before implementation:
 5. Validate major sync
    - required major deltas and refs present
    - `todo.json` v2 required fields valid
+   - `memory_refs` present on tasks; referenced ids resolve in `memory.index.json` (when any are present); empty `memory_refs` requires rationale in `handoff_notes`
 
 If any major-lane requirement is missing, stop and request correction.
 

@@ -153,6 +153,7 @@ Before asking for plan approval, present a deterministic in-chat review packet s
 9. todo preview table:
    - task id
    - dependencies
+   - memory refs (`memory_refs` ids or explicit “none + why”)
    - file targets
    - verification checks
    - commit intent
@@ -191,6 +192,7 @@ After writing finalized `todo.json`, validate it before handoff:
 - every `plan_refs` / `research_refs` anchor resolves in the corresponding markdown artifact
 - each item includes `memory_refs` (may be empty, but must exist)
 - if any `memory_refs` are present, they must exist as ids in `memory.index.json`
+- if an item has empty `memory_refs`, its `handoff_notes` must include a short “no applicable memory ids” rationale (prevents silent forgetting in long/multi-agent runs)
 
 If validation fails:
 
@@ -227,6 +229,7 @@ Every `todo.json` task must include:
 - explicit `plan_refs` (required)
 - explicit `research_refs` (required in full mode)
 - `memory_refs` (ids from `memory.index.json`; can be empty but must exist)
+- `handoff_notes` (required; if `memory_refs` is empty, include a “no applicable memory ids” rationale)
 - ordered executable steps
 - exact commands and expected results
 - verification checks and acceptance criteria ids

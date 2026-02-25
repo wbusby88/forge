@@ -133,7 +133,7 @@
           "tests/ui/navbar.test.ts"
         ]
       },
-      "handoff_notes": "Keep viewport breakpoint constant for consistency.",
+      "handoff_notes": "Memory: no applicable memory ids for this task (or list IDs in memory_refs + why). Keep viewport breakpoint constant for consistency.",
       "memory_update_candidate": ""
     }
   ]

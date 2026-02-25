@@ -67,7 +67,8 @@ Everything else belongs in the index + archive.
 
 Each todo task includes:
 
-- `memory_refs`: ids from `memory.index.json` relevant to that task (can be empty, but must exist)
+- `memory_refs`: ids from `memory.index.json` relevant to that task (must exist)
+  - if empty: include a short “no applicable memory ids” rationale in `handoff_notes` (prevents silent forgetting in long/multi-agent runs)
 - `memory_update_candidate`: freeform candidate note (optional) used to suggest index updates
 
 At task completion:

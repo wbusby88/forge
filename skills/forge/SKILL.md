@@ -34,10 +34,13 @@ Fallback order:
 Read these artifacts in order:
 
 1. `memory.md` at project root
-2. plan folder location recorded in `memory.md` (if present)
-3. if full-mode `todo.json` exists, read it and extract `context` paths
-4. if quick-mode `quick-todo.json` exists, read it and extract `context` paths
-5. full-plan artifacts (prefer `todo.json.context.*` when available):
+2. Memory v2 companions at project root (if `memory.md` exists):
+   - `memory.index.json`
+   - `memory.archive.md`
+3. plan folder location recorded in `memory.md` (if present)
+4. if full-mode `todo.json` exists, read it and extract `context` paths
+5. if quick-mode `quick-todo.json` exists, read it and extract `context` paths
+6. full-plan artifacts (prefer `todo.json.context.*` when available):
    - `research.md`
    - `plan.md`
    - review markers:
@@ -45,9 +48,9 @@ Read these artifacts in order:
      - `## Review Mitigation Deltas` in `plan.md`
      - or decision marker:
        - `## Review Plan Decision - <YYYY-MM-DD>` in `plan.md` with `decision: skipped|reviewed`
-6. quick-mode artifacts (prefer `quick-todo.json.context.*` when available):
+7. quick-mode artifacts (prefer `quick-todo.json.context.*` when available):
    - `quick.md`
-7. implementation/iteration/verification artifacts (prefer `todo.json.context.*` when available):
+8. implementation/iteration/verification artifacts (prefer `todo.json.context.*` when available):
    - `iteration.md` (if present)
    - `implementation-review.md` (if present)
    - `verification.md` (if present)
@@ -68,6 +71,7 @@ Use the lifecycle contract vocabulary for “current detected phase”:
 ## Routing Rules
 
 - If `memory.md` is missing: route to `forge-init`
+- If `memory.md` exists but `memory.index.json` is missing: treat as legacy memory -> route to `forge-init` (migrate to Memory v2 before proceeding)
 - If task is eligible for quick mode:
   - present both options (`forge-quick` and full planning path)
   - ask user which path to use

@@ -132,7 +132,7 @@
           "tests/auth/refresh.test.ts"
         ]
       },
-      "handoff_notes": "Next task depends on this test fixture name remaining stable.",
+      "handoff_notes": "Memory: no applicable memory ids for this task (or list IDs in memory_refs + why). Next task depends on this test fixture name remaining stable.",
       "memory_update_candidate": "Refresh-token expiration pitfall discovered in legacy parser."
     }
   ]

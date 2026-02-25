@@ -189,6 +189,9 @@ Validate `todo.json` after patching:
 - required top-level fields exist
 - `items` is non-empty
 - each item has required v2 fields and explicit refs
+- each item includes `memory_refs` and `handoff_notes`
+- if `memory_refs` is empty, `handoff_notes` includes a short “no applicable memory ids” rationale
+- if any `memory_refs` are present, referenced ids exist in `memory.index.json`
 
 If validation fails, correct and re-validate before handoff.
 
