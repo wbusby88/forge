@@ -4,6 +4,8 @@
   "mode": "full",
   "context": {
     "memory_path": "memory.md",
+    "memory_index_path": "memory.index.json",
+    "memory_archive_path": "memory.archive.md",
     "plan_path": "plans/plan.md",
     "research_path": "plans/research.md",
     "iteration_artifact_path": "plans/iteration.md",
@@ -49,6 +51,12 @@
       "research_refs": [
         "research.md#entry-1",
         "research.md#decision-1"
+      ],
+      "memory_refs": [
+        "CON-001",
+        "DEC-002",
+        "PIT-001",
+        "LRN-001"
       ],
       "steps": [
         {

@@ -4,6 +4,8 @@
   "mode": "quick",
   "context": {
     "memory_path": "memory.md",
+    "memory_index_path": "memory.index.json",
+    "memory_archive_path": "memory.archive.md",
     "plan_path": "plans/quick.md",
     "research_path": null,
     "verification_artifact_path": "plans/quick.md"
@@ -49,6 +51,7 @@
         "quick.md#scope"
       ],
       "research_refs": [],
+      "memory_refs": [],
       "steps": [
         {
           "step_id": "Q01-S1",

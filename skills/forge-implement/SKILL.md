@@ -14,6 +14,7 @@ Execute approved work using `todo.json` schema v2.0 as canonical execution sourc
 Read before any implementation:
 
 - root `memory.md`
+- `memory.index.json` (from `todo.json.context.memory_index_path` when present)
 - `research.md`
 - `plan.md`
 - `todo.json`
@@ -38,6 +39,7 @@ Before executing any task, validate `todo.json`:
 - required top-level fields must exist
 - every task must include required task fields
 - each full-mode task must include non-empty `plan_refs` and `research_refs`
+- each task must include `memory_refs` (may be empty, but must exist)
 - each step must map to known command/expected-result refs where required
 
 If validation fails:
@@ -77,8 +79,15 @@ When direct invocation is used, still run all preflight checks and then start ta
 Before executing batch:
 
 - confirm task references resolve in `plan.md` and `research.md`
+- confirm `memory_refs` ids exist in `memory.index.json` (when any are present)
 - identify ambiguity or contradictions
 - identify mismatched acceptance criteria
+
+## Memory Compliance (Hard Rule)
+
+For each task, read the indexed memory entries referenced by `memory_refs` and treat them as execution constraints (do not “forget” them mid-task).
+
+If a referenced memory entry is unclear or contradicts the plan, stop and ask for clarification rather than guessing.
 
 If blockers exist, stop and ask for clarification. Do not guess.
 
@@ -120,11 +129,11 @@ Then wait for feedback before next batch.
 
 ## Memory and Learning Updates
 
-When significant implementation learnings occur, append to `memory.md`:
+When significant implementation learnings occur, persist them without bloating the working set:
 
-- repeated failure patterns
-- environment/tooling pitfalls
-- reliable implementation conventions
+- add/update an entry in `memory.index.json` (status `candidate`)
+- keep full details in `memory.archive.md`
+- promote into `memory.md` working set only if it is high-risk/high-frequency and the cap is preserved
 
 Use task `memory_update_candidate` as starting point.
 

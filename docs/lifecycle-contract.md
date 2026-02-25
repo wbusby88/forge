@@ -32,11 +32,14 @@
 ## Invariants
 
 - `memory.md` is always at project root.
+- Memory v2 artifacts exist at project root after init/migration:
+  - `memory.index.json` (canonical registry)
+  - `memory.archive.md` (long tail)
 - No implementation before plan/quick approval gate.
 - Full-path implementation requires either plan review (`forge-review-plan`) or an explicit recorded skip decision before `forge-implement`.
 - Full-path verification requires either implementation review (`forge-review-implementation`) or an explicit recorded skip decision before `forge-verify`.
 - No completion claim before verification evidence.
-- Every new planning cycle appends durable learnings to `memory.md`.
+- Durable learnings are recorded in `memory.index.json` and promoted into `memory.md` working set only via the bounded-cap promotion/compaction rule.
 - Quick mode is for low-risk scoped changes only.
 - Canonical execution source is todo v2 (`todo.json` / `quick-todo.json`).
 - Missing required todo fields or unresolved refs causes hard fail and stop.

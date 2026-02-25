@@ -1,0 +1,152 @@
+{
+  "schema_version": "2.0",
+  "generated_at": "2026-02-25",
+  "working_set_limit": 12,
+  "paths": {
+    "memory_path": "memory.md",
+    "archive_path": "memory.archive.md"
+  },
+  "items": [
+    {
+      "id": "CON-001",
+      "type": "constraint",
+      "status": "working",
+      "summary": "Artifacts must be markdown-first and durable (no chat-only requirements).",
+      "tags": [
+        "process"
+      ],
+      "applies_to": [
+        "plans/plan.md",
+        "plans/research.md",
+        "plans/todo.json"
+      ],
+      "how_to_comply": [
+        "Write research.md continuously during planning.",
+        "Use explicit HTML anchors and reference them from todo.json.",
+        "Treat artifacts as source of truth (not chat context)."
+      ],
+      "evidence_refs": [
+        "examples/sample-project-artifacts/"
+      ],
+      "canonical_location": "memory.md#con-001",
+      "archived_location": "memory.archive.md#con-001",
+      "needs_review": false,
+      "last_updated": "2026-02-25",
+      "last_verified": null,
+      "source_section": "Constraints"
+    },
+    {
+      "id": "DEC-001",
+      "type": "decision",
+      "status": "working",
+      "summary": "Use todo.json (schema 2.0) as the canonical execution source.",
+      "tags": [
+        "process"
+      ],
+      "applies_to": [
+        "plans/todo.json"
+      ],
+      "how_to_comply": [
+        "Treat todo.json as the canonical execution spec; do not execute from plan.md alone.",
+        "Require todo schema validation before handing off to implementation."
+      ],
+      "evidence_refs": [],
+      "canonical_location": "memory.md#dec-001",
+      "archived_location": "memory.archive.md#dec-001",
+      "needs_review": false,
+      "last_updated": "2026-02-25",
+      "last_verified": null,
+      "source_section": "Decisions"
+    },
+    {
+      "id": "DEC-002",
+      "type": "decision",
+      "status": "working",
+      "summary": "Use explicit HTML anchors in plan.md / research.md for stable refs.",
+      "tags": [
+        "process"
+      ],
+      "applies_to": [
+        "plans/plan.md",
+        "plans/research.md"
+      ],
+      "how_to_comply": [
+        "Use explicit HTML anchors (<a id=\"...\"></a>) for every referenced section.",
+        "Ensure plan_refs and research_refs resolve to real anchors."
+      ],
+      "evidence_refs": [],
+      "canonical_location": "memory.md#dec-002",
+      "archived_location": "memory.archive.md#dec-002",
+      "needs_review": false,
+      "last_updated": "2026-02-25",
+      "last_verified": null,
+      "source_section": "Decisions"
+    },
+    {
+      "id": "PIT-001",
+      "type": "pitfall",
+      "status": "working",
+      "summary": "Losing decisions in chat-only context causes plan drift across sessions.",
+      "tags": [
+        "process"
+      ],
+      "applies_to": [],
+      "how_to_comply": [
+        "Persist decisions and research in research.md and reference them in todo.json.",
+        "Avoid chat-only decision-making without artifact updates."
+      ],
+      "evidence_refs": [],
+      "canonical_location": "memory.md#pit-001",
+      "archived_location": "memory.archive.md#pit-001",
+      "needs_review": false,
+      "last_updated": "2026-02-25",
+      "last_verified": null,
+      "source_section": "Pitfalls"
+    },
+    {
+      "id": "LRN-001",
+      "type": "learning",
+      "status": "working",
+      "summary": "Keep the plans folder stable once chosen.",
+      "tags": [
+        "process"
+      ],
+      "applies_to": [
+        "plans/"
+      ],
+      "how_to_comply": [
+        "Record the chosen plans folder in memory.",
+        "Keep todo.json.context.* paths consistent with the chosen plans folder."
+      ],
+      "evidence_refs": [],
+      "canonical_location": "memory.md#lrn-001",
+      "archived_location": "memory.archive.md#lrn-001",
+      "needs_review": false,
+      "last_updated": "2026-02-25",
+      "last_verified": null,
+      "source_section": "Learnings"
+    },
+    {
+      "id": "OPS-001",
+      "type": "operational_default",
+      "status": "working",
+      "summary": "Planning artifacts live under examples/sample-project-artifacts/plans/ for this demo.",
+      "tags": [
+        "process"
+      ],
+      "applies_to": [
+        "plans/"
+      ],
+      "how_to_comply": [
+        "Do not invent new plan locations mid-stream; keep context paths consistent."
+      ],
+      "evidence_refs": [],
+      "canonical_location": "memory.md#ops-001",
+      "archived_location": "memory.archive.md#ops-001",
+      "needs_review": false,
+      "last_updated": "2026-02-25",
+      "last_verified": null,
+      "source_section": "Operational Defaults"
+    }
+  ]
+}

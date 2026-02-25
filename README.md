@@ -13,7 +13,8 @@ Optional router: `forge`.
 
 ## Goals
 
-- Keep long-lived context in `memory.md` at project root
+- Keep essential long-lived context in a **bounded** `memory.md` working set (always read fully)
+- Keep the long tail in `memory.index.json` (canonical registry) + `memory.archive.md` (full details)
 - Require explicit planning before implementation
 - Allow a safe quick path for low-risk ad hoc changes
 - Make `todo.json` canonical and deterministic for execution handoff
@@ -33,7 +34,10 @@ Optional router: `forge`.
 
 ## Runtime Artifact Contract
 
-- `memory.md`: required at project root
+- Memory v2 (required at project root):
+  - `memory.md`: bounded working set (must stay small; every agent reads fully)
+  - `memory.index.json`: canonical registry (IDs, tags, applies_to, links)
+  - `memory.archive.md`: long tail (full details; access via index)
 - Plans folder: user-selected during planning, then persisted in `memory.md`
 - Full path artifacts:
   - `research.md`: running research + interview record

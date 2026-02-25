@@ -14,8 +14,9 @@ This skill is additive. It does not replace `forge-plan` for medium/high-risk wo
 ## Preconditions
 
 1. Read root `memory.md` first.
-2. Confirm the task is eligible for quick mode.
-3. If not eligible, route to `forge-plan`.
+2. If `memory.index.json` is missing, treat memory as legacy and run `forge-init` (or the migration tool) before proceeding.
+3. Confirm the task is eligible for quick mode.
+4. If not eligible, route to `forge-plan`.
 
 ## Quick Eligibility (Hard Gate)
 
@@ -76,7 +77,7 @@ Treat `templates/quick-todo.template.json` as the canonical required shape.
 Minimum validation checks:
 
 - top-level: `schema_version`, `task_id`, `mode`, `context`, `execution_policy`, `items`
-- each item: `id`, `status`, `file_targets`, `plan_refs`, `steps`, `commands`, `expected_results`, `verification`, `commit`
+- each item: `id`, `status`, `file_targets`, `plan_refs`, `memory_refs`, `steps`, `commands`, `expected_results`, `verification`, `commit`
 - each `step.command_ref` and `step.expected_result_ref` resolves to a declared `commands[]` / `expected_results[]` entry
 
 If missing:
@@ -129,11 +130,17 @@ No completion claim if verification fails.
 
 ## Memory Update Rule
 
-Always read `memory.md`. Update it only when durable value exists:
+Always read `memory.md` (working set). Update memory only when durable value exists:
 
 - reusable implementation learning
 - recurring pitfall with prevention
 - decision likely to affect future work
+
+When durable value exists:
+
+- add/update an entry in `memory.index.json`
+- promote into `memory.md` working set only if it is high-risk/high-frequency and the working-set cap is preserved
+- keep full details in `memory.archive.md`
 
 If no durable update is needed, explicitly record that in `quick.md`.
 
@@ -146,7 +153,7 @@ Ask:
 Only after explicit confirmation:
 
 - finalize quick task statuses
-- persist required memory updates (if any)
+- persist required memory updates (if any) via v2 artifacts (`memory.index.json`, `memory.md` working set within cap, `memory.archive.md`)
 
 ## Strict Prohibitions
 

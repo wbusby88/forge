@@ -4,6 +4,8 @@
   "mode": "full",
   "context": {
     "memory_path": "memory.md",
+    "memory_index_path": "memory.index.json",
+    "memory_archive_path": "memory.archive.md",
     "plan_path": "plans/plan.md",
     "research_path": "plans/research.md",
     "iteration_artifact_path": "plans/iteration.md",
@@ -55,6 +57,7 @@
         "research.md#entry-1",
         "research.md#decision-1"
       ],
+      "memory_refs": [],
       "steps": [
         {
           "step_id": "T01-S1",

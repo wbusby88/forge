@@ -197,11 +197,13 @@ If validation fails, correct and re-validate before handoff.
 
 ## Memory Update Mandate
 
-Append durable learnings to root `memory.md`:
+Update project memory without bloating the working set:
 
 - repeated implementation failure patterns
 - test/verification blind spots
 - reusable prevention practices
+
+Persist them as entries in `memory.index.json` (typically `status: candidate`) and promote only the highest-signal items into the bounded `memory.md` working set.
 
 Do not add transient noise.
 

@@ -14,6 +14,8 @@ Produce evidence-based verification before any completion claim.
 Read:
 
 - root `memory.md`
+- `memory.index.json` (from `todo.json.context.memory_index_path` when present)
+- `memory.archive.md` (only if needed for details; prefer index-driven access)
 - `plan.md`
 - `research.md`
 - `todo.json`
@@ -85,15 +87,18 @@ Ask:
 Only after explicit confirmation:
 
 - mark final completion state in `todo.json` (for example, set `lifecycle.state: verified` and record `verified_at` and the verification artifact path)
-- append verification learnings and pitfalls to `memory.md`
+- update project memory (v2):
+  - add/update durable learnings in `memory.index.json`
+  - promote high-risk/high-frequency items into `memory.md` working set (within cap)
+  - move long details to `memory.archive.md`
 
 ## Memory Update Mandate
 
-Append durable outcomes to `memory.md`:
+Update durable outcomes without bloating the working set:
 
-- what worked repeatedly
-- what failed and why
-- prevention patterns for future plans
+- record verified outcomes in `memory.index.json` (status `candidate` -> `working` or `archived`)
+- promote only a bounded subset into `memory.md` working set
+- keep full details in `memory.archive.md` for anything that doesn’t deserve working-set space
 
 ## Strict Prohibitions
 
@@ -105,4 +110,4 @@ Append durable outcomes to `memory.md`:
 
 - Reporting tests as pass without recorded evidence
 - Ignoring acceptance criteria gaps
-- Closing tasks without updating `memory.md`
+- Closing tasks without updating project memory (via `memory.index.json` and bounded `memory.md` working set)

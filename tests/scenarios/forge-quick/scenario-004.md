@@ -10,3 +10,4 @@
 - task marked blocked
 - quick mode stops until todo is corrected
 - validation includes step `command_ref` / `expected_result_ref` resolution
+- validation requires `memory_refs` field to exist on each quick task (may be empty)

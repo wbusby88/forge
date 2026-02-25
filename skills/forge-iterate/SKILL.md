@@ -212,11 +212,13 @@ Do not proceed without explicit yes.
 
 ## Memory Update Rule
 
-Update root `memory.md` only if durable value exists:
+Update project memory only if durable value exists:
 
 - reusable engineering lesson
 - recurring pitfall and prevention
 - decision likely to affect future planning
+
+Persist durable items in `memory.index.json` (typically `status: candidate`). Promote into `memory.md` working set only if it is high-risk/high-frequency and the cap is preserved.
 
 If no durable update is needed, record that decision in `iteration.md`.
 

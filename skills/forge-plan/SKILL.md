@@ -15,8 +15,9 @@ This skill combines design facilitation with plan authoring. It does not impleme
 
 1. Read root `memory.md` first.
 2. Summarize relevant memory context.
-3. Confirm or ask for plans folder location.
-4. Persist plans folder choice in `memory.md`.
+3. If `memory.index.json` exists, use it to pull a small “Memory Digest” of relevant IDs (constraints/decisions/pitfalls/ops defaults/learnings) for this plan’s scope.
+4. Confirm or ask for plans folder location.
+5. Persist plans folder choice in `memory.md`.
 
 ## Artifact Bootstrapping (Hard Gate)
 
@@ -129,6 +130,7 @@ After understanding confirmation:
    - acceptance criteria
    - test strategy
    - explicit anchor labels used for task references (for example `<a id="task-t01"></a>`, `<a id="acceptance-ac1"></a>`)
+   - a “Memory Digest” section in the context snapshot that lists relevant memory IDs (`CON-*`, `DEC-*`, `PIT-*`, `OPS-*`, `LRN-*`) and how they affect design/tests/rollout
 
 ## Structured Review Packet (Hard Gate)
 
@@ -139,21 +141,22 @@ Before asking for plan approval, present a deterministic in-chat review packet s
 1. objective and success criteria
 2. scope in / scope out
 3. constraints and non-functional requirements
-4. key decisions with rejected alternatives
-5. risks and mitigations
-6. acceptance criteria checklist
-7. proposed file change inventory:
+4. memory digest (relevant `memory.index.json` ids and how they constrain the plan)
+5. key decisions with rejected alternatives
+6. risks and mitigations
+7. acceptance criteria checklist
+8. proposed file change inventory:
    - files to create
    - files to modify
    - files to add/modify tests
    - one-line reason per file
-8. todo preview table:
+9. todo preview table:
    - task id
    - dependencies
    - file targets
    - verification checks
    - commit intent
-9. unresolved items requiring a user decision
+10. unresolved items requiring a user decision
 
 Use a draft task set for this preview. Final `todo.json` is generated only after approval.
 
@@ -186,6 +189,8 @@ After writing finalized `todo.json`, validate it before handoff:
 - each item includes required v2 fields
 - `context.*` paths are present and consistent with the chosen plans folder
 - every `plan_refs` / `research_refs` anchor resolves in the corresponding markdown artifact
+- each item includes `memory_refs` (may be empty, but must exist)
+- if any `memory_refs` are present, they must exist as ids in `memory.index.json`
 
 If validation fails:
 
@@ -221,6 +226,7 @@ Every `todo.json` task must include:
 - exact file_targets (create/modify/test)
 - explicit `plan_refs` (required)
 - explicit `research_refs` (required in full mode)
+- `memory_refs` (ids from `memory.index.json`; can be empty but must exist)
 - ordered executable steps
 - exact commands and expected results
 - verification checks and acceptance criteria ids
@@ -236,12 +242,11 @@ Do not finalize planning if any required field is missing.
 
 ## Memory Update Mandate
 
-Before handoff, append to root `memory.md`:
+Before handoff, update project memory without bloating the working set:
 
-- important research findings
-- key decisions and rationale
-- newly discovered pitfalls or constraints
-- lessons that should influence future plans
+- add durable items to `memory.index.json` as `status: candidate`
+- promote into `memory.md` working set only if it is high-risk/high-frequency and the working-set cap is preserved
+- keep full details in `memory.archive.md` when needed
 
 ## Strict Prohibitions
 

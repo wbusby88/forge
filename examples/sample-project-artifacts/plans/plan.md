@@ -16,7 +16,7 @@ Capture brainstorming and research in markdown before todo creation.
 
 ## Context Snapshot
 
-- Relevant memory highlights: Durable artifacts > chat-only context.
+- Relevant memory highlights: CON-001, DEC-001, DEC-002, PIT-001, LRN-001, OPS-001.
 - Relevant research highlights: Interview entry confirms artifact persistence.
 
 ## Approach

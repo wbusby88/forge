@@ -7,7 +7,11 @@ description: Use when starting a project lifecycle or when project memory is mis
 
 ## Overview
 
-Create or normalize durable project memory in root `memory.md`.
+Create or normalize durable project memory using Memory v2 artifacts at project root:
+
+- `memory.md` (bounded working set; must stay small; always read fully)
+- `memory.index.json` (canonical registry; IDs, tags, applies_to, links)
+- `memory.archive.md` (long tail; can be large; access via index)
 
 This skill establishes long-lived context and constraints used by all later phases, for both:
 
@@ -23,9 +27,39 @@ This skill establishes long-lived context and constraints used by all later phas
 
 ### Step 1: Locate Memory
 
-- Check for `memory.md` at project root.
-- If missing, create it using repository template and continue in `New Project Mode`.
-- If present, read and summarize current sections, then continue in `Existing Project Mode`.
+- Check for Memory v2 artifacts at project root:
+  - `memory.md`
+  - `memory.index.json`
+  - `memory.archive.md`
+
+#### If `memory.md` is missing
+
+- Create `memory.md` from `templates/memory.template.md`
+- Create `memory.index.json` from `templates/memory-index.template.json`
+- Create `memory.archive.md` from `templates/memory-archive.template.md`
+- Continue in `New Project Mode`
+
+#### If `memory.md` exists but `memory.index.json` is missing (Legacy Memory)
+
+Treat this as legacy memory and migrate it before continuing.
+
+Run the migration tool (in-place, with backup):
+
+```bash
+# If you're running from the forge-skills repo:
+python3 skills/forge-init/tools/migrate-memory-v2.py --project-root .
+
+# If forge-init is installed as a Codex skill:
+python3 ~/.codex/skills/forge-init/tools/migrate-memory-v2.py --project-root .
+```
+
+Then re-read the new `memory.md` and continue in `Existing Project Mode`.
+
+#### If Memory v2 artifacts exist
+
+- Read `memory.md` fully (working set)
+- Skim `memory.index.json` to understand available IDs/tags
+- Continue in `Existing Project Mode`
 
 ### Step 2: Determine Context Mode
 
@@ -65,30 +99,39 @@ When available, derive these from existing project artifacts before asking the u
 
 Summarize extracted facts in `memory.md` and mark uncertain items as assumptions.
 
+Do not bloat the working set. Prefer:
+
+- add full details to `memory.archive.md`
+- register/organize in `memory.index.json` (tags + applies_to)
+- promote only high-frequency/high-risk items into the `memory.md` working set (within cap)
+
 ### Step 5: Normalize Memory Structure
 
-Ensure these sections exist:
+Ensure required Memory v2 sections exist in `memory.md`:
 
+- `## Working Set (Read This Fully)`
+- `## How To Use Memory (Read This Once)`
 - `## Project Summary`
-- `## Constraints`
 - `## Tech Stack`
-- `## Architectural Decisions`
-- `## Persistent Learnings`
-- `## Known Pitfalls`
-- `## Decision History`
-- `## Operational Constraints`
+- `## Registry Files`
+
+Also ensure `memory.index.json` has a valid `items[]` array with stable IDs.
+
+## Working Set Cap (Hard Gate)
+
+Keep the working set within its cap (default 12). If it would exceed the cap, merge or demote an entry to `memory.archive.md` and keep it indexed.
 
 ### Step 6: Persist Decisions and Plan Destination
 
 Write concise, durable entries with dates and rationale.
 
-If user provides an existing plans folder preference, record it in `Operational Constraints` as default planning destination.
+If user provides an existing plans folder preference, record it as an `OPS-xxx` working-set entry (and index it) so planners reliably use the same destination.
 
 For existing projects, also add:
 
-- at least 3 `Persistent Learnings` entries
-- at least 3 `Known Pitfalls` entries with prevention actions
-- current top risks in `Operational Constraints`
+- at least 3 learnings (`LRN-*`) with concrete “how to apply”
+- at least 3 pitfalls (`PIT-*`) with prevention actions
+- top risks/defaults captured as constraints/ops (`CON-*` / `OPS-*`)
 
 ### Step 7: Validation Pass
 
@@ -116,7 +159,7 @@ If any answer is missing, continue interviewing and updating memory.
 
 ## Quick Reference
 
-- Missing memory -> create `memory.md` and run New Project Mode
-- Existing repo with missing memory -> create `memory.md` and run Existing Project Mode backfill
-- Stale/inconsistent memory -> normalize sections and re-validate assumptions
+- Missing memory -> create Memory v2 artifacts (`memory.md`, `memory.index.json`, `memory.archive.md`) and run New Project Mode
+- Existing repo with legacy memory -> run migration tool, then backfill into v2
+- Stale/inconsistent memory -> normalize v2 sections, de-duplicate, and re-validate assumptions
 - Unclear project purpose -> keep interviewing until baseline is stable

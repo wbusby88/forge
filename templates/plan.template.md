@@ -13,7 +13,7 @@
 
 ## Context Snapshot
 
-- Relevant memory highlights:
+- Relevant memory highlights (include `CON-*` / `DEC-*` / `PIT-*` / `OPS-*` / `LRN-*` IDs from `memory.index.json`):
 - Relevant research highlights:
 
 ## Approach

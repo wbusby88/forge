@@ -194,11 +194,13 @@ If validation fails, correct and re-validate before handoff.
 
 ## Memory Update Mandate
 
-Append durable learnings to root `memory.md`:
+Update project memory without bloating the working set:
 
 - repeated planning mistakes detected
 - systemic risk patterns and prevention rules
 - mitigation decisions likely to affect future plans
+
+Persist them as entries in `memory.index.json` (typically `status: candidate`) and promote only the highest-signal items into the bounded `memory.md` working set.
 
 Do not add transient or one-off noise.
 
@@ -228,4 +230,4 @@ Do not implement in this skill.
 - asking one global yes/no instead of one-by-one finding decisions
 - asking decision questions without medium-length context and an example
 - updating `todo.json` without updating `plan.md` and `research.md`
-- recording no durable learnings in `memory.md` when recurring patterns are found
+- recording no durable learnings in project memory (via `memory.index.json`) when recurring patterns are found
