@@ -20,6 +20,8 @@ Read first:
 3. `plan.md`
 4. `todo.json` (schema `2.0`)
 
+If `todo.json.context.*` paths exist, treat them as canonical for locating `plan.md` / `research.md` / downstream artifacts. Do not guess paths.
+
 Then summarize:
 
 - current objective and scope
@@ -110,6 +112,14 @@ Then ask one finding at a time:
    "Apply the mitigation set for `Fxx`? (yes/no)"
 3. Wait for reply and record result before moving to the next finding.
 
+## Patch Modes (Definitions)
+
+When asking for patch mode, use these stable meanings:
+
+- `minimal`: apply the smallest plan/todo changes that materially reduce the risk for the accepted findings (focus on correctness + clear acceptance criteria + essential tests + rollback).
+- `hardening`: apply `minimal` plus additional safety/operability work (stronger negative/edge-case coverage, observability/diagnostics hooks, clearer rollout/rollback guidance, and tighter NFR acceptance checks when relevant).
+- `custom`: user-defined boundaries; ask one scoped question at a time until the boundaries are unambiguous.
+
 After all finding-level decisions:
 
 1. If at least one finding is accepted, explain execution tradeoffs and ask:
@@ -125,6 +135,11 @@ If user accepts one or more findings and selects `minimal`, `hardening`, or `cus
    - append final mitigation choices
    - include rejected options and rationale
 2. `plan.md`
+   - add `## Review Plan Decision - <YYYY-MM-DD>`:
+     - decision: `reviewed`
+     - patch_mode: `minimal|hardening|custom`
+     - finding decision ledger (`Fxx -> yes/no`)
+     - residual risks accepted (if any)
    - add `## Review Mitigation Deltas`
    - update acceptance criteria, risks, and test strategy as needed
 3. `todo.json`
@@ -132,7 +147,14 @@ If user accepts one or more findings and selects `minimal`, `hardening`, or `cus
    - maintain schema `2.0`
    - ensure one logical-task commit specification per task
 
-If user declines a specific finding or all findings, log the decision and residual risk acceptance in `research.md`.
+If user declines a specific finding or all findings:
+
+- log the decision and residual risk acceptance in `research.md`
+- append to `plan.md` under `## Review Plan Decision - <YYYY-MM-DD>`:
+  - decision: `reviewed`
+  - patch_mode: `none`
+  - finding decision ledger (`Fxx -> yes/no`)
+  - residual risks accepted (if any)
 
 ## Updated Plan Review Packet (Hard Gate)
 

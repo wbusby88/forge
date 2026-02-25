@@ -9,3 +9,4 @@
 - quick validation hard-fails
 - task marked blocked
 - quick mode stops until todo is corrected
+- validation includes step `command_ref` / `expected_result_ref` resolution

@@ -6,6 +6,7 @@
 - Date:
 - Owner:
 
+<a id="objective"></a>
 ## Objective
 
 - 
@@ -19,6 +20,7 @@
 - No public API contract change: yes/no
 - No cross-cutting refactor: yes/no
 
+<a id="scope"></a>
 ## Scope
 
 - In scope:

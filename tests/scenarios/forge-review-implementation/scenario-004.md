@@ -9,5 +9,6 @@
 
 - logs residual risk acceptance in `implementation-review.md`
 - produces reviewed implementation summary packet with traceable refs
+- writes `## Implementation Review Decision - <YYYY-MM-DD>` to `plan.md` with profile `none`
 - asks final approval gate before verification handoff
 - routes to `forge-verify` after approval

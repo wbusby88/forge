@@ -35,6 +35,12 @@ Read first:
 - `plan.md`
 - `todo.json` (schema v2.0)
 
+## Artifact Location Rule (Hard Rule)
+
+Use `todo.json.context.*` paths as canonical for locating and updating artifacts.
+
+If `todo.json.context.*` is missing or incomplete, stop and ask for correction. Do not guess paths.
+
 Then summarize:
 
 - what was implemented
@@ -94,9 +100,20 @@ Before any new implementation work, update these artifacts:
 3. `todo.json`
    - regenerate or patch affected tasks using schema `2.0`
    - preserve completed task history
-   - mark replaced tasks as superseded with reason
+   - mark replaced tasks as superseded with reason (see “Supersede Representation”)
 
 If any required artifact update is missing, stop and request correction.
+
+## Supersede Representation (Hard Rule)
+
+When iteration replaces a previously completed (or planned) task, represent it explicitly in `todo.json`:
+
+- set the replaced item’s `status` to `superseded`
+- add:
+  - `superseded_reason` (why it was replaced)
+  - `superseded_by` (new task ids that replace it)
+
+Do not delete prior task items. Preserve history for multi-agent continuity.
 
 ## Major Iteration Lane (Hard Gate)
 
@@ -144,6 +161,8 @@ Maintain `iteration.md` in the active plan folder with:
 - memory decision:
   - update `memory.md` now, or
   - no durable memory update needed
+
+If `iteration.md` is missing, create it by copying `templates/iteration.template.md` verbatim, then fill it in.
 
 ## Major Drift Re-Score Gate
 

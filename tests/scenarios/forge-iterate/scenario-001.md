@@ -10,4 +10,5 @@
 
 - skill routes to iteration sync gate
 - requires updates to `research.md`, `plan.md`, and `todo.json` before implementation
+- `iteration.md` is created/updated from `templates/iteration.template.md`
 - blocks iteration execution until all three artifacts are synchronized

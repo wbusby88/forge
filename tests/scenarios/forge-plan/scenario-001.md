@@ -14,6 +14,7 @@
 ## Expected Skill Behavior
 
 - Reads memory first
+- Bootstraps `research.md` and `plan.md` from `templates/*` if missing
 - Creates/updates `research.md`
 - Asks one clarifying question at a time
 - Requires understanding lock before design

@@ -6,6 +6,8 @@
     "memory_path": "memory.md",
     "plan_path": "plans/plan.md",
     "research_path": "plans/research.md",
+    "iteration_artifact_path": "plans/iteration.md",
+    "implementation_review_path": "plans/implementation-review.md",
     "verification_artifact_path": "plans/verification.md"
   },
   "global_constraints": [
@@ -50,8 +52,8 @@
         "plan.md#acceptance-ac1"
       ],
       "research_refs": [
-        "research.md#entry-3",
-        "research.md#decision-2"
+        "research.md#entry-1",
+        "research.md#decision-1"
       ],
       "steps": [
         {

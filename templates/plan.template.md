@@ -32,14 +32,17 @@
 
 ## Task Anchors (Required for todo.v2 refs)
 
-- `#task-t01`:
-- `#task-t02`:
-- `#acceptance-ac1`:
-- `#acceptance-ac2`:
+Use explicit HTML anchors so `todo.json.plan_refs` can be stable:
+
+- `<a id="task-t01"></a>`
+- `<a id="task-t02"></a>`
+- `<a id="acceptance-ac1"></a>`
+- `<a id="acceptance-ac2"></a>`
 
 ## Task Breakdown (Narrative Source)
 
-### Task T01: [Name] {#task-t01}
+<a id="task-t01"></a>
+### Task T01: [Name]
 
 - Objective:
 - Scope in:
@@ -54,7 +57,8 @@
 - Acceptance criteria ids:
 - Research refs expected in todo:
 
-### Task T02: [Name] {#task-t02}
+<a id="task-t02"></a>
+### Task T02: [Name]
 
 - Objective:
 - Scope in:
@@ -71,9 +75,11 @@
 
 ## Acceptance Criteria
 
-- AC1 {#acceptance-ac1}:
+<a id="acceptance-ac1"></a>
+- AC1:
   - Verification method:
-- AC2 {#acceptance-ac2}:
+<a id="acceptance-ac2"></a>
+- AC2:
   - Verification method:
 
 ## Test Strategy
@@ -92,3 +98,13 @@
 
 - Question:
   - Owner:
+
+## Append-Only Sections (Reserved)
+
+Use these headings when later phases add durable deltas:
+
+- `## Review Plan Decision - <YYYY-MM-DD>`
+- `## Review Mitigation Deltas`
+- `## Implementation Review Decision - <YYYY-MM-DD>`
+- `## Implementation Review Deltas`
+- `## Iteration Major Deltas`

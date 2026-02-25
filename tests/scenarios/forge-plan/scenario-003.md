@@ -10,3 +10,4 @@
 - planner runs post-approval finalization check
 - detects missing `schema_version` and blocks handoff
 - corrects `todo.json` and re-validates before suggesting `forge-implement`
+- validation includes `todo.json.context.*` consistency and anchor ref resolution

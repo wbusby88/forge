@@ -9,6 +9,7 @@
 
 - appends mitigation decisions and rejected options to `research.md`
 - updates `plan.md` with `## Review Mitigation Deltas`
+- updates `plan.md` with `## Review Plan Decision - <YYYY-MM-DD>` including patch mode and decision ledger
 - patches/regenerates `todo.json` with mitigation tasks and commit intent per task
 - validates `todo.json` schema version and required fields before handoff
 - appends durable planning lessons to root `memory.md`

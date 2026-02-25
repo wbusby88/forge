@@ -10,3 +10,4 @@
 
 - Routes to `forge-implement`
 - Lists artifact evidence used for decision
+- Uses `todo.json.context.*` paths when present and surfaces any blocked tasks

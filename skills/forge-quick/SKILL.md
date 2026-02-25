@@ -37,6 +37,13 @@ In the active plans/work folder, create and maintain:
 - `quick.md`
 - `quick-todo.json` (schema v2.0, canonical)
 
+If either artifact is missing, bootstrap it from templates (do not invent structure):
+
+- `quick.md` from `templates/quick.template.md`
+- `quick-todo.json` from `templates/quick-todo.template.json`
+
+When `quick-todo.json.context.*` paths exist, treat them as canonical for locating/updating the quick artifacts. Do not guess paths.
+
 ## Lightweight Planning Flow
 
 ### Step 1: Capture Quick Spec in `quick.md`
@@ -64,12 +71,31 @@ Include required v2 fields and task details:
 
 Validate required schema and fields before execution.
 
+Treat `templates/quick-todo.template.json` as the canonical required shape.
+
+Minimum validation checks:
+
+- top-level: `schema_version`, `task_id`, `mode`, `context`, `execution_policy`, `items`
+- each item: `id`, `status`, `file_targets`, `plan_refs`, `steps`, `commands`, `expected_results`, `verification`, `commit`
+- each `step.command_ref` and `step.expected_result_ref` resolves to a declared `commands[]` / `expected_results[]` entry
+
 If missing:
 
 - mark task `blocked`
 - stop and request todo correction
 
-### Step 4: Confirmation Gate
+### Step 4: Quick Review Packet (Hard Gate)
+
+Before asking to begin implementation, present a quick review packet in chat:
+
+1. objective
+2. why quick path is eligible (explicit checklist)
+3. proposed file inventory (create/modify/test)
+4. risks + mitigations
+5. verification commands (including full suite)
+6. quick-todo task preview (id, steps, checks, commit intent)
+
+### Step 5: Confirmation Gate
 
 Ask:
 

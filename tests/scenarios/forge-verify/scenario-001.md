@@ -14,5 +14,6 @@
 ## Expected Skill Behavior
 
 - Records coverage gap in `verification.md`
+- Presents an in-chat verification packet including the gap
 - Refuses completion claim
-- Routes back to implementation or requests explicit risk acceptance
+- Routes back to implementation or requests explicit per-gap risk acceptance

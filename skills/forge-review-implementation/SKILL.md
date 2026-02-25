@@ -21,6 +21,10 @@ Read first:
 4. `todo.json`
 5. `implementation-review.md` (if present)
 
+If `todo.json.context.*` paths exist, treat them as canonical for locating `plan.md` / `research.md` / downstream artifacts. Do not guess paths.
+
+If `implementation-review.md` is missing, create it by copying `templates/implementation-review.template.md` verbatim, then fill it in.
+
 Then summarize:
 
 - implemented scope and completed task ids
@@ -111,6 +115,14 @@ Then ask finding-level questions one-by-one:
    "Apply the improvement set for `Fxx`? (yes/no)"
 3. Wait for reply and record result before moving to the next finding.
 
+## Improvement Profiles (Definitions)
+
+When asking for an improvement profile, use these stable meanings:
+
+- `minimal`: smallest change set that materially reduces risk for the accepted findings (targeted tests, correctness fixes, explicit edge handling, small refactors to remove sharp edges).
+- `hardening`: apply `minimal` plus additional robustness work (stronger negative/edge-case coverage, performance/reliability guardrails when relevant, clearer operational/diagnostic behavior, and cleanup of high-risk tech debt).
+- `custom`: user-defined boundaries; ask one scoped question at a time until boundaries are unambiguous.
+
 After all finding-level decisions:
 
 1. If at least one finding is accepted, explain profile tradeoffs with one concrete impact example, then ask:
@@ -125,6 +137,11 @@ If user accepts one or more findings and chooses `minimal`, `hardening`, or `cus
 1. `research.md`
    - append implementation-review findings and selected improvements
 2. `plan.md`
+   - add `## Implementation Review Decision - <YYYY-MM-DD>`:
+     - decision: `reviewed`
+     - profile: `minimal|hardening|custom`
+     - finding decision ledger (`Fxx -> yes/no`)
+     - residual risks accepted (if any)
    - add `## Implementation Review Deltas`
    - update acceptance criteria/test strategy/risks where needed
 3. `todo.json`
@@ -132,7 +149,14 @@ If user accepts one or more findings and chooses `minimal`, `hardening`, or `cus
    - preserve completed history and supersede changed tasks with reason
    - include one logical-task commit specification per task
 
-If user declines one or more findings, log accepted residual risk per finding in `implementation-review.md`.
+If user declines one or more findings:
+
+- log accepted residual risk per finding in `implementation-review.md`
+- append to `plan.md` under `## Implementation Review Decision - <YYYY-MM-DD>`:
+  - decision: `reviewed`
+  - profile: `none`
+  - finding decision ledger (`Fxx -> yes/no`)
+  - residual risks accepted (if any)
 
 ## Updated Review Packet (Hard Gate)
 

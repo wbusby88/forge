@@ -15,16 +15,25 @@ Read:
 
 - root `memory.md`
 - `plan.md`
+- `research.md`
 - `todo.json`
 - `implementation-review.md`
 - existing verification artifacts (if any)
+
+If `todo.json.context.*` paths exist, treat them as canonical for locating and updating artifacts. Do not guess paths.
+
+## Verification Artifact (Hard Gate)
+
+Write verification evidence to the `verification.md` path declared in `todo.json.context.verification_artifact_path`.
+
+If the artifact is missing, create it by copying `templates/verification.template.md` verbatim, then fill it in.
 
 ## Verification Steps
 
 ### Step 1: Test Evidence
 
 - Run the full test suite defined by project workflow.
-- Record command outputs and pass/fail summary in `verification.md`.
+- Record the exact command(s), environment notes, and pass/fail summary in `verification.md`.
 - If failures remain, route back to `forge-implement`.
 
 ### Step 2: Coverage Comparison
@@ -38,7 +47,18 @@ Write plan coverage matrix to `verification.md` including:
 - status
 - notes on gaps
 
-### Step 3: Deferred Work and Risk Assessment
+### Step 3: Gap Handling (Hard Gate)
+
+If *any* acceptance criterion lacks evidence or is not satisfied:
+
+1. Present the gaps in chat (not file-only).
+2. For each gap, ask an explicit decision:
+   - fix now (route to `forge-implement`), or
+   - accept residual risk (record explicit risk acceptance in `verification.md`)
+
+Do not ask the completion gate until all gaps are resolved or explicitly accepted.
+
+### Step 4: Deferred Work and Risk Assessment
 
 Document:
 
@@ -46,7 +66,17 @@ Document:
 - residual risks and severity
 - recommended follow-up actions
 
-### Step 4: Completion Gate
+### Step 5: In-Chat Verification Packet (Hard Gate)
+
+Before asking for completion confirmation, present a deterministic verification packet in chat so the user can decide without opening files:
+
+1. full-suite test commands + results
+2. acceptance criteria coverage summary (pass/fail/unknown counts)
+3. any gaps (and whether they were fixed or explicitly accepted)
+4. deferred items / follow-ups
+5. residual risk ledger
+
+### Step 6: Completion Gate
 
 Ask:
 
@@ -54,7 +84,7 @@ Ask:
 
 Only after explicit confirmation:
 
-- mark final completion state in `todo.json`
+- mark final completion state in `todo.json` (for example, set `lifecycle.state: verified` and record `verified_at` and the verification artifact path)
 - append verification learnings and pitfalls to `memory.md`
 
 ## Memory Update Mandate

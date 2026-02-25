@@ -9,7 +9,10 @@
 
 ## Interview Log (Structured)
 
-### Entry N
+Use explicit HTML anchors so `todo.json.research_refs` can be stable.
+
+<a id="entry-1"></a>
+### Entry 1
 
 - Question:
 - User Response:
@@ -41,6 +44,7 @@
 
 ## Decision Log
 
+<a id="decision-1"></a>
 - Decision:
   - Alternatives considered:
   - Why chosen:
@@ -56,3 +60,11 @@
 
 - Finding to append to `memory.md`:
 - Pitfall to append to `memory.md`:
+
+## Review Pass - <YYYY-MM-DD>
+
+Use this section for `forge-review-plan` findings and mitigation decisions.
+
+- Critical questions answered:
+- Ranked findings (`Fxx`, severity, evidence refs):
+- Mitigation options and decisions:

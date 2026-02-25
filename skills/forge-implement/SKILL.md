@@ -18,6 +18,12 @@ Read before any implementation:
 - `plan.md`
 - `todo.json`
 
+## Artifact Location Rule (Hard Rule)
+
+Use `todo.json.context.*` paths as canonical for locating and updating artifacts (`memory.md`, `plan.md`, `research.md`, `verification.md`, etc.).
+
+If `todo.json.context.*` is missing or incomplete, stop and ask for correction. Do not guess paths.
+
 Then summarize:
 
 - current phase
@@ -37,10 +43,22 @@ Before executing any task, validate `todo.json`:
 If validation fails:
 
 - mark affected task as `blocked`
-- record validation error
+- record validation error in the affected task’s blocker notes (see “Blocked Task Recording”)
 - stop execution and request a corrected todo
 
 Do not improvise missing fields.
+
+## Blocked Task Recording (Hard Rule)
+
+When marking a task `blocked`, record the reason *in `todo.json`* so another agent (or you later) can resume deterministically.
+
+Minimum required fields to add/update on the blocked item:
+
+- `blockers`: append an entry with:
+  - `date` (`YYYY-MM-DD`)
+  - `kind` (`invalid_todo|needs_clarification|scope_expansion|failing_verification|environment`)
+  - `summary` (1-2 sentences)
+  - `unblock_requires` (bullets of what is needed to proceed)
 
 ## Invocation-Aware Confirmation Gate
 
@@ -86,6 +104,7 @@ If requested work touches files or behavior outside declared task scope:
 
 - stop task
 - set status to `blocked`
+- record a `scope_expansion` blocker entry describing the out-of-scope request and the required replan
 - trigger replan requirement per policy `stop_and_replan`
 
 ## Batch Checkpoint
@@ -124,6 +143,8 @@ If user chooses skip:
   - user rationale
   - residual risks acknowledged
   - note that no adversarial implementation review was performed
+  - prefer writing to `todo.json.context.implementation_review_path` when present
+  - if the file does not exist yet, create it by copying `templates/implementation-review.template.md` verbatim, then fill in the skip decision section
 
 Do not auto-invoke the next skill.
 

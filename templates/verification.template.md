@@ -18,6 +18,14 @@
 | --- | --- | --- |
 |  |  |  |
 
+## Gap Decisions (If Any)
+
+If any criteria are `fail` or `unknown`, record the decision for each:
+
+| Criterion | Decision (fix/accept) | Rationale | Follow-up |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
 ## Plan vs Implementation Notes
 
 - Planned behavior:

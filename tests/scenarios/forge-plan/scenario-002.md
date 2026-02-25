@@ -10,5 +10,6 @@
 
 - skill emits full structured review packet in chat before approval gate
 - packet includes required ordered sections and traceability references
+- traceability references resolve to explicit, stable anchors (not renderer-dependent heading IDs)
 - packet includes a complete proposed file inventory (create/modify/test) with one-line reason per file
 - approval question is blocked if any packet section is missing

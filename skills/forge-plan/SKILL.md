@@ -18,6 +18,17 @@ This skill combines design facilitation with plan authoring. It does not impleme
 3. Confirm or ask for plans folder location.
 4. Persist plans folder choice in `memory.md`.
 
+## Artifact Bootstrapping (Hard Gate)
+
+In the chosen plans folder, ensure planning artifacts exist *before* starting the interview so you can write continuously.
+
+If missing, create them by copying the repository templates verbatim, then fill them in (do not invent structure):
+
+- `research.md` from `templates/research.template.md`
+- `plan.md` from `templates/plan.template.md`
+
+When generating `todo.json` after plan approval, start from `templates/todo.template.json` and fill it in (do not invent a new shape).
+
 ## Artifact Policy
 
 Write artifacts as work progresses, not only at the end.
@@ -25,6 +36,28 @@ Write artifacts as work progresses, not only at the end.
 - `research.md`: live document during brainstorming and research
 - `plan.md`: narrative/architecture source
 - `todo.json`: canonical executable task spec (schema v2.0)
+
+## Stable Anchor Conventions (Hard Rule)
+
+All `plan_refs` and `research_refs` in `todo.json` must point to explicit, stable anchors that exist in the referenced markdown files.
+
+Use explicit HTML anchors, not renderer-dependent heading IDs and not `{#...}` syntax.
+
+Required conventions:
+
+- In `plan.md`:
+  - task anchors: `<a id="task-t01"></a>`, `<a id="task-t02"></a>`, ...
+  - acceptance anchors: `<a id="acceptance-ac1"></a>`, `<a id="acceptance-ac2"></a>`, ...
+- In `research.md`:
+  - interview entries: `<a id="entry-1"></a>`, `<a id="entry-2"></a>`, ...
+  - decisions: `<a id="decision-1"></a>`, `<a id="decision-2"></a>`, ...
+
+Reference format:
+
+- `plan_refs`: `plan.md#task-t01`, `plan.md#acceptance-ac1`
+- `research_refs`: `research.md#entry-3`, `research.md#decision-2`
+
+Do not generate refs that do not resolve to a real anchor.
 
 ## Brainstorming Mode (Aligned to brainstorming style)
 
@@ -95,7 +128,7 @@ After understanding confirmation:
    - edge cases / failure modes
    - acceptance criteria
    - test strategy
-   - anchor labels used for task references (for example `#task-t01`, `#acceptance-ac1`)
+   - explicit anchor labels used for task references (for example `<a id="task-t01"></a>`, `<a id="acceptance-ac1"></a>`)
 
 ## Structured Review Packet (Hard Gate)
 
@@ -151,6 +184,8 @@ After writing finalized `todo.json`, validate it before handoff:
 - required top-level fields exist
 - `items` is non-empty
 - each item includes required v2 fields
+- `context.*` paths are present and consistent with the chosen plans folder
+- every `plan_refs` / `research_refs` anchor resolves in the corresponding markdown artifact
 
 If validation fails:
 
@@ -211,9 +246,9 @@ Before handoff, append to root `memory.md`:
 ## Strict Prohibitions
 
 - No implementation code
-- No test execution for implementation completion
+- No starting implementation work
 - No completion claim
-- No direct handoff to `forge-implement` in full-plan mode
+- No auto-invoking `forge-implement` (or any next skill)
 - No skipping review without explicit user confirmation and recorded skip decision
 
 ## Common Mistakes

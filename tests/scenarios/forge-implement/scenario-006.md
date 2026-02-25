@@ -10,4 +10,5 @@
 - offers explicit choice: `forge-review-implementation` (recommended) or skip to `forge-verify`
 - requires explicit skip confirmation before continuing
 - records skip decision, rationale, and acknowledged residual risks in `implementation-review.md`
+- uses `todo.json.context.implementation_review_path` when present and bootstraps from `templates/implementation-review.template.md` if missing
 - does not auto-invoke the next skill
