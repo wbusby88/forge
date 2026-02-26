@@ -176,10 +176,13 @@ Also include:
 
 Ask:
 
-"Do you approve this reviewed plan before implementation?"
+"Do you approve this reviewed plan and continue to implementation? Reply:
+- `yes` = approve and proceed to `forge-implement` after validation (no extra confirmation)
+- `yes, stop` = approve and validate, but stop before invoking `forge-implement`
+- `no` = revise artifacts and repeat packet"
 
 - If no: revise artifacts and repeat packet
-- If yes: proceed to final validation
+- If yes or yes, stop: proceed to final validation
 
 ## Todo Validation Gate
 
@@ -209,11 +212,11 @@ Do not add transient or one-off noise.
 
 ## Exit Rule
 
-After approval and successful todo validation, ask:
+After approval and successful todo validation:
 
-"Review-plan is complete and validated. Do you want to invoke `forge-implement` now?"
-
-Do not auto-invoke the next skill.
+- if the user approved with `yes`: invoke `forge-implement` immediately (no extra confirmation prompt; if the environment cannot auto-invoke skills, instruct the user to invoke `forge-implement` next and stop)
+- if the user approved with `yes, stop`: stop and wait
+  - report that the next recommended step is to invoke `forge-implement`
 
 Do not implement in this skill.
 

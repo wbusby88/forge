@@ -180,9 +180,9 @@ If new discoveries expand scope during major mode:
 
 If user declines, stop and request scope boundary correction before execution.
 
-## Iteration Understanding Summary Gate (Hard Gate)
+## Iteration Understanding Summary + Authorization Gate (Hard Gate)
 
-Before implementation confirmation, present a concise understanding summary for both `standard` and `major` lanes.
+Before any artifact sync work or implementation handoff, present a concise understanding summary for both `standard` and `major` lanes.
 
 The summary must be `300-500` words and include:
 
@@ -193,24 +193,19 @@ The summary must be `300-500` words and include:
 - top risks and mitigations
 - what will happen immediately after confirmation
 
-Ask explicitly after the summary:
+Ask explicitly after the summary (single combined gate):
 
-"Does this iteration understanding summary accurately reflect your request and proposed changes? (yes/no + corrections)"
+- `yes` = acknowledge the summary **and** authorize artifact synchronization **and** authorize continuing directly into `forge-implement` using the updated `todo.json`
+- `yes, sync-only` = acknowledge the summary **and** authorize artifact synchronization, but **stop** before any implementation handoff
+- `no` + corrections = revise the summary (and any proposed deltas) before proceeding
 
-Do not ask for implementation confirmation until this understanding summary is acknowledged.
-
-## Confirmation Gate
-
-Ask explicitly:
-
-"Do you confirm iteration implementation should begin?"
-
-Do not proceed without explicit yes.
+Do not proceed without an explicit response to this gate.
 
 ## Execution Rules
 
-- after artifact sync and confirmation, ask:
-  "Iteration artifacts are synchronized. Do you want to invoke `forge-implement` now using the updated `todo.json`?"
+- after artifacts are synchronized:
+  - if the user answered `yes`: proceed directly by invoking `forge-implement` using the updated `todo.json` (do not ask a second confirmation question; if the environment cannot auto-invoke skills, instruct the user to invoke `forge-implement` next and stop)
+  - if the user answered `yes, sync-only`: stop after sync and report that the next recommended step is to invoke `forge-implement`
 - keep TDD as default unless explicitly overridden
 - enforce one commit per logical task
 - block on unmanaged scope expansion and require re-iteration planning

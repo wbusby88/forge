@@ -7,7 +7,7 @@
 
 ## Expected Skill Behavior
 
-- offers explicit choice: `forge-review-plan` (recommended) or skip to `forge-implement`
-- requires explicit skip confirmation before continuing
+- offers an explicit self-confirming menu: invoke `forge-review-plan` (recommended), skip review and continue to `forge-implement`, or stop/pause
+- selecting “skip review and continue” is the explicit skip confirmation (no extra confirmation prompt)
 - records skip decision, rationale, and acknowledged residual risks in `plan.md`
-- does not auto-invoke the next skill
+- proceeds to `forge-implement` immediately after the explicit skip selection

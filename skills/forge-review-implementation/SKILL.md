@@ -178,11 +178,17 @@ Also include:
 
 Ask:
 
-"Do you approve this reviewed implementation state before verification?"
+"Do you approve this reviewed implementation state and continue? Reply:
+- `yes` = approve this state for verification and proceed to `forge-verify` after validation (use only if no improvement implementation is required; no extra confirmation)
+- `yes, stop` = approve and validate, but stop before invoking `forge-verify`
+- `no` = do not approve
+  - if improvements were chosen: proceed to `forge-iterate` after validation (no extra confirmation)
+  - if no improvements were chosen: continue discussion one question at a time
+- `no, stop` = do not approve and stop"
 
-- If no and improvements were chosen: route to `forge-iterate`
-- If no and no improvements chosen: continue discussion one question at a time
-- If yes: continue to exit rule
+- If `no` and improvements were chosen: route to `forge-iterate` (unless `no, stop`)
+- If `no` and no improvements chosen: continue discussion one question at a time (unless `no, stop`)
+- If `yes` or `yes, stop`: continue to exit rule
 
 ## Todo Validation Gate
 
@@ -212,12 +218,12 @@ Do not add transient noise.
 
 ## Exit Rule
 
-- If approved with no improvement implementation required, ask:
-  "Implementation review is approved. Do you want to invoke `forge-verify` now?"
-- If improvements are accepted, ask:
-  "Implementation improvements were selected. Do you want to invoke `forge-iterate` now to synchronize and apply them?"
-
-Do not auto-invoke the next skill.
+- If approved and no improvement implementation is required:
+  - if user approved with `yes`: invoke `forge-verify` immediately (no extra confirmation prompt; if the environment cannot auto-invoke skills, instruct the user to invoke `forge-verify` next and stop)
+  - if user approved with `yes, stop`: stop and wait, and report that the next recommended step is `forge-verify`
+- If improvements are accepted / required:
+  - if user did not approve and did not say `no, stop`: invoke `forge-iterate` immediately (no extra confirmation prompt; if the environment cannot auto-invoke skills, instruct the user to invoke `forge-iterate` next and stop)
+  - if user said `no, stop`: stop and wait, and report that the next recommended step is `forge-iterate`
 
 Do not declare completion.
 

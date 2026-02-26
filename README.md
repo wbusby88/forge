@@ -56,6 +56,9 @@ Optional router: `forge`.
 - Missing required todo fields trigger hard fail and stop.
 - One commit per logical task is mandatory.
 - `forge-plan` must present a deterministic in-chat review packet before asking for plan approval.
+- Skill handoffs use single-confirmation gates (avoid repeated yes/no prompts):
+  - `yes` = approve and continue immediately
+  - `yes, stop` / `stop` / `pause` = approve (if applicable) but stop before invoking the next phase
 
 ## Install/Use
 

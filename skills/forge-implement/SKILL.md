@@ -67,12 +67,13 @@ Minimum required fields to add/update on the blocked item:
 Determine how `forge-implement` was entered:
 
 - Direct invocation (`forge-implement` explicitly requested): treat invocation as implementation confirmation.
+- Explicit handoff from a prior phase (user explicitly selected a “continue to `forge-implement`” option or answered a combined gate that authorizes continuing): treat that selection as implementation confirmation.
 - Routed or implicit handoff (for example, from `forge-plan` summary): ask explicitly:
   "Do you confirm implementation should begin?"
 
 If explicit confirmation is required and missing, do not proceed.
 
-When direct invocation is used, still run all preflight checks and then start task 1 without asking a duplicate confirmation question.
+When direct invocation or explicit handoff is used, still run all preflight checks and then start task 1 without asking a duplicate confirmation question.
 
 ## Preflight Context Review
 
@@ -153,21 +154,27 @@ Use task `memory_update_candidate` as starting point.
 
 After all implementation tasks complete, ask:
 
-"Implementation tasks are complete. Choose next step: invoke `forge-review-implementation` (recommended) or skip to `forge-verify`."
+"Implementation tasks are complete. Choose next step (reply A/B/C):
 
-If user chooses skip:
+A) invoke `forge-review-implementation` (recommended) and continue immediately
+B) skip implementation review and continue to `forge-verify` (records skip decision + rationale + residual risks in `implementation-review.md`) and continue immediately
+C) stop/pause (do not proceed to the next skill)
 
-- ask explicit confirmation:
-  "You chose to skip implementation review. Confirm skip and continue to `forge-verify`? (yes/no)"
-- if confirmed, create or update `implementation-review.md` with:
+If the user replies `yes` without specifying an option, treat it as A (recommended)."
+
+If user chooses B:
+
+- create or update `implementation-review.md` with:
   - decision: skipped
   - user rationale
   - residual risks acknowledged
   - note that no adversarial implementation review was performed
   - prefer writing to `todo.json.context.implementation_review_path` when present
   - if the file does not exist yet, create it by copying `templates/implementation-review.template.md` verbatim, then fill in the skip decision section
+- proceed directly to `forge-verify` (no extra confirmation prompt)
 
-Do not auto-invoke the next skill.
+Do not proceed to the next skill unless the user selected A or B (or replied `yes`, which maps to A).
+If the environment cannot auto-invoke skills, instruct the user which next skill to invoke and stop (do not ask an extra confirmation question).
 
 Do not declare final completion.
 
@@ -178,7 +185,7 @@ Do not declare final completion.
 - No skipping per-task logical commits
 - No execution when required fields are missing
 - No final completion claim
-- No skipping implementation review without explicit user confirmation and recorded skip decision
+- No skipping implementation review without an explicit skip choice (B) and recorded skip decision
 
 ## Stop Conditions
 

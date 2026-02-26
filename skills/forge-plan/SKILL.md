@@ -204,20 +204,24 @@ Handoff is allowed only after this check passes.
 
 After successful validation, ask:
 
-"`todo.json` is validated. Choose next step: invoke `forge-review-plan` (recommended) or skip to `forge-implement`."
+"`todo.json` is validated. Choose next step (reply A/B/C):
 
-If user chooses skip:
+A) invoke `forge-review-plan` (recommended) and continue immediately
+B) skip plan review and continue to `forge-implement` (records skip decision + rationale + residual risks in `plan.md`) and continue immediately
+C) stop/pause (do not proceed to the next skill)
 
-- ask explicit confirmation:
-  "You chose to skip plan review. Confirm skip and continue to `forge-implement`? (yes/no)"
-- if confirmed, append skip decision in `plan.md` under:
-  `## Review Plan Decision - <YYYY-MM-DD>`
-  including:
+If the user replies `yes` without specifying an option, treat it as A (recommended)."
+
+If user chooses B:
+
+- append skip decision in `plan.md` under `## Review Plan Decision - <YYYY-MM-DD>` including:
   - decision: skipped
   - user rationale
   - known residual risks acknowledged
+- proceed directly to `forge-implement` (no extra confirmation prompt)
 
-Do not auto-invoke the next skill.
+Do not proceed to the next skill unless the user selected A or B (or replied `yes`, which maps to A).
+If the environment cannot auto-invoke skills, instruct the user which next skill to invoke and stop (do not ask an extra confirmation question).
 
 ## Todo v2 Requirements (Hard Rules)
 
@@ -256,8 +260,8 @@ Before handoff, update project memory without bloating the working set:
 - No implementation code
 - No starting implementation work
 - No completion claim
-- No auto-invoking `forge-implement` (or any next skill)
-- No skipping review without explicit user confirmation and recorded skip decision
+- No proceeding to the next skill without an explicit user choice (A/B) or an implicit `yes` mapping to A
+- No skipping review without an explicit skip choice (B) and recorded skip decision
 
 ## Common Mistakes
 
