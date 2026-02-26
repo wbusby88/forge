@@ -1,0 +1,343 @@
+{
+  "schema_version": "2.0",
+  "generated_at": "2026-02-26",
+  "working_set_limit": 12,
+  "paths": {
+    "memory_path": "memory.md",
+    "archive_path": "memory.archive.md"
+  },
+  "items": [
+    {
+      "id": "CON-001",
+      "type": "constraint",
+      "status": "working",
+      "summary": "Keep memory.md within the 12-entry working-set cap; store long-tail context in memory.index.json + memory.archive.md.",
+      "tags": [
+        "memory",
+        "process"
+      ],
+      "applies_to": [
+        "memory.md",
+        "memory.index.json",
+        "memory.archive.md"
+      ],
+      "how_to_comply": [
+        "Prefer adding durable items as status:candidate in memory.index.json.",
+        "Promote into memory.md only if high-frequency/high-risk.",
+        "Merge/demote an existing entry when approaching the cap."
+      ],
+      "evidence_refs": [
+        "docs/memory-propagation-rules.md"
+      ],
+      "canonical_location": "memory.md#con-001",
+      "archived_location": "memory.archive.md#con-001",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Constraints"
+    },
+    {
+      "id": "CON-002",
+      "type": "constraint",
+      "status": "working",
+      "summary": "All plan_refs / research_refs must point to explicit HTML anchors (not heading IDs).",
+      "tags": [
+        "process"
+      ],
+      "applies_to": [
+        "templates/plan.template.md",
+        "templates/research.template.md",
+        "templates/todo.template.json",
+        "skills/forge-plan/SKILL.md"
+      ],
+      "how_to_comply": [
+        "Use explicit anchors (<a id=\"...\"></a>) in plan.md and research.md.",
+        "Validate every plan_ref/research_ref resolves before handoff."
+      ],
+      "evidence_refs": [
+        "skills/forge-plan/SKILL.md"
+      ],
+      "canonical_location": "memory.md#con-002",
+      "archived_location": "memory.archive.md#con-002",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Constraints"
+    },
+    {
+      "id": "CON-003",
+      "type": "constraint",
+      "status": "working",
+      "summary": "todo.json / quick-todo.json must use schema 2.0 and hard-fail on missing required fields.",
+      "tags": [
+        "process",
+        "todo"
+      ],
+      "applies_to": [
+        "templates/todo.template.json",
+        "templates/quick-todo.template.json",
+        "docs/lifecycle-contract.md"
+      ],
+      "how_to_comply": [
+        "Start from canonical templates in templates/.",
+        "Run the post-write validation gates described in skills before handoff."
+      ],
+      "evidence_refs": [
+        "docs/lifecycle-contract.md"
+      ],
+      "canonical_location": "memory.md#con-003",
+      "archived_location": "memory.archive.md#con-003",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Constraints"
+    },
+    {
+      "id": "DEC-001",
+      "type": "decision",
+      "status": "working",
+      "summary": "Adopt Memory v2 split: memory.md (bounded working set) + memory.index.json (registry) + memory.archive.md (long tail).",
+      "tags": [
+        "memory",
+        "process"
+      ],
+      "applies_to": [
+        "memory.md",
+        "memory.index.json",
+        "memory.archive.md",
+        "templates/memory.template.md",
+        "templates/memory-index.template.json",
+        "templates/memory-archive.template.md"
+      ],
+      "how_to_comply": [
+        "Keep memory.md within the working-set cap.",
+        "Index durable items in memory.index.json with stable anchors.",
+        "Store full details in memory.archive.md when needed."
+      ],
+      "evidence_refs": [
+        "docs/memory-propagation-rules.md",
+        "README.md"
+      ],
+      "canonical_location": "memory.md#dec-001",
+      "archived_location": "memory.archive.md#dec-001",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Decisions"
+    },
+    {
+      "id": "DEC-002",
+      "type": "decision",
+      "status": "working",
+      "summary": "Use docs/lifecycle-contract.md states/transitions as the canonical process model for skills and UIs.",
+      "tags": [
+        "process"
+      ],
+      "applies_to": [
+        "docs/lifecycle-contract.md",
+        "skills/"
+      ],
+      "how_to_comply": [
+        "Model lifecycle states and required transitions explicitly.",
+        "Use the canonical gate questions from docs/lifecycle-contract.md."
+      ],
+      "evidence_refs": [
+        "docs/lifecycle-contract.md"
+      ],
+      "canonical_location": "memory.md#dec-002",
+      "archived_location": "memory.archive.md#dec-002",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Decisions"
+    },
+    {
+      "id": "PIT-001",
+      "type": "pitfall",
+      "status": "working",
+      "summary": "Artifacts created late leads to lost interview/planning context.",
+      "tags": [
+        "process",
+        "planning"
+      ],
+      "applies_to": [
+        "skills/forge-plan/SKILL.md",
+        "templates/research.template.md",
+        "templates/plan.template.md"
+      ],
+      "how_to_comply": [
+        "Bootstrap research.md and plan.md from templates before asking the first interview question.",
+        "Write continuously during the interview (not only at the end)."
+      ],
+      "evidence_refs": [
+        "skills/forge-plan/SKILL.md"
+      ],
+      "canonical_location": "memory.md#pit-001",
+      "archived_location": "memory.archive.md#pit-001",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Pitfalls"
+    },
+    {
+      "id": "PIT-002",
+      "type": "pitfall",
+      "status": "working",
+      "summary": "Asking for plan approval without a complete deterministic review packet causes rework and ambiguity.",
+      "tags": [
+        "process",
+        "planning"
+      ],
+      "applies_to": [
+        "skills/forge-plan/SKILL.md"
+      ],
+      "how_to_comply": [
+        "Include all required review-packet sections (including file change inventory) before approval.",
+        "Keep section order deterministic to reduce review effort."
+      ],
+      "evidence_refs": [
+        "skills/forge-plan/SKILL.md"
+      ],
+      "canonical_location": "memory.md#pit-002",
+      "archived_location": "memory.archive.md#pit-002",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Pitfalls"
+    },
+    {
+      "id": "PIT-003",
+      "type": "pitfall",
+      "status": "working",
+      "summary": "Implementation drift happens when todo.json file_targets and scope_* are treated as suggestions instead of hard boundaries.",
+      "tags": [
+        "process",
+        "implementation"
+      ],
+      "applies_to": [
+        "templates/todo.template.json",
+        "skills/forge-implement/SKILL.md"
+      ],
+      "how_to_comply": [
+        "Do not edit files outside declared file_targets unless blocked and replanned.",
+        "Stop and replan on scope expansion instead of \"just fixing\" adjacent issues."
+      ],
+      "evidence_refs": [
+        "templates/todo.template.json"
+      ],
+      "canonical_location": "memory.md#pit-003",
+      "archived_location": "memory.archive.md#pit-003",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Pitfalls"
+    },
+    {
+      "id": "LRN-001",
+      "type": "learning",
+      "status": "working",
+      "summary": "Plans folder must remain stable once chosen; todo.json.context.* paths must match the chosen location.",
+      "tags": [
+        "process",
+        "planning"
+      ],
+      "applies_to": [
+        "templates/todo.template.json",
+        "templates/quick-todo.template.json"
+      ],
+      "how_to_comply": [
+        "Persist the chosen plans folder in memory as an operational default.",
+        "Keep todo.json.context.* paths consistent with that folder."
+      ],
+      "evidence_refs": [
+        "docs/memory-propagation-rules.md"
+      ],
+      "canonical_location": "memory.md#lrn-001",
+      "archived_location": "memory.archive.md#lrn-001",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Learnings"
+    },
+    {
+      "id": "LRN-002",
+      "type": "learning",
+      "status": "working",
+      "summary": "Skill authoring needs scenario-based regression tests (RED/GREEN/REFACTOR) to prevent prompt drift.",
+      "tags": [
+        "skills",
+        "testing"
+      ],
+      "applies_to": [
+        "tests/scenarios/"
+      ],
+      "how_to_comply": [
+        "Add a failing scenario for each observed skill failure (RED).",
+        "Update the skill/template to pass (GREEN), then tighten wording/loopholes (REFACTOR)."
+      ],
+      "evidence_refs": [
+        "README.md"
+      ],
+      "canonical_location": "memory.md#lrn-002",
+      "archived_location": "memory.archive.md#lrn-002",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Learnings"
+    },
+    {
+      "id": "LRN-003",
+      "type": "learning",
+      "status": "working",
+      "summary": "Quick mode must stay separate from full planning to preserve guarantees; keep verification evidence inside quick artifacts.",
+      "tags": [
+        "process",
+        "quick"
+      ],
+      "applies_to": [
+        "skills/forge-quick/SKILL.md",
+        "templates/quick.template.md",
+        "templates/quick-todo.template.json"
+      ],
+      "how_to_comply": [
+        "Use quick.md + quick-todo.json for eligible low-risk scoped work.",
+        "Record full-suite verification evidence inside quick artifacts."
+      ],
+      "evidence_refs": [
+        "docs/lifecycle-contract.md"
+      ],
+      "canonical_location": "memory.md#lrn-003",
+      "archived_location": "memory.archive.md#lrn-003",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Learnings"
+    },
+    {
+      "id": "OPS-001",
+      "type": "operational_default",
+      "status": "working",
+      "summary": "Design/plan artifacts live in docs/plans/ with date-prefixed files and folders (YYYY-MM-DD-...).",
+      "tags": [
+        "repo",
+        "docs"
+      ],
+      "applies_to": [
+        "docs/plans/"
+      ],
+      "how_to_comply": [
+        "For single-file docs: create docs/plans/YYYY-MM-DD-<topic>.md.",
+        "For multi-artifact plans: create docs/plans/YYYY-MM-DD-<topic>/ containing research.md / plan.md / todo.json."
+      ],
+      "evidence_refs": [
+        "docs/plans/"
+      ],
+      "canonical_location": "memory.md#ops-001",
+      "archived_location": "memory.archive.md#ops-001",
+      "needs_review": false,
+      "last_updated": "2026-02-26",
+      "last_verified": null,
+      "source_section": "Operational Defaults"
+    }
+  ]
+}
