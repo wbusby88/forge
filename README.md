@@ -16,7 +16,7 @@ Optional router: `forge`.
 - Keep essential long-lived context in a **bounded** `memory.md` working set (always read fully)
 - Keep the long tail in `memory.index.json` (canonical registry) + `memory.archive.md` (full details)
 - Require explicit planning before implementation
-- Allow a safe quick path for low-risk ad hoc changes
+- Provide an accelerated planning path for users who want to skip interview-heavy planning
 - Make `todo.json` canonical and deterministic for execution handoff
 - Make TDD the default implementation mode
 - Require evidence before completion
@@ -27,7 +27,7 @@ Optional router: `forge`.
 - `forge`: routes to the correct lifecycle stage based on available artifacts
 - `forge-init`: creates or updates project memory only
 - `forge-plan`: runs brainstorming interview, records Q/A + research to `research.md`, writes `plan.md`, then emits canonical `todo.json` v2
-- `forge-quick`: handles low-risk ad hoc changes with `quick.md` and canonical `quick-todo.json` v2
+- `forge-quick`: accelerated planning path that takes user request at face value, reads memory + project rules, generates canonical `research.md`/`plan.md`/`todo.json`, then gates handoff to `forge-implement`
 - `forge-implement`: executes canonical todo v2 in batches with checkpoints
 - `forge-iterate`: handles post-implement change/refactor/redo loops by synchronizing `research.md`, `plan.md`, `todo.json`, and `iteration.md` before resumed execution
 - `forge-verify`: validates coverage and test evidence before completion
@@ -38,16 +38,14 @@ Optional router: `forge`.
   - `memory.md`: bounded working set (must stay small; every agent reads fully)
   - `memory.index.json`: canonical registry (IDs, tags, applies_to, links)
   - `memory.archive.md`: long tail (full details; access via index)
-- Plans root: resolved during planning (prefer persisted root, fallback `docs/plans/`), then persisted in `memory.md`; each new full plan uses a date-prefixed subfolder under that root
-- Full path artifacts:
-  - `research.md`: running research + interview record
+- Plans root: resolved during planning (prefer persisted root, fallback `docs/plans/`), then persisted in `memory.md`; each new plan uses a date-prefixed subfolder under that root
+- Canonical planning/execution artifacts:
+  - `research.md`: running research and decisions record
   - `plan.md`: narrative architecture and decision context
   - `todo.json`: canonical executable task specification (schema `2.0`)
   - `iteration.md`: post-implement change/refactor/redo delta record (when iteration is used)
   - `verification.md`: verification evidence, plan coverage, residual risks
-- Quick path artifacts:
-  - `quick.md`: lightweight scoped plan, execution notes, and verification evidence
-  - `quick-todo.json`: canonical executable quick task specification (schema `2.0`)
+- Legacy quick artifacts (`quick.md`, `quick-todo.json`) are deprecated and are only for migration/discovery compatibility.
 
 ## Deterministic Handoff Rules
 
@@ -56,7 +54,7 @@ Optional router: `forge`.
 - Missing required todo fields trigger hard fail and stop.
 - One commit per logical task is mandatory.
 - When lifecycle artifacts are modified, commit those artifact changes before phase handoff/completion unless user requests no commit or the artifact folder is gitignored.
-- `forge-plan` must present a deterministic in-chat review packet before asking for plan approval.
+- `forge-plan` and `forge-quick` must present deterministic in-chat review packets before asking for handoff approval.
 - Skill handoffs use single-confirmation gates (avoid repeated yes/no prompts):
   - `yes` = approve and continue immediately
   - `yes, stop` / `stop` / `pause` = approve (if applicable) but stop before invoking the next phase

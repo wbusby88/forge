@@ -1,170 +1,209 @@
 ---
 name: forge-quick
-description: Use when handling a low-risk ad hoc change that needs lightweight planning and execution while still reading and selectively updating root project memory.
+description: Use when a user wants an accelerated path that still produces full planning artifacts (`research.md`, `plan.md`, `todo.json`) and then hands off directly to `forge-implement` after approval.
 ---
 
 # Forge Quick
 
 ## Overview
 
-Execute low-risk, scoped changes without full-plan overhead while preserving memory discipline.
+Create a full executable plan quickly, without interview-heavy planning, while preserving forge memory discipline.
 
-This skill is additive. It does not replace `forge-plan` for medium/high-risk work.
+This skill is a planning skill. It does not implement code.
 
-## Preconditions
+## Mandatory Preconditions
 
-1. Read root `memory.md` first.
-2. If `memory.index.json` is missing, treat memory as legacy and run `forge-init` (or the migration tool) before proceeding.
-3. Confirm the task is eligible for quick mode.
-4. If not eligible, route to `forge-plan`.
+1. Read project `AGENTS.md` first.
+2. Read root `memory.md`.
+3. If `memory.index.json` exists, pull relevant memory IDs for the request scope.
+4. If `memory.index.json` is missing, treat memory as legacy and run `forge-init` (or migration) before proceeding.
+5. Resolve plans root and active plan folder before creating artifacts.
 
-## Quick Eligibility (Hard Gate)
+## Plans Root + Active Folder Resolution (Hard Gate)
 
-Quick mode is allowed only if all conditions are true:
+Use the same root-resolution behavior as `forge-plan`.
 
-- single objective
-- limited file touch set
-- no architecture changes
-- no database/schema migrations
-- no public API contract changes
-- no cross-cutting refactor or multi-phase rollout
+### Search Roots
 
-If any condition fails, stop quick mode and route to `forge-plan`.
+- always search the current repository root
+- if running in a linked git worktree, also search the primary/root project worktree (for example via `git worktree list`) because gitignored artifacts may exist only there
+
+### Resolution Order
+
+1. if user explicitly provides a new plan-folder path in this turn, use that exact path
+2. otherwise use persisted plans root (or derive from persisted prior plan folder) when it exists
+3. otherwise derive from existing artifacts (`todo.json.context.*`, legacy `quick-todo.json.context.*`, `research.md` metadata) when parent plans root exists
+4. otherwise use `docs/plans/` when it exists
+5. ask user only when no valid plans root can be resolved
+
+### Active Folder Rule
+
+- Create a new active plan folder by default for each new quick session.
+- Do not reuse an existing plan folder unless the user explicitly requests that exact folder.
+- Default naming: `YYYY-MM-DD-<topic-slug>/` under the resolved plans root.
+- If the generated folder already exists, create a deterministic non-colliding variant (`-2`, `-3`, ...).
+- Do not ask for confirmation when root/name is auto-resolved.
 
 ## Required Artifacts
 
-In the active plans/work folder, create and maintain:
+In the active plan folder, maintain canonical full planning artifacts:
 
-- `quick.md`
-- `quick-todo.json` (schema v2.0, canonical)
+- `research.md`
+- `plan.md`
+- `todo.json` (schema `2.0`, canonical execution source)
 
-If either artifact is missing, bootstrap it from templates (do not invent structure):
+If markdown artifacts are missing, bootstrap them from templates (do not invent structure):
 
-- `quick.md` from `templates/quick.template.md`
-- `quick-todo.json` from `templates/quick-todo.template.json`
+- `research.md` from `templates/research.template.md`
+- `plan.md` from `templates/plan.template.md`
 
-When `quick-todo.json.context.*` paths exist, treat them as canonical for locating/updating the quick artifacts. Do not guess paths.
+Generate `todo.json` from `templates/todo.template.json` after drafting the plan.
 
-## Lightweight Planning Flow
+Do not create or rely on `quick.md` / `quick-todo.json`.
 
-### Step 1: Capture Quick Spec in `quick.md`
+## Accelerated Planning Flow
 
-Record:
+### Step 1: Capture Request at Face Value (Hard Rule)
+
+Treat the user request as the intended scope baseline.
+
+- do not run a quick-eligibility or "too big" refusal gate
+- do not route away because scope is large
+- ask clarifying questions only when contradictions/blockers prevent safe planning
+
+### Step 2: Read Context + Research Project
+
+Research enough repository context to produce an executable plan.
+
+Record in `research.md`:
+
+- user request summary
+- assumptions
+- relevant code/repo findings
+- unresolved blockers (if any)
+- memory IDs used and why
+
+### Step 3: Extract Project Specific Considerations from `AGENTS.md`
+
+Create a dedicated `Project Specific Considerations` section sourced from project `AGENTS.md`.
+
+Include only implementation-impacting items, such as:
+
+- TDD/testing requirements
+- style/lint/format expectations
+- required tools/commands/checks
+- workflow or commit constraints
+- verification expectations
+
+For each item, include a short note describing how it affects implementation/testing.
+
+### Step 4: Write `plan.md`
+
+Write a concise but complete implementation plan with:
 
 - objective
-- why quick path is eligible
-- scope and non-scope
-- expected file changes
-- risks
-- verification plan
+- scope in / scope out
+- architecture/data flow changes
+- edge cases / failure modes
+- acceptance criteria
+- test strategy
+- memory digest
+- project specific considerations
 
-### Step 2: Create `quick-todo.json` v2
+### Step 5: Generate `todo.json` v2
 
-Include required v2 fields and task details:
+Generate full-mode executable tasks from `plan.md` and `research.md`.
 
-- exact file targets
-- ordered steps, commands, expected results
-- verification checks
-- one logical commit block
-- plan refs into `quick.md`
+Every task must include required v2 fields, including:
 
-### Step 3: Validation Gate (Hard Fail)
+- `plan_refs`
+- `research_refs`
+- `memory_refs` (may be empty but must exist)
+- `handoff_notes` (if `memory_refs` is empty, include "no applicable memory ids" rationale)
+- ordered steps, commands, expected results, and verification
 
-Validate required schema and fields before execution.
+## Todo Validation Gate (Hard Fail)
 
-Treat `templates/quick-todo.template.json` as the canonical required shape.
+Before presenting approval, validate `todo.json`:
 
-Minimum validation checks:
+- `schema_version` exists and equals `2.0`
+- required top-level fields exist
+- `items` is non-empty
+- each item includes all required v2 fields
+- every `plan_refs` / `research_refs` anchor resolves
+- any non-empty `memory_refs` IDs exist in `memory.index.json`
 
-- top-level: `schema_version`, `task_id`, `mode`, `context`, `execution_policy`, `items`
-- each item: `id`, `status`, `file_targets`, `plan_refs`, `memory_refs`, `steps`, `commands`, `expected_results`, `verification`, `commit`
-- each `step.command_ref` and `step.expected_result_ref` resolves to a declared `commands[]` / `expected_results[]` entry
+If validation fails:
 
-If missing:
+- stop
+- mark affected task(s) `blocked`
+- request correction before any handoff
 
-- mark task `blocked`
-- stop and request todo correction
+## Required Quick Review Packet (Hard Gate)
 
-### Step 4: Quick Review Packet (Hard Gate)
+Before asking for handoff, present this in chat with these exact sections (in order):
 
-Before asking to begin implementation, present a quick review packet in chat:
+1. `Scope and Assumptions`
+2. `Files to change` (short summary per file)
+3. `Risks and pitfalls`
+4. `Project Specific Considerations` (from `AGENTS.md`, with implementation/testing impact notes)
 
-1. objective
-2. why quick path is eligible (explicit checklist)
-3. proposed file inventory (create/modify/test)
-4. risks + mitigations
-5. verification commands (including full suite)
-6. quick-todo task preview (id, steps, checks, commit intent)
+Do not ask approval until all four sections are present.
 
-### Step 5: Confirmation Gate
+## Approval + Handoff Gate
 
-Ask:
+Ask exactly:
 
-"Do you confirm quick implementation should begin?"
+"Do you approve this quick plan and continue to `forge-implement`?"
 
-Do not implement before explicit confirmation.
+If user does not approve, revise artifacts and re-present the packet.
 
-## Execution Rules
+Do not hand off to implementation without explicit approval.
 
-For each quick task:
+## Pre-Handoff Artifact Commit Gate (Hard Gate)
 
-1. mark `in_progress`
-2. follow task steps in order
-3. run declared commands and checks
-4. enforce one commit per logical task
-5. mark `completed` or `blocked`
+After approval and successful todo validation, and before handoff to `forge-implement`:
 
-Stop and ask for help if blocked or scope expands.
+1. Commit is required by default.
+2. Skip commit only if:
+   - user explicitly requests no commit, or
+   - chosen plans folder is gitignored
+3. If commit is required, stage and commit changed tracked lifecycle artifacts for this phase:
+   - `research.md`, `plan.md`, `todo.json`
+   - memory artifacts when changed (`memory.md`, `memory.index.json`, `memory.archive.md`)
+4. Report commit hash and included files in chat before handoff.
 
-## Verification Rules
+If commit is skipped:
 
-Run the full test suite for every quick change.
+- state exact reason in chat
+- append a short skip note in `plan.md` under `## Plan Artifact Commit Decision - <YYYY-MM-DD>` with:
+  - `decision: skipped`
+  - `rationale`
+  - `risks accepted`
 
-Record in `quick.md`:
+Proceed to `forge-implement` only after commit gate resolution.
 
-- command(s)
-- pass/fail summary
-- notable failures or warnings
+## Memory Update Mandate
 
-No completion claim if verification fails.
+Persist durable planning learnings without bloating the working set:
 
-## Memory Update Rule
-
-Always read `memory.md` (working set). Update memory only when durable value exists:
-
-- reusable implementation learning
-- recurring pitfall with prevention
-- decision likely to affect future work
-
-When durable value exists:
-
-- add/update an entry in `memory.index.json`
-- promote into `memory.md` working set only if it is high-risk/high-frequency and the working-set cap is preserved
-- keep full details in `memory.archive.md`
-
-If no durable update is needed, explicitly record that in `quick.md`.
-
-## Completion Gate
-
-Ask:
-
-"Do you confirm this quick change is complete based on recorded verification evidence?"
-
-Only after explicit confirmation:
-
-- finalize quick task statuses
-- persist required memory updates (if any) via v2 artifacts (`memory.index.json`, `memory.md` working set within cap, `memory.archive.md`)
+- add/update durable items in `memory.index.json` as `candidate`
+- keep full details in `memory.archive.md` when needed
+- promote to `memory.md` working set only when high-risk/high-frequency and cap is preserved
 
 ## Strict Prohibitions
 
-- no hidden scope growth
-- no skipping full-suite verification
-- no execution with missing required todo fields
-- no claiming completion without evidence
+- no quick-eligibility compatibility gate
+- no scope-based refusal to plan in quick path
+- no `quick.md` / `quick-todo.json` generation
+- no implementation code changes
+- no handoff with invalid `todo.json`
+- no handoff without commit gate resolution (commit or explicit documented skip)
 
 ## Common Mistakes
 
-- treating quick mode as a bypass for architecture-impacting work
-- forgetting to record why quick path was eligible
-- writing tracker-only quick todos without executable command detail
-- skipping memory decision (update vs explicitly no update)
+- reintroducing low-risk/size gating for `forge-quick`
+- skipping `AGENTS.md` extraction into project-specific considerations
+- presenting a packet missing one of the four required sections
+- generating tracker-only `todo.json` without executable commands/verification
+- handing off without plan artifact commit (or explicit documented skip reason)

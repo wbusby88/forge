@@ -56,12 +56,12 @@ Everything else belongs in the index + archive.
 
 - `forge-init`: create v2 memory artifacts or migrate legacy `memory.md`
 - `forge-plan`: always read working set; add new candidates to `memory.index.json` (do not bloat working set)
+- `forge-quick`: accelerated planning path, same memory behavior as `forge-plan` (add candidates; no working-set promotion by default)
 - `forge-review-plan`: add review-discovered candidates (risks, missing mitigations) to index when durable
 - `forge-implement`: add major implementation learnings as candidates to index when they affect future work
 - `forge-review-implementation`: add durable quality/test/operability learnings as candidates to index
 - `forge-iterate`: record iteration memory decision; add durable cross-task candidates to index
 - `forge-verify`: promotion/compaction point — promote durable candidates into working set (within cap), archive the rest
-- `forge-quick`: promotion/compaction point for quick mode — same as verify
 
 ## Todo v2 Memory Coupling
 
@@ -75,14 +75,14 @@ At task completion:
 
 1. if candidate is durable, add/update an entry in `memory.index.json` (status `candidate`)
 2. if not durable, record explicit "no memory update needed" rationale in verification artifact
-3. at verification/quick completion, decide whether to promote the candidate into `memory.md` working set or keep it archived-only
+3. at verification completion, decide whether to promote the candidate into `memory.md` working set or keep it archived-only
 
-## Quick-Mode Decision Rule
+## Accelerated Quick-Path Memory Decision Rule
 
-For each quick change, explicitly decide and record one outcome:
+For each `forge-quick` planning cycle, explicitly decide and record one outcome in planning artifacts (`research.md` or `plan.md`):
 
-1. durable insight found -> add/update `memory.index.json` entry and decide promote vs archive at completion
-2. no durable insight -> record explicit "no memory update needed" rationale in `quick.md`
+1. durable insight found -> add/update `memory.index.json` entry and carry it into relevant task `memory_refs`
+2. no durable insight -> record explicit "no memory update needed" rationale
 
 ## Iterate-Mode Decision Rule
 

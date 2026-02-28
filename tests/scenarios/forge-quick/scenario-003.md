@@ -1,18 +1,22 @@
-# Scenario 003 - Memory Update Decision
+# Scenario 003 - Quick Pre-Handoff Artifact Commit Discipline
 
 ## Setup
 
-- Quick change completed successfully
-- No durable learning discovered
+- `forge-quick` plan is approved
+- `todo.json` validation passed
+- Next step is handoff to `forge-implement`
 
 ## Expected Behavior
 
-- `quick.md` explicitly states why no `memory.md` update was required
-- Completion still requires full-suite verification evidence and confirmation gate
+- Before handoff, skill applies artifact commit gate
+- When plans folder is tracked and user did not opt out:
+  - commits updated lifecycle artifacts (`research.md`, `plan.md`, `todo.json`, and changed memory artifacts)
+  - reports commit hash and included files
 
 ## Variant
 
-When durable learning exists:
+When user asks not to commit or plan folder is gitignored:
 
-- `memory.md` is updated with learning/pitfall/decision entry
-- `quick.md` references what was persisted
+- commit is skipped
+- exact skip reason is stated in chat
+- skip rationale is recorded in `plan.md`

@@ -1,13 +1,13 @@
-# Scenario 004 - Quick Todo v2 Validation
+# Scenario 004 - Quick Todo v2 Validation Blocks Handoff
 
 ## Setup
 
-- `quick-todo.json` missing required `commands` mapping
+- Generated `todo.json` is missing required full-mode fields
 
 ## Expected Behavior
 
-- quick validation hard-fails
-- task marked blocked
-- quick mode stops until todo is corrected
-- validation includes step `command_ref` / `expected_result_ref` resolution
-- validation requires `memory_refs` field to exist on each quick task (may be empty)
+- Todo validation hard-fails before handoff
+- Affected task(s) are marked `blocked`
+- Skill requests todo correction before proceeding
+- No handoff to `forge-implement` occurs until validation passes
+- Validation includes `plan_refs` / `research_refs` resolution and required `memory_refs` presence per task
