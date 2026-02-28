@@ -35,6 +35,7 @@
 - Memory v2 artifacts exist at project root after init/migration:
   - `memory.index.json` (canonical registry)
   - `memory.archive.md` (long tail)
+- `forge-plan` resolves a plans root (prefer persisted root, fallback `docs/plans/`) and creates a new dated active plan folder by default for each new plan session.
 - No implementation before plan/quick approval gate.
 - Full-path implementation requires either plan review (`forge-review-plan`) or an explicit recorded skip decision before `forge-implement`.
 - Full-path verification requires either implementation review (`forge-review-implementation`) or an explicit recorded skip decision before `forge-verify`.

@@ -38,7 +38,7 @@ Optional router: `forge`.
   - `memory.md`: bounded working set (must stay small; every agent reads fully)
   - `memory.index.json`: canonical registry (IDs, tags, applies_to, links)
   - `memory.archive.md`: long tail (full details; access via index)
-- Plans folder: user-selected during planning, then persisted in `memory.md`
+- Plans root: resolved during planning (prefer persisted root, fallback `docs/plans/`), then persisted in `memory.md`; each new full plan uses a date-prefixed subfolder under that root
 - Full path artifacts:
   - `research.md`: running research + interview record
   - `plan.md`: narrative architecture and decision context

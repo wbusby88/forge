@@ -16,35 +16,45 @@ This skill combines design facilitation with plan authoring. It does not impleme
 1. Read root `memory.md` first.
 2. Summarize relevant memory context.
 3. If `memory.index.json` exists, use it to pull a small “Memory Digest” of relevant IDs (constraints/decisions/pitfalls/ops defaults/learnings) for this plan’s scope.
-4. Resolve the plans folder using the auto-resolution rules below.
-5. Persist the resolved plans folder choice in `memory.md`.
+4. Resolve the plans root using the auto-resolution rules below.
+5. Create/select the active plan folder for this planning session.
+6. Persist the plans root and active plan folder in `memory.md`.
 
-## Plans Folder Resolution (Hard Gate)
+## Plans Root + Active Folder Resolution (Hard Gate)
 
-Resolve plans folder before artifact bootstrapping and before the first interview question.
+Resolve plans root and active plan folder before artifact bootstrapping and before the first interview question.
 
 ### Search Roots
 
 - Always search the current repository root.
 - If running in a linked git worktree, also search the primary/root project worktree (for example via `git worktree list`) because gitignored planning artifacts may exist only there.
 
-### Resolution Order
+### Plans Root Resolution Order
 
-1. If user explicitly provides a new folder path in this turn, use it.
-2. Otherwise use a persisted plans folder found in memory (for example an `OPS-*` default) when it exists on disk in any search root.
-3. Otherwise use a folder implied by existing plan artifacts (for example `todo.json.context.*`, `quick-todo.json.context.*`, or `research.md` task metadata) when it exists on disk in any search root.
-4. Otherwise use `docs/plans/` when it exists in any search root.
-5. If no folder can be resolved, ask the user for the plans folder location.
+1. If user explicitly provides a new plan-folder path in this turn, use that exact path for this session (skip root discovery).
+2. Otherwise, resolve a plans root from memory when present:
+   - if memory stores a plans root, use it when it exists
+   - if memory stores a specific prior plan folder, derive its parent as plans root when it exists
+3. Otherwise, resolve a plans root from existing artifacts (`todo.json.context.*`, `quick-todo.json.context.*`, `research.md` task metadata) by deriving the parent plans root when it exists.
+4. Otherwise, use `docs/plans/` when it exists in any search root.
+5. If no plans root can be resolved, ask the user for plans root/folder location.
+
+### Active Plan Folder Rule (New Plan Default)
+
+- For a new `forge-plan` session, create a new active plan folder by default. Do not reuse an existing plan artifact folder unless the user explicitly asks to continue that exact folder.
+- Default naming convention for auto-created folders:
+  - `YYYY-MM-DD-<topic-slug>/` under resolved plans root (for example `docs/plans/2026-02-28-auth-hardening/`)
+- If the generated folder already exists, generate a deterministic non-colliding variant (for example suffix `-2`, `-3`) without asking.
 
 ### Questioning Rule
 
-- If a folder is resolved by steps 1-4, do not ask a confirmation question for folder location.
-- Start the first brainstorming interview question immediately after folder resolution.
-- Ask about folder location only when no folder can be resolved, or when the user requests switching to a new folder but does not provide a concrete path.
+- If plans root/folder is resolved by the rules above, do not ask a confirmation question for location or auto-generated name.
+- Start the first brainstorming interview question immediately after creating/selecting the active plan folder.
+- Ask about location only when no plans root/folder can be resolved, or when user requests switching to a new folder but does not provide a concrete path.
 
 ## Artifact Bootstrapping (Hard Gate)
 
-In the chosen plans folder, ensure planning artifacts exist *before* starting the interview so you can write continuously.
+In the active plan folder for this session, ensure planning artifacts exist *before* starting the interview so you can write continuously.
 
 If missing, create them by copying the repository templates verbatim, then fill them in (do not invent structure):
 
@@ -320,7 +330,8 @@ Before handoff, update project memory without bloating the working set:
 ## Common Mistakes
 
 - Holding brainstorming in context only without writing `research.md`
-- Asking redundant plans-folder confirmation when memory/artifacts already resolve an existing folder
+- Asking redundant plans-folder confirmation when plans root is already resolvable
+- Reusing an existing plan artifact folder for a new plan instead of creating a new dated folder
 - Asking for approval without a full in-chat structured review packet
 - omitting a complete proposed add/modify/test file inventory before approval
 - Generating `todo.json` but skipping post-write schema validation
