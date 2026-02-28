@@ -34,9 +34,9 @@ This skill establishes long-lived context and constraints used by all later phas
 
 #### If `memory.md` is missing
 
-- Create `memory.md` from `templates/memory.template.md`
-- Create `memory.index.json` from `templates/memory-index.template.json`
-- Create `memory.archive.md` from `templates/memory-archive.template.md`
+- Create `memory.md` from `../../templates/memory.template.md`
+- Create `memory.index.json` from `../../templates/memory-index.template.json`
+- Create `memory.archive.md` from `../../templates/memory-archive.template.md`
 - Continue in `New Project Mode`
 
 #### If `memory.md` exists but `memory.index.json` is missing (Legacy Memory)

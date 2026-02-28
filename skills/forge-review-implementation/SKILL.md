@@ -23,7 +23,7 @@ Read first:
 
 If `todo.json.context.*` paths exist, treat them as canonical for locating `plan.md` / `research.md` / downstream artifacts. Do not guess paths.
 
-If `implementation-review.md` is missing, create it by copying `templates/implementation-review.template.md` verbatim, then fill it in.
+If `implementation-review.md` is missing, create it by copying `../../templates/implementation-review.template.md` verbatim, then fill it in.
 
 Then summarize:
 

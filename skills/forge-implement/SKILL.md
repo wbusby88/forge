@@ -170,7 +170,7 @@ If user chooses B:
   - residual risks acknowledged
   - note that no adversarial implementation review was performed
   - prefer writing to `todo.json.context.implementation_review_path` when present
-  - if the file does not exist yet, create it by copying `templates/implementation-review.template.md` verbatim, then fill in the skip decision section
+  - if the file does not exist yet, create it by copying `../../templates/implementation-review.template.md` verbatim, then fill in the skip decision section
 - proceed directly to `forge-verify` (no extra confirmation prompt)
 
 Do not proceed to the next skill unless the user selected A or B (or replied `yes`, which maps to A).

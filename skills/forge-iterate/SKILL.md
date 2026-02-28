@@ -167,7 +167,7 @@ Maintain `iteration.md` in the active plan folder with:
   - update `memory.md` now, or
   - no durable memory update needed
 
-If `iteration.md` is missing, create it by copying `templates/iteration.template.md` verbatim, then fill it in.
+If `iteration.md` is missing, create it by copying `../../templates/iteration.template.md` verbatim, then fill it in.
 
 ## Major Drift Re-Score Gate
 

@@ -54,10 +54,10 @@ In the active plan folder, maintain canonical full planning artifacts:
 
 If markdown artifacts are missing, bootstrap them from templates (do not invent structure):
 
-- `research.md` from `templates/research.template.md`
-- `plan.md` from `templates/plan.template.md`
+- `research.md` from `../../templates/research.template.md`
+- `plan.md` from `../../templates/plan.template.md`
 
-Generate `todo.json` from `templates/todo.template.json` after drafting the plan.
+Generate `todo.json` from `../../templates/todo.template.json` after drafting the plan.
 
 Do not create or rely on `quick.md` / `quick-todo.json`.
 

@@ -28,7 +28,7 @@ If `todo.json.context.*` paths exist, treat them as canonical for locating and u
 
 Write verification evidence to the `verification.md` path declared in `todo.json.context.verification_artifact_path`.
 
-If the artifact is missing, create it by copying `templates/verification.template.md` verbatim, then fill it in.
+If the artifact is missing, create it by copying `../../templates/verification.template.md` verbatim, then fill it in.
 
 ## Verification Steps
 

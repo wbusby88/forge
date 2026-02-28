@@ -58,10 +58,10 @@ In the active plan folder for this session, ensure planning artifacts exist *bef
 
 If missing, create them by copying the repository templates verbatim, then fill them in (do not invent structure):
 
-- `research.md` from `templates/research.template.md`
-- `plan.md` from `templates/plan.template.md`
+- `research.md` from `../../templates/research.template.md`
+- `plan.md` from `../../templates/plan.template.md`
 
-When generating `todo.json` after plan approval, start from `templates/todo.template.json` and fill it in (do not invent a new shape).
+When generating `todo.json` after plan approval, start from `../../templates/todo.template.json` and fill it in (do not invent a new shape).
 
 ## Artifact Policy
 
