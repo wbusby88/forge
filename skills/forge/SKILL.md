@@ -23,11 +23,18 @@ When `todo.json` or `quick-todo.json` exists, treat its `context` paths as canon
 
 Do not guess artifact locations from convention (for example “it’s probably in `plans/`”).
 
-Fallback order:
+Search roots:
 
-1. `todo.json.context.*` / `quick-todo.json.context.*`
-2. plan folder location recorded in root `memory.md`
-3. ask the user to confirm the active plan folder
+- always search the current repository root
+- if running in a linked git worktree, also search the primary/root project worktree (for example via `git worktree list`) because plan artifacts can be gitignored in one worktree but present in the other
+
+Resolution order:
+
+1. `todo.json.context.*` / `quick-todo.json.context.*` paths that exist on disk
+2. plan folder location recorded in root `memory.md` that exists on disk
+3. a folder implied by existing plan artifacts (`research.md`, `plan.md`, `todo.json`, `quick.md`, `quick-todo.json`) when found in search roots
+4. `docs/plans/` when it exists in any search root
+5. ask the user for the active plan folder only if no valid folder can be resolved
 
 ## Routing Inputs
 
@@ -137,6 +144,7 @@ Always output:
 ## Common Mistakes
 
 - Guessing phase from conversation instead of artifacts
+- Asking the user to confirm plan folder when artifacts or `docs/plans/` already resolve it
 - Auto-routing quick mode without explicit user choice when eligible
 - Routing to implementation before v2 canonical todo is present
 - Routing to implementation when review markers are missing and no explicit skip decision is recorded

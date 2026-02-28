@@ -55,6 +55,7 @@ Optional router: `forge`.
 - Every task must reference `plan.md` and `research.md` (full mode) for context traceability.
 - Missing required todo fields trigger hard fail and stop.
 - One commit per logical task is mandatory.
+- When lifecycle artifacts are modified, commit those artifact changes before phase handoff/completion unless user requests no commit or the artifact folder is gitignored.
 - `forge-plan` must present a deterministic in-chat review packet before asking for plan approval.
 - Skill handoffs use single-confirmation gates (avoid repeated yes/no prompts):
   - `yes` = approve and continue immediately

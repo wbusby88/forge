@@ -16,8 +16,31 @@ This skill combines design facilitation with plan authoring. It does not impleme
 1. Read root `memory.md` first.
 2. Summarize relevant memory context.
 3. If `memory.index.json` exists, use it to pull a small “Memory Digest” of relevant IDs (constraints/decisions/pitfalls/ops defaults/learnings) for this plan’s scope.
-4. Confirm or ask for plans folder location.
-5. Persist plans folder choice in `memory.md`.
+4. Resolve the plans folder using the auto-resolution rules below.
+5. Persist the resolved plans folder choice in `memory.md`.
+
+## Plans Folder Resolution (Hard Gate)
+
+Resolve plans folder before artifact bootstrapping and before the first interview question.
+
+### Search Roots
+
+- Always search the current repository root.
+- If running in a linked git worktree, also search the primary/root project worktree (for example via `git worktree list`) because gitignored planning artifacts may exist only there.
+
+### Resolution Order
+
+1. If user explicitly provides a new folder path in this turn, use it.
+2. Otherwise use a persisted plans folder found in memory (for example an `OPS-*` default) when it exists on disk in any search root.
+3. Otherwise use a folder implied by existing plan artifacts (for example `todo.json.context.*`, `quick-todo.json.context.*`, or `research.md` task metadata) when it exists on disk in any search root.
+4. Otherwise use `docs/plans/` when it exists in any search root.
+5. If no folder can be resolved, ask the user for the plans folder location.
+
+### Questioning Rule
+
+- If a folder is resolved by steps 1-4, do not ask a confirmation question for folder location.
+- Start the first brainstorming interview question immediately after folder resolution.
+- Ask about folder location only when no folder can be resolved, or when the user requests switching to a new folder but does not provide a concrete path.
 
 ## Artifact Bootstrapping (Hard Gate)
 
@@ -218,7 +241,37 @@ If user chooses B:
   - decision: skipped
   - user rationale
   - known residual risks acknowledged
-- proceed directly to `forge-implement` (no extra confirmation prompt)
+
+## Pre-Handoff Artifact Commit Gate (Hard Gate)
+
+Do not run this gate before plan approval.
+
+After plan approval, todo validation, and next-step selection:
+
+- if next step is `A` or `B` (or implicit `yes` -> `A`), run this gate before invoking or recommending the next skill
+- if next step is `C`, stop/pause without requiring this commit gate
+
+Commit behavior for `A`/`B`:
+
+1. Determine if commit is required:
+   - required by default
+   - skip only if:
+     - user explicitly asks not to commit, or
+     - chosen plans folder is gitignored
+2. If required, stage and commit all changed tracked lifecycle artifacts updated during planning:
+   - plans artifacts: `research.md`, `plan.md`, `todo.json`
+   - memory artifacts when changed: `memory.md`, `memory.index.json`, `memory.archive.md`
+3. Report commit hash and included files in chat before handoff.
+
+If commit is skipped:
+
+- state the exact reason in chat before handoff
+- if skip reason is user request, append a short note in `plan.md` under `## Plan Artifact Commit Decision - <YYYY-MM-DD>` with:
+  - decision: skipped
+  - rationale
+  - risks accepted
+
+For `B`, record the review-skip decision in `plan.md` first, then run this commit gate so the decision is included in the same plan commit. Proceed directly to `forge-implement` after this gate (no extra confirmation prompt).
 
 Do not proceed to the next skill unless the user selected A or B (or replied `yes`, which maps to A).
 If the environment cannot auto-invoke skills, instruct the user which next skill to invoke and stop (do not ask an extra confirmation question).
@@ -262,10 +315,12 @@ Before handoff, update project memory without bloating the working set:
 - No completion claim
 - No proceeding to the next skill without an explicit user choice (A/B) or an implicit `yes` mapping to A
 - No skipping review without an explicit skip choice (B) and recorded skip decision
+- No handoff to `forge-review-plan` or `forge-implement` without either a plan commit or an explicit documented skip reason (user request or gitignored plans folder)
 
 ## Common Mistakes
 
 - Holding brainstorming in context only without writing `research.md`
+- Asking redundant plans-folder confirmation when memory/artifacts already resolve an existing folder
 - Asking for approval without a full in-chat structured review packet
 - omitting a complete proposed add/modify/test file inventory before approval
 - Generating `todo.json` but skipping post-write schema validation
@@ -275,3 +330,4 @@ Before handoff, update project memory without bloating the working set:
 - Skipping non-functional requirements
 - Failing to append key learnings to `memory.md`
 - skipping review without recording explicit skip rationale and acknowledged risks
+- Handing off approved plan artifacts without committing them (unless explicitly skipped or gitignored)

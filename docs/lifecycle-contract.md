@@ -45,10 +45,27 @@
 - Missing required todo fields or unresolved refs causes hard fail and stop.
 - Iteration changes must update `research.md`, `plan.md`, and `todo.json` before new implementation begins.
 
+## Artifact Commit Discipline (Hard Rule)
+
+- If a forge skill modifies tracked lifecycle artifacts, commit those artifact changes before handoff to the next skill or before completion confirmation.
+- Lifecycle artifacts include:
+  - planning: `research.md`, `plan.md`, `todo.json`
+  - quick: `quick.md`, `quick-todo.json`
+  - iteration/review/verify: `iteration.md`, `implementation-review.md`, `verification.md`
+  - memory: `memory.md`, `memory.index.json`, `memory.archive.md`
+- Commit may be skipped only when:
+  - user explicitly requests no commit, or
+  - the relevant artifact folder is gitignored
+- If commit is skipped, the agent must:
+  - state the exact skip reason in chat, and
+  - record skip rationale in the phase artifact decision section when available
+- For `forge-plan`, apply commit discipline only after plan approval and `todo.json` validation, and before `forge-review-plan` / `forge-implement` handoff.
+
 ## Gate Questions
 
 - Planning gate: "Do you approve this plan before implementation?"
 - Plan handoff choice gate: "`todo.json` is validated. Choose next step (A/B/C): A) invoke `forge-review-plan` (recommended) and continue immediately, B) skip review and continue to `forge-implement` (records skip decision + residual risks), C) stop/pause. If the user replies `yes`, treat it as A."
+  - If A/B is selected (or implicit `yes` -> A), run the plan artifact commit gate before handoff unless commit is explicitly skipped per commit-discipline exceptions.
 - Review patch decision (question 1): "Do you want to apply suggested mitigation patches to the plan? (yes/no)"
 - Review patch decision (question 2 if yes): "Which patch profile should I apply: minimal, hardening, or custom?"
 - Review approval gate: "Do you approve this reviewed plan and continue to implementation? (`yes` continues; `yes, stop` pauses; `no` revises)"
