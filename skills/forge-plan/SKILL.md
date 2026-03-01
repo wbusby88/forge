@@ -13,16 +13,51 @@ This skill combines design facilitation with plan authoring. It does not impleme
 
 ## Mandatory Preconditions
 
-1. Read root `memory.md` first.
-2. Summarize relevant memory context.
-3. If `memory.index.json` exists, use it to pull a small “Memory Digest” of relevant IDs (constraints/decisions/pitfalls/ops defaults/learnings) for this plan’s scope.
-4. Resolve the plans root using the auto-resolution rules below.
-5. Create/select the active plan folder for this planning session.
-6. Persist the plans root and active plan folder in `memory.md`.
+1. Read project `AGENTS.md` first.
+2. Read root `memory.md`.
+3. Summarize relevant memory context.
+4. If `memory.index.json` exists, use it to pull a small “Memory Digest” of relevant IDs (constraints/decisions/pitfalls/ops defaults/learnings) for this plan’s scope.
+5. Start the startup pipeline below (Gate A first, Gate B in background when possible).
+
+## Startup Pipeline (Hard Rule)
+
+Use a two-lane startup to reduce time-to-first-user-interaction without losing planning rigor.
+
+### Gate A (Immediate User Interaction Gate)
+
+Complete these before the first clarifying question:
+
+- read `AGENTS.md`
+- read `memory.md`
+- pull a lightweight memory digest from `memory.index.json` when available
+- parse the user request and identify the highest-impact functional ambiguity
+
+After Gate A, ask the first clarifying question immediately.
+
+### Background Lane (Run In Parallel When Available)
+
+While the first question is in flight, run:
+
+- plans root + active folder resolution
+- shallow project research (defined below)
+- plan artifact bootstrapping (defined below)
+
+If the environment supports subagents/subprocesses/background terminals, use them.
+If not, run the same work sequentially, but still ask the first question as soon as Gate A is complete.
+
+### Gate B (Planning Integrity Gate)
+
+Gate B must be complete before:
+
+- writing planning artifacts (`research.md`, `plan.md`, `todo.json`)
+- presenting the Understanding Lock Summary
+- plan approval and handoff gates
+
+If Gate B is incomplete, finish it before proceeding past early interview Q&A.
 
 ## Plans Root + Active Folder Resolution (Hard Gate)
 
-Resolve plans root and active plan folder before artifact bootstrapping and before the first interview question.
+Resolve plans root and active plan folder before writing planning artifacts and before Understanding Lock.
 
 ### Search Roots
 
@@ -49,12 +84,13 @@ Resolve plans root and active plan folder before artifact bootstrapping and befo
 ### Questioning Rule
 
 - If plans root/folder is resolved by the rules above, do not ask a confirmation question for location or auto-generated name.
-- Start the first brainstorming interview question immediately after creating/selecting the active plan folder.
+- Ask the first brainstorming interview question immediately after Gate A, even if folder resolution is still running in background.
 - Ask about location only when no plans root/folder can be resolved, or when user requests switching to a new folder but does not provide a concrete path.
 
 ## Artifact Bootstrapping (Hard Gate)
 
-In the active plan folder for this session, ensure planning artifacts exist *before* starting the interview so you can write continuously.
+In the active plan folder for this session, ensure planning artifacts exist before any planning-artifact writes and before Understanding Lock.
+This bootstrapping may run in the background lane during early interview Q&A.
 
 If missing, create them by copying the repository templates verbatim, then fill them in (do not invent structure):
 
@@ -63,6 +99,29 @@ If missing, create them by copying the repository templates verbatim, then fill 
 
 When generating `todo.json` after plan approval, start from `../../templates/todo.template.json` and fill it in (do not invent a new shape).
 
+## Shallow Project Research (Background Lane)
+
+Run a bounded, non-mutating repo scan to improve question quality quickly.
+
+Use only fast surface-level checks initially:
+
+- manifests/configs (`package.json`, `pyproject.toml`, `go.mod`, etc.)
+- top-level source/test directories
+- obvious test/build commands
+- nearby docs that define current module boundaries
+
+Do not block the first question on deep code traversal.
+Complete this scan before Understanding Lock so assumptions are grounded.
+
+## Startup Digest in Memory (Hard Rule)
+
+Use `memory.index.json` as the startup context cache (no new artifact type).
+
+- On startup, prefer existing digest items tagged for startup/repo-surface context.
+- If digest coverage is missing or stale, fill gaps from shallow project research.
+- Persist durable startup findings in `memory.index.json` as `status: candidate` with tags such as `startup-context`, `repo-surface`, and `plans-root`.
+- Keep only a concise pointer summary in `memory.md` (working-set cap still applies).
+
 ## Artifact Policy
 
 Write artifacts as work progresses, not only at the end.
@@ -70,6 +129,8 @@ Write artifacts as work progresses, not only at the end.
 - `research.md`: live document during brainstorming and research
 - `plan.md`: narrative/architecture source
 - `todo.json`: canonical executable task spec (schema v2.0)
+
+If an early question occurs before artifacts are ready, capture the exchange in transient notes and flush it to `research.md` immediately after Gate B completes.
 
 ## Stable Anchor Conventions (Hard Rule)
 
@@ -129,6 +190,8 @@ No proactive non-functional interrogation:
 
 ### Understanding Lock (Hard Gate)
 
+Before design output, confirm Gate B has completed.
+
 Before design output, write in `research.md`:
 
 - understanding summary
@@ -158,6 +221,8 @@ Each question cycle appends structured entries to `research.md`:
 - interpreted takeaway
 - interim research findings done between questions
 - unresolved follow-up
+
+If any question occurred before Gate B completed, append those staged exchanges to `research.md` immediately after Gate B completion, preserving question order.
 
 If total questions exceed 5, each extra question entry must also include:
 
@@ -349,6 +414,7 @@ Before handoff, update project memory without bloating the working set:
 ## Common Mistakes
 
 - Holding brainstorming in context only without writing `research.md`
+- Blocking first user interaction on full plans-root/discovery work
 - Asking redundant plans-folder confirmation when plans root is already resolvable
 - Reusing an existing plan artifact folder for a new plan instead of creating a new dated folder
 - Asking for approval without a full in-chat structured review packet
@@ -359,6 +425,7 @@ Before handoff, update project memory without bloating the working set:
 - Creating `todo.json` before plan approval
 - Asking speculative non-functional questions that the user did not request
 - Exceeding 5 planning questions without explicit unblock justification in `research.md`
+- Reaching Understanding Lock before plans-root resolution, artifact bootstrapping, and shallow project research are reconciled
 - Failing to append key learnings to `memory.md`
 - skipping review without recording explicit skip rationale and acknowledged risks
 - Handing off approved plan artifacts without committing them (unless explicitly skipped or gitignored)

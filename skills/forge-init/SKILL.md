@@ -121,7 +121,26 @@ Also ensure `memory.index.json` has a valid `items[]` array with stable IDs.
 
 Keep the working set within its cap (default 12). If it would exceed the cap, merge or demote an entry to `memory.archive.md` and keep it indexed.
 
-### Step 6: Persist Decisions and Plan Destination
+### Step 6: Capture Startup Context Digest (Required)
+
+Persist a compact startup digest in `memory.index.json` so `forge-plan` and `forge-quick` can ask a high-quality first question quickly.
+
+Capture/update durable, surface-level facts:
+
+- primary language/framework/runtime and package manager
+- canonical test/build/lint command defaults
+- primary source and test directory roots
+- default plans root/folder preference when known
+- implementation-impacting workflow/tooling constraints from `AGENTS.md`
+
+Storage rules:
+
+- prefer updating existing items over duplicating entries
+- use tags like `startup-context`, `repo-surface`, `commands`, `plans-root`
+- set `status: candidate` unless evidence is already strong enough for `working`
+- keep only concise pointer summaries in `memory.md` (respect working-set cap)
+
+### Step 7: Persist Decisions and Plan Destination
 
 Write concise, durable entries with dates and rationale.
 
@@ -133,7 +152,7 @@ For existing projects, also add:
 - at least 3 pitfalls (`PIT-*`) with prevention actions
 - top risks/defaults captured as constraints/ops (`CON-*` / `OPS-*`)
 
-### Step 7: Validation Pass
+### Step 8: Validation Pass
 
 Before exiting, verify `memory.md` answers:
 
@@ -141,6 +160,7 @@ Before exiting, verify `memory.md` answers:
 - what constraints govern decisions
 - what mistakes should not be repeated
 - what defaults `forge-plan` should use next time
+- what startup context (commands/paths/plans root) planners can rely on immediately
 
 If any answer is missing, continue interviewing and updating memory.
 

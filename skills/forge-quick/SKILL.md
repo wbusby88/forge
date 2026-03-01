@@ -17,7 +17,41 @@ This skill is a planning skill. It does not implement code.
 2. Read root `memory.md`.
 3. If `memory.index.json` exists, pull relevant memory IDs for the request scope.
 4. If `memory.index.json` is missing, treat memory as legacy and run `forge-init` (or migration) before proceeding.
-5. Resolve plans root and active plan folder before creating artifacts.
+5. Start the startup pipeline below (Gate A first, Gate B in background when possible).
+
+## Startup Pipeline (Hard Rule)
+
+Use a two-lane startup to keep user interaction fast while still producing high-quality artifacts.
+
+### Gate A (Immediate Interaction Gate)
+
+Complete these first:
+
+- read `AGENTS.md`
+- read `memory.md`
+- pull a lightweight memory digest from `memory.index.json` when available
+- parse the user request and identify blockers/contradictions
+
+If blockers exist, ask the first clarifying question immediately after Gate A.
+
+### Background Lane (Run In Parallel When Available)
+
+While early clarification is in flight, run:
+
+- plans root + active folder resolution
+- shallow project research (defined below)
+- artifact bootstrapping (defined below)
+
+If the environment supports subagents/subprocesses/background terminals, use them.
+If not, run the same work sequentially.
+
+### Gate B (Planning Integrity Gate)
+
+Gate B must be complete before:
+
+- writing planning artifacts (`research.md`, `plan.md`, `todo.json`)
+- presenting the quick review packet
+- approval/handoff/commit gates
 
 ## Plans Root + Active Folder Resolution (Hard Gate)
 
@@ -60,6 +94,27 @@ If markdown artifacts are missing, bootstrap them from templates (do not invent 
 Generate `todo.json` from `../../templates/todo.template.json` after drafting the plan.
 
 Do not create or rely on `quick.md` / `quick-todo.json`.
+
+## Shallow Project Research (Background Lane)
+
+Run a bounded, non-mutating repo scan for fast planning context:
+
+- manifests/configs (`package.json`, `pyproject.toml`, `go.mod`, etc.)
+- top-level source/test directories
+- obvious test/build commands
+- nearby docs that define module boundaries
+
+Do not block initial user interaction on deep code traversal.
+Complete shallow scan before writing final assumptions/plan details.
+
+## Startup Digest in Memory (Hard Rule)
+
+Use `memory.index.json` as the startup context cache (no new artifact type).
+
+- prefer existing digest items tagged for startup/repo-surface context
+- if stale/missing, backfill from shallow project research
+- persist durable startup findings as `status: candidate` with tags such as `startup-context`, `repo-surface`, and `plans-root`
+- keep only concise pointer summary in `memory.md` (respect working-set cap)
 
 ## Accelerated Planning Flow
 
@@ -203,7 +258,9 @@ Persist durable planning learnings without bloating the working set:
 ## Common Mistakes
 
 - reintroducing low-risk/size gating for `forge-quick`
+- blocking first user interaction on full repository discovery
 - skipping `AGENTS.md` extraction into project-specific considerations
+- skipping startup context persistence in `memory.index.json` after shallow scan
 - presenting a packet missing one of the four required sections
 - generating tracker-only `todo.json` without executable commands/verification
 - handing off without plan artifact commit (or explicit documented skip reason)

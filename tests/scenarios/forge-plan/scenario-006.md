@@ -17,5 +17,6 @@
 - creates a new plan folder under the resolved root using default convention `YYYY-MM-DD-<topic-slug>/`
 - does not ask a confirmation question for auto-generated folder name/location
 - does not reuse an existing plan artifact folder unless the user explicitly asks to continue that exact folder
-- starts the first brainstorming interview question immediately after new folder creation
+- asks the first brainstorming interview question immediately after startup Gate A (AGENTS + memory + request parsing), even if root/folder work is still in background
+- completes root resolution and new-folder creation before Understanding Lock and before writing planning artifacts
 - asks for plans folder location only when no plans root can be resolved
