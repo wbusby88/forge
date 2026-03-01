@@ -101,18 +101,31 @@ Do not generate refs that do not resolve to a real anchor.
 - Prefer multiple-choice questions when possible
 - Make assumptions explicit
 - Avoid implementation changes while planning
+- Keep questioning concise and functionality-first
 
-### Required Coverage
+### Question Budget (Hard Rule)
+
+- Target 1-5 planning questions total.
+- This is a soft cap: ask extra questions only when required to unblock functional correctness or resolve contradictions.
+- Do not ask extra questions for optional detail gathering when safe assumptions can be made.
+- If you exceed 5 questions, each extra question must be justified in `research.md` with:
+  - why this question was required to unblock planning
+  - risk of proceeding without the answer
+  - why a default assumption was not safe
+
+### Functional Clarification Scope (Hard Rule)
+
+Primary question targets:
 
 - problem and desired outcome
-- users/stakeholders
 - constraints and non-goals
-- non-functional requirements:
-  - performance
-  - scale
-  - security/privacy
-  - reliability/availability
-  - maintenance ownership
+- functional acceptance criteria
+- contradiction resolution between user intent and observed project constraints
+
+No proactive non-functional interrogation:
+
+- Do not ask performance, scale/concurrency, reliability/SLO, persona/target-audience, or maintenance-ownership questions unless the user explicitly asks for those concerns.
+- If such concerns are relevant but not user-requested, record assumption(s) in `research.md` and proceed.
 
 ### Understanding Lock (Hard Gate)
 
@@ -146,6 +159,12 @@ Each question cycle appends structured entries to `research.md`:
 - interim research findings done between questions
 - unresolved follow-up
 
+If total questions exceed 5, each extra question entry must also include:
+
+- unblock justification
+- risk of proceeding without answer
+- why default assumption was unsafe
+
 ## Design + Plan Authoring
 
 After understanding confirmation:
@@ -173,7 +192,7 @@ Before asking for plan approval, present a deterministic in-chat review packet s
 
 1. objective and success criteria
 2. scope in / scope out
-3. constraints and non-functional requirements
+3. constraints and functional clarifications
 4. memory digest (relevant `memory.index.json` ids and how they constrain the plan)
 5. key decisions with rejected alternatives
 6. risks and mitigations
@@ -338,7 +357,8 @@ Before handoff, update project memory without bloating the working set:
 - Generating tracker-only `todo.json` without executable details
 - Missing task references back to `plan.md` and `research.md`
 - Creating `todo.json` before plan approval
-- Skipping non-functional requirements
+- Asking speculative non-functional questions that the user did not request
+- Exceeding 5 planning questions without explicit unblock justification in `research.md`
 - Failing to append key learnings to `memory.md`
 - skipping review without recording explicit skip rationale and acknowledged risks
 - Handing off approved plan artifacts without committing them (unless explicitly skipped or gitignored)
