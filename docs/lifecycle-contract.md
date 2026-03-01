@@ -25,6 +25,12 @@
 10. `implementation-reviewed -> verified` via `forge-verify`
 11. `implemented -> verified` via `forge-verify` only when implementation review skip decision is explicitly recorded in `implementation-review.md`
 
+## Auxiliary Skills (Non-Phase)
+
+- `forge-debug` is a manual, user-invoked execution helper for error handling during implementation or iteration.
+- `forge-debug` does not add lifecycle states and does not modify required transitions.
+- After `forge-debug` work, execution should return to the owning phase skill (`forge-implement` or `forge-iterate`).
+
 ## Invariants
 
 - `memory.md` is always at project root.

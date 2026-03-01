@@ -84,6 +84,7 @@ Use the lifecycle contract vocabulary for "current detected phase":
 
 - If `memory.md` is missing: route to `forge-init`
 - If `memory.md` exists but `memory.index.json` is missing: treat as legacy memory -> route to `forge-init` (migrate to Memory v2 before proceeding)
+- Keep routing phase-only: do not auto-route to `forge-debug`; if the user explicitly requests `forge-debug`, report current phase evidence and note that `forge-debug` is a manual auxiliary helper
 - If user explicitly asks for `forge-quick` / quick path / accelerated path:
   - route to `forge-quick`
   - do not reject based on scope size, complexity, or architecture impact
@@ -137,6 +138,7 @@ Always output:
 - Never implement code in this skill
 - Never edit plan artifacts in this skill
 - Never mark work complete in this skill
+- Never auto-route to `forge-debug` based on detected errors/blockers
 
 ## Common Mistakes
 

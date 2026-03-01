@@ -10,6 +10,7 @@ Forge is a project lifecycle skill system for agents:
 6. `forge-verify`
 
 Optional router: `forge`.
+Optional execution helper: `forge-debug` (manual, non-phase).
 
 ## Goals
 
@@ -29,6 +30,7 @@ Optional router: `forge`.
 - `forge-plan`: runs brainstorming interview, records Q/A + research to `research.md`, writes `plan.md`, then emits canonical `todo.json` v2
 - `forge-quick`: accelerated planning path that takes user request at face value, reads memory + project rules, generates canonical `research.md`/`plan.md`/`todo.json`, then gates handoff to `forge-implement`
 - `forge-implement`: executes canonical todo v2 in batches with checkpoints
+- `forge-debug`: resolves implementation/iteration errors with artifact-aware debugging, test-first defaults, and explicit user verification before closure
 - `forge-iterate`: handles post-implement change/refactor/redo loops by synchronizing `research.md`, `plan.md`, `todo.json`, and `iteration.md` before resumed execution
 - `forge-verify`: validates coverage and test evidence before completion
 
