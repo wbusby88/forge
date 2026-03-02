@@ -25,6 +25,11 @@
 10. `implementation-reviewed -> verified` via `forge-verify`
 11. `implemented -> verified` via `forge-verify` only when implementation review skip decision is explicitly recorded in `implementation-review.md`
 
+## Optional Pre-Planning (Non-State)
+
+- `forge-scope` is an optional scoping + research precursor used when an idea is still vague and you are not ready to commit to planning artifacts.
+- `forge-scope` does not create lifecycle states and does not change required transitions.
+
 ## Auxiliary Skills (Non-Phase)
 
 - `forge-debug` is a manual, user-invoked execution helper for error handling during implementation or iteration.

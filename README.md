@@ -3,11 +3,12 @@
 Forge is a project lifecycle skill system for agents:
 
 1. `forge-init`
-2. `forge-plan`
-3. `forge-quick`
-4. `forge-implement`
-5. `forge-iterate`
-6. `forge-verify`
+2. `forge-scope` (optional scoping + research before planning)
+3. `forge-plan`
+4. `forge-quick`
+5. `forge-implement`
+6. `forge-iterate`
+7. `forge-verify`
 
 Optional router: `forge`.
 Optional execution helper: `forge-debug` (manual, non-phase).
@@ -27,6 +28,7 @@ Optional execution helper: `forge-debug` (manual, non-phase).
 
 - `forge`: routes to the correct lifecycle stage based on available artifacts
 - `forge-init`: creates or updates project memory only
+- `forge-scope`: scopes vague ideas using project context + research, then emits a promotion packet to `forge-plan` / `forge-quick`
 - `forge-plan`: runs brainstorming interview, records Q/A + research to `research.md`, writes `plan.md`, then emits canonical `todo.json` v2
 - `forge-quick`: accelerated planning path that takes user request at face value, reads memory + project rules, generates canonical `research.md`/`plan.md`/`todo.json`, then gates handoff to `forge-implement`
 - `forge-implement`: executes canonical todo v2 in batches with checkpoints

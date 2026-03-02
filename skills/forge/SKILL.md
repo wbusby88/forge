@@ -1,6 +1,6 @@
 ---
 name: forge
-description: Use when an agent needs to determine the correct project lifecycle phase and route to forge-init, forge-plan, forge-review-plan, forge-quick, forge-implement, forge-review-implementation, forge-iterate, or forge-verify.
+description: Use when an agent needs to determine the correct project lifecycle phase and route to forge-init, forge-scope, forge-plan, forge-review-plan, forge-quick, forge-implement, forge-review-implementation, forge-iterate, or forge-verify.
 ---
 
 # Forge Router
@@ -16,6 +16,8 @@ This skill is a dispatcher. It does not replace phase skills.
 Use when phase is unclear or when resuming interrupted work.
 
 Do not use when you already know the exact phase skill to run.
+
+If the user is still scoping/ideating and is not ready to commit to planning artifacts yet, recommend `forge-scope` as an optional precursor (without breaking artifact-based phase routing).
 
 ## Artifact Location Rule (Hard Rule)
 
@@ -106,6 +108,17 @@ Use the lifecycle contract vocabulary for "current detected phase":
   - report phase `verified`
   - do not route to an execution phase unless user requests new work
 
+## Optional Scoping Precursor (Non-Blocking)
+
+Do not replace artifact-based routing with scoping.
+
+When the next recommended skill is `forge-plan` or `forge-quick`, and the user request indicates they are still exploring (for example: “help me scope this”, “I’m not sure yet”, “need options”, “need research”, “brainstorm”), include:
+
+- an additional line: `Optional precursor: forge-scope`
+- a one-sentence rationale for why scoping may be appropriate
+
+If the next recommended skill is not `forge-plan`/`forge-quick`, do not recommend `forge-scope`.
+
 ## Evidence Freshness (Definition)
 
 Treat evidence as **missing or stale** when the artifact exists but does not clearly apply to the current work scope.
@@ -131,6 +144,7 @@ Always output:
 1. Current detected phase
 2. Evidence used (artifact paths and key states)
 3. Recommended next skill to invoke
+   - if applicable, include: `Optional precursor: forge-scope` and rationale
 4. Blockers to resolve before routing can proceed
 
 ## Guardrails
@@ -145,6 +159,7 @@ Always output:
 - Guessing phase from conversation instead of artifacts
 - Asking the user to confirm plan folder when artifacts or `docs/plans/` already resolve it
 - Refusing `forge-quick` due to "too big" scope
+- Replacing artifact-based routing with a hard route to `forge-scope`
 - Routing to implementation before v2 canonical `todo.json` is present
 - Routing to implementation when review markers are missing and no explicit skip decision is recorded
 - Routing to verify before implementation-review evidence exists
