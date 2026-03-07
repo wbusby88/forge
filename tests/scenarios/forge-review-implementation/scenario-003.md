@@ -3,12 +3,12 @@
 ## Setup
 
 - implementation review completed
-- user approves `hardening` improvement profile
+- user approves the explicit proposed improvement sets for actionable findings
 
 ## Expected Skill Behavior
 
 - updates `research.md`, `plan.md`, and `todo.json` with improvement deltas
-- writes `## Implementation Review Decision - <YYYY-MM-DD>` to `plan.md` with chosen profile and decision ledger
+- writes `## Implementation Review Decision - <YYYY-MM-DD>` to `plan.md` with selected sets and decision ledger
 - validates changed `todo.json` schema and required fields
 - appends durable implementation learnings to root `memory.md`
 - routes to `forge-iterate` for synchronized rework

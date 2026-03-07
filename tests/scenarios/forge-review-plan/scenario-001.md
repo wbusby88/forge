@@ -13,4 +13,4 @@
 - presents findings in chat before any decision prompts
 - does not ask the user to answer risk-discovery questions
 - asks mitigation decisions one finding at a time
-- asks patch mode only after accepted findings exist
+- includes the explicit mitigation set in each finding prompt

@@ -30,7 +30,9 @@ Use `Fxx` ids and a severity of `low|medium|high|critical`.
 - Summary:
 - Evidence refs (plan/research/todo/code/tests):
 - Suggested improvements (at least 2 for medium+):
+- Recommended improvement set:
 - Decision (yes/no):
+- Selected set:
 - Residual risk accepted (if no):
 
 ## Decision Ledger
@@ -42,7 +44,7 @@ Use `Fxx` ids and a severity of `low|medium|high|critical`.
 ## Implementation Review Decision - <YYYY-MM-DD>
 
 - decision: `reviewed|skipped`
-- profile: `minimal|hardening|custom|none`
+- selected sets:
 - rationale:
 - residual risks acknowledged:
 
