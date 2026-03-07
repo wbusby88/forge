@@ -52,6 +52,8 @@ Then summarize:
 
 Classify the iteration before planning updates.
 
+If entry is a direct handoff from `forge-review-implementation`, first check `plan.md` for an explicit handoff classification with hard triggers, weighted risk score, and rationale.
+
 ### Hard Triggers (Any One => Major Candidate)
 
 - public API contract change
@@ -78,6 +80,15 @@ Cap total score at `10`.
 - if any hard trigger exists: major candidate
 - else if risk score is `>= 7`: major candidate
 - else: standard iteration
+
+### Review Handoff Shortcut
+
+When `forge-review-implementation` already wrote a handoff classification into `plan.md`, use it as the default classification input.
+
+- If the handoff says `standard-ready`, and current facts still match that handoff, continue in standard iteration without re-asking the user about major mode.
+- If the handoff says `major-candidate`, ask the normal major-mode confirmation prompt.
+- If the handoff is missing, incomplete, stale, or contradicted by new evidence, recompute classification here and follow the normal rules.
+- Log in `iteration.md` whether the handoff classification was reused or overridden and why.
 
 For major candidates, ask explicitly:
 
@@ -158,6 +169,7 @@ Maintain `iteration.md` in the active plan folder with:
 - impacted files and acceptance criteria ids
 - task ids added/changed/superseded
 - lane classification (`standard` or `major`)
+- classification source (`review handoff` or `forge-iterate recompute`)
 - hard triggers found (or `none`)
 - weighted risk score breakdown and final total
 - major-mode confirmation decision (`yes/no`) and rationale
@@ -237,6 +249,7 @@ No completion claim is allowed in this skill.
 - no implementation before artifact sync gate passes
 - no skipping iteration classification before sync
 - no entering major mode without explicit user confirmation
+- no re-asking the user to choose standard vs major when a valid `standard-ready` handoff from `forge-review-implementation` still matches current facts
 - no implementation confirmation before the understanding summary gate is acknowledged
 - no silent todo changes without corresponding `plan.md` and `research.md` updates
 - no memory updates without durable value
@@ -246,6 +259,7 @@ No completion claim is allowed in this skill.
 
 - treating iteration as ad hoc coding without artifact updates
 - skipping major-mode classification for large refactors
+- re-asking the major-mode question after a valid unchanged `standard-ready` review handoff
 - auto-running heavy re-planning for every minor change
 - asking a bare implementation confirmation without first summarizing proposed changes
 - updating todo tasks without updating plan/research anchors
