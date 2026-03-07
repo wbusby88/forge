@@ -142,6 +142,11 @@ If user accepts one or more findings and the concrete set for each accepted find
      - decision: `reviewed`
      - finding decision ledger (`Fxx -> yes/no`)
      - selected sets for accepted findings
+     - `forge-iterate` handoff classification:
+       - `standard-ready` or `major-candidate`
+       - hard triggers found (or `none`)
+       - weighted risk score and breakdown
+       - short rationale for the classification
      - residual risks accepted (if any)
    - add `## Implementation Review Deltas`
    - update acceptance criteria/test strategy/risks where needed
@@ -174,6 +179,16 @@ Include traceable refs to anchors and task ids.
 Also include:
 
 6. finding decision ledger (`Fxx -> yes/no`) and the concrete accepted sets (or `none`)
+7. `forge-iterate` handoff classification (`standard-ready` or `major-candidate`) with hard triggers and weighted risk score
+
+### Iteration Handoff Rule
+
+If the next step is `forge-iterate`, pre-classify the handoff before exit using `forge-iterate`'s hard triggers and weighted risk score rubric.
+
+- If no hard trigger exists and the weighted risk score is `< 7`, mark the handoff `standard-ready`.
+- If any hard trigger exists or the weighted risk score is `>= 7`, mark the handoff `major-candidate`.
+- Record the classification in `plan.md` and present it in chat as part of the updated review packet.
+- Do not ask a separate abstract "minor or major" question in this skill; the purpose is to seed `forge-iterate` with a concrete starting classification, not to replace `forge-iterate` entirely.
 
 ## Final Approval Gate
 
