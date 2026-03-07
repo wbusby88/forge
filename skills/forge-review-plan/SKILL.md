@@ -9,7 +9,7 @@ description: Use when a full plan exists and needs a hypercritical pre-implement
 
 Review a completed plan with an adversarial lens before implementation.
 
-This skill performs the critical questioning itself, answers with evidence, and then asks the user whether to apply mitigation patches.
+This skill performs the critical questioning itself, answers with evidence, and then asks the user whether to apply explicit, concrete mitigation sets.
 
 ## Preconditions
 
@@ -75,12 +75,12 @@ Ask one user-facing question per message and wait for reply before asking the ne
 
 Do not bundle multiple decision questions into one message.
 Do not bundle multiple findings into one decision prompt.
-Do not skip directly to a global profile decision.
 
 Each decision question message must include:
 
 - an issue summary between 450 and 900 characters
 - at least one concrete example tied to current plan risks/tasks
+- the exact mitigation set being proposed in this question, with concrete artifact/task/test changes
 - one explicit decision question at the end
 
 ### Decision State Gate (Hard Rule)
@@ -89,56 +89,57 @@ Decision order is mandatory:
 
 1. Ask one finding-level decision at a time: apply this finding's mitigation set `yes/no`.
 2. Repeat for each actionable finding (`severity >= medium`) in descending severity order.
-3. Ask for global patch mode (`minimal|hardening|custom`) only after finding-level decisions are complete, and only if at least one finding was accepted.
+3. If the user rejects the proposed set but still wants mitigation work for that finding, ask one scoped follow-up question at a time until the set boundary is explicit (`alternate set` or `custom`), then record the chosen set and continue.
 
 Invalid behavior:
 
-- asking for global profile before any finding-level decisions
 - combining multiple findings into one yes/no question
 - inferring acceptance without explicit per-finding confirmation
 - asking a bare decision question without contextual summary/example
+- asking the user to approve a finding without spelling out the concrete set being approved
+- asking a late global `minimal|hardening|custom` question after the finding interview
 
 ### Interview Sequence
 
 Present in chat:
 
 - ranked findings with severity and evidence refs
-- mitigation options and recommended option for each finding
+- recommended mitigation sets for each finding with concrete artifact/task changes
+- alternate narrower/broader sets only when the tradeoff materially changes cost or confidence
 
 Then ask one finding at a time:
 
 1. Provide finding `Fxx` summary (450-900 chars) + at least one concrete plan/task example.
-2. Ask:
+2. Spell out the proposed mitigation set for `Fxx` in concrete terms:
+   - plan/research/todo sections or task ids to change
+   - acceptance criteria, rollback, or verification additions
+   - if relevant, one alternate narrower or broader set with the tradeoff stated explicitly
+3. If the user already stated a direction such as "keep it minimal" or "harden this", translate that preference into the proposed set now. Do not ask them to restate it later as an abstract mode.
+4. Ask:
    "Apply the mitigation set for `Fxx`? (yes/no)"
-3. Wait for reply and record result before moving to the next finding.
+5. Wait for reply and record result before moving to the next finding.
 
-## Patch Modes (Definitions)
+### Set Construction Rule
 
-When asking for patch mode, use these stable meanings:
+The approval target must always be a concrete set, not an abstract label.
 
-- `minimal`: apply the smallest plan/todo changes that materially reduce the risk for the accepted findings (focus on correctness + clear acceptance criteria + essential tests + rollback).
-- `hardening`: apply `minimal` plus additional safety/operability work (stronger negative/edge-case coverage, observability/diagnostics hooks, clearer rollout/rollback guidance, and tighter NFR acceptance checks when relevant).
-- `custom`: user-defined boundaries; ask one scoped question at a time until the boundaries are unambiguous.
-
-After all finding-level decisions:
-
-1. If at least one finding is accepted, explain execution tradeoffs and ask:
-   "Which patch mode should I apply for accepted findings: minimal, hardening, or custom?"
-2. If `custom`, ask one scoped question at a time until patch boundaries are clear.
-3. If no findings are accepted, skip patch mode and continue with residual risk recording.
+- Preferred: name the exact set in plain language, for example "split rollback guidance into its own acceptance criterion, add a failure-observability task, and tighten the ambiguous task boundary in T03/T04".
+- Allowed shorthand: append a parenthetical cue such as `(minimal)` or `(hardening)` only after the concrete set is already stated.
+- If the user wants a different boundary, ask one scoped follow-up question for that finding only. Example: "For `F03`, should I keep this to acceptance-criteria clarification plus one rollback task, or also add observability hooks now?"
+- Do not introduce a global patch mode question after the findings are discussed.
 
 ## Artifact Patch Protocol
 
-If user accepts one or more findings and selects `minimal`, `hardening`, or `custom`, update artifacts in this order:
+If user accepts one or more findings and the concrete set for each accepted finding is explicit, update artifacts in this order:
 
 1. `research.md`
-   - append final mitigation choices
+   - append final mitigation choices and accepted mitigation sets
    - include rejected options and rationale
 2. `plan.md`
    - add `## Review Plan Decision - <YYYY-MM-DD>`:
      - decision: `reviewed`
-     - patch_mode: `minimal|hardening|custom`
      - finding decision ledger (`Fxx -> yes/no`)
+     - selected sets for accepted findings
      - residual risks accepted (if any)
    - add `## Review Mitigation Deltas`
    - update acceptance criteria, risks, and test strategy as needed
@@ -152,8 +153,8 @@ If user declines a specific finding or all findings:
 - log the decision and residual risk acceptance in `research.md`
 - append to `plan.md` under `## Review Plan Decision - <YYYY-MM-DD>`:
   - decision: `reviewed`
-  - patch_mode: `none`
   - finding decision ledger (`Fxx -> yes/no`)
+  - selected sets: `none`
   - residual risks accepted (if any)
 
 ## Updated Plan Review Packet (Hard Gate)
@@ -170,7 +171,7 @@ Include traceable refs to anchors in `research.md`, `plan.md`, and task ids.
 
 Also include:
 
-6. finding decision ledger (`Fxx -> yes/no`) and the final patch mode used (or `none`)
+6. finding decision ledger (`Fxx -> yes/no`) and the concrete accepted sets (or `none`)
 
 ## Final Approval Gate
 
@@ -232,8 +233,9 @@ Do not implement in this skill.
 - turning review into a generic discussion instead of evidence-backed critique
 - asking user discovery questions the agent should answer itself
 - writing findings only to file without showing them in chat
-- asking global profile selection before per-finding decisions
 - asking one global yes/no instead of one-by-one finding decisions
+- asking the user to approve a finding without seeing the actual proposed mitigation set
+- asking for a late abstract patch mode after the concrete finding interview
 - asking decision questions without medium-length context and an example
 - updating `todo.json` without updating `plan.md` and `research.md`
 - recording no durable learnings in project memory (via `memory.index.json`) when recurring patterns are found

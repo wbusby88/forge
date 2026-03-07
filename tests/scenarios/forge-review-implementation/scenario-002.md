@@ -9,7 +9,6 @@
 
 - asks one user-facing decision question per message
 - asks per-finding yes/no decisions one-by-one (severity >= medium)
-- asks improvement profile only after accepted findings exist
-- asks custom-boundary questions one at a time if `custom` is selected
-- each decision question includes a 450-900 character issue summary and a concrete example
-- treats file-only output and global all-findings yes/no prompts as invalid behavior
+- each decision question includes a 450-900 character issue summary, a concrete example, and the exact proposed improvement set
+- if the user wants a different boundary, asks one scoped follow-up question for that finding only
+- treats file-only output, abstract profile questions, and global all-findings yes/no prompts as invalid behavior

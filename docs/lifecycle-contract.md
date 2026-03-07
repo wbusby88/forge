@@ -76,13 +76,11 @@
   - If A/B is selected (or implicit `yes` -> A), run the plan artifact commit gate before handoff unless commit is explicitly skipped per commit-discipline exceptions.
 - Quick planning gate (`forge-quick`): "Do you approve this quick plan and continue to `forge-implement`?"
   - Run the plan artifact commit gate before handoff unless commit is explicitly skipped per commit-discipline exceptions.
-- Review patch decision (question 1): "Do you want to apply suggested mitigation patches to the plan? (yes/no)"
-- Review patch decision (question 2 if yes): "Which patch profile should I apply: minimal, hardening, or custom?"
+- Review patch decisions: one finding at a time, with the concrete mitigation set spelled out in the same message, then ask "Apply the mitigation set for `Fxx`? (yes/no)". If the user rejects the proposed set but wants different boundaries, ask one scoped follow-up question for that finding only.
 - Review approval gate: "Do you approve this reviewed plan and continue to implementation? (`yes` continues; `yes, stop` pauses; `no` revises)"
 - Implementation gate: direct `forge-implement` invocation or an explicit handoff selection acts as confirmation; otherwise ask "Do you confirm implementation should begin?"
 - Implementation handoff choice gate: "Implementation tasks are complete. Choose next step (A/B/C): A) invoke `forge-review-implementation` (recommended) and continue immediately, B) skip review and continue to `forge-verify` (records skip decision + residual risks), C) stop/pause. If the user replies `yes`, treat it as A."
-- Implementation review decision (question 1): "Do you want to apply the suggested implementation improvements? (yes/no)"
-- Implementation review decision (question 2 if yes): "Which improvement profile should I apply: minimal, hardening, or custom?"
+- Implementation review decisions: one finding at a time, with the concrete improvement set spelled out in the same message, then ask "Apply the improvement set for `Fxx`? (yes/no)". If the user rejects the proposed set but wants different boundaries, ask one scoped follow-up question for that finding only.
 - Implementation review approval gate: "Do you approve this reviewed implementation state and continue? (`yes` continues to verify; `yes, stop` pauses; `no` continues discussion or routes to iteration when improvements are pending)"
 - Iterate gate: "After the iteration understanding summary, ask one combined authorization: `yes` (ack + authorize artifact sync + continue to `forge-implement`), `yes, sync-only` (ack + sync-only), or `no + corrections`."
 - Completion gate (full): "Do you confirm this is complete based on verification evidence?"
