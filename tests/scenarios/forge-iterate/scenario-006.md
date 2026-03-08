@@ -10,5 +10,6 @@
 
 - classifies iteration as `standard`
 - does not ask major-mode confirmation prompt
-- presents an iteration understanding summary and a single combined authorization gate (`yes` / `yes, sync-only` / `no + corrections`)
+- inspects the implementation drift before any artifact sync
+- presents a concise change summary with project impact and memory impact, plus a single combined authorization gate (`yes` / `yes, sync-only` / `no + corrections`)
 - if the user answers `yes`, performs standard sync updates (`research.md`, `plan.md`, `todo.json`) and continues directly to `forge-implement` with no second confirmation prompt

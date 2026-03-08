@@ -12,4 +12,4 @@
 - treats the review handoff as satisfying the classification gate
 - records in `iteration.md` that classification source was the review handoff
 - does not ask the user to choose or confirm major iteration
-- proceeds to the iteration understanding summary and combined authorization gate
+- proceeds to the concise change summary and combined authorization gate

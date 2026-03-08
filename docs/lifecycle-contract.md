@@ -51,6 +51,7 @@
 - Durable learnings are recorded in `memory.index.json` and promoted into `memory.md` working set only via the bounded-cap promotion/compaction rule.
 - Canonical execution source is `todo.json` v2 (`schema_version: 2.0`).
 - Missing required todo fields or unresolved refs causes hard fail and stop.
+- Iteration must inspect actual implementation drift and summarize project impact plus memory impact before artifact synchronization.
 - Iteration changes must update `research.md`, `plan.md`, and `todo.json` before new implementation begins.
 
 ## Artifact Commit Discipline (Hard Rule)
@@ -82,5 +83,5 @@
 - Implementation handoff choice gate: "Implementation tasks are complete. Choose next step (A/B/C): A) invoke `forge-review-implementation` (recommended) and continue immediately, B) skip review and continue to `forge-verify` (records skip decision + residual risks), C) stop/pause. If the user replies `yes`, treat it as A."
 - Implementation review decisions: one finding at a time, with the concrete improvement set spelled out in the same message, then ask "Apply the improvement set for `Fxx`? (yes/no)". If the user rejects the proposed set but wants different boundaries, ask one scoped follow-up question for that finding only.
 - Implementation review approval gate: "Do you approve this reviewed implementation state and continue? (`yes` continues to verify; `yes, stop` pauses; `no` continues discussion or routes to iteration when improvements are pending)"
-- Iterate gate: "After the iteration understanding summary, ask one combined authorization: `yes` (ack + authorize artifact sync + continue to `forge-implement`), `yes, sync-only` (ack + sync-only), or `no + corrections`."
+- Iterate gate: "After a concise change summary grounded in actual implementation drift, ask one combined authorization: `yes` (ack + authorize artifact sync + continue to `forge-implement`), `yes, sync-only` (ack + sync-only), or `no + corrections`."
 - Completion gate (full): "Do you confirm this is complete based on verification evidence?"

@@ -33,7 +33,7 @@ Optional execution helper: `forge-debug` (manual, non-phase).
 - `forge-quick`: accelerated planning path that takes user request at face value, reads memory + project rules, generates canonical `research.md`/`plan.md`/`todo.json`, then gates handoff to `forge-implement`
 - `forge-implement`: executes canonical todo v2 in batches with checkpoints
 - `forge-debug`: resolves implementation/iteration errors with artifact-aware debugging, test-first defaults, and explicit user verification before closure
-- `forge-iterate`: handles post-implement change/refactor/redo loops by synchronizing `research.md`, `plan.md`, `todo.json`, and `iteration.md` before resumed execution
+- `forge-iterate`: handles post-implement change/refactor/redo loops by first understanding actual implementation drift, summarizing project/memory impact, and synchronizing `research.md`, `plan.md`, `todo.json`, and `iteration.md` before resumed execution
 - `forge-verify`: validates coverage and test evidence before completion
 
 ## Runtime Artifact Contract
