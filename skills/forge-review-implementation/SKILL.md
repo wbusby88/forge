@@ -1,15 +1,18 @@
 ---
 name: forge-review-implementation
-description: Use when implementation is done for current scope and a hypercritical comparison against plan acceptance criteria is needed before verification.
+description: Use when implementation is complete for current scope and needs review for intent alignment, evidence coverage, and residual risk before verification.
 ---
 
 # Forge Review Implementation
 
 ## Overview
 
-Run an adversarial implementation review against the approved plan before verification.
+Review completed implementation in two ordered passes before verification:
 
-This skill answers its own critical questions from artifacts and evidence, then asks the user one-by-one whether to apply explicit, concrete improvement sets.
+1. `alignment`: verify implementation evidence still matches approved intent
+2. `hardening`: run adversarial critique against the aligned implementation
+
+This skill answers its own review questions from artifacts and evidence, then asks the user one-by-one whether to apply explicit, concrete improvement sets for actionable findings.
 
 ## Preconditions
 
@@ -25,13 +28,80 @@ If `todo.json.context.*` paths exist, treat them as canonical for locating `plan
 
 If `implementation-review.md` is missing, create it by copying `../../templates/implementation-review.template.md` verbatim, then fill it in.
 
-Then summarize:
+## Full Artifact Intake (Hard Rule)
+
+Read the full artifacts, not only the refs already cited by tasks or prior reviews.
+
+Before producing findings, summarize:
 
 - implemented scope and completed task ids
-- acceptance criteria with weakest evidence
+- explicit non-goals and out-of-scope items
+- key research decisions and approved assumptions
+- acceptance criteria count
+- implementation evidence with weakest support
 - highest residual risks and likely regressions
 
-## Critical Interrogation Mode (Agent-Led)
+Do not generate adversarial findings until the Alignment Coverage Pass is complete and shown in chat.
+
+## Alignment Coverage Pass (Hard Gate)
+
+Run an explicit fidelity review before any adversarial critique.
+
+The agent must build an alignment matrix across this chain:
+
+1. understanding summary in `research.md`
+2. decision log and accepted assumptions in `research.md`
+3. `plan.md` objective, scope, approach, acceptance criteria, and test strategy
+4. approved `todo.json` tasks and verification checks
+5. code changes, tests, and execution evidence
+
+Check, at minimum:
+
+- approved decisions not reflected in code
+- acceptance criteria implemented with weak or missing evidence
+- completed tasks with no observable code/test outcome
+- implementation behavior that exceeds or contradicts approved scope
+- tests that pass but do not evidence the intended behavior
+- gaps between required verification checks and actual evidence
+
+For each alignment row, record in `implementation-review.md` under `## Implementation Review Pass - <YYYY-MM-DD>`:
+
+- row id (`Axx`)
+- category: `alignment`
+- intent source
+- research refs
+- plan refs
+- todo refs
+- code/test/evidence refs
+- status (`aligned|partial|missing|contradicted|extra`)
+- severity (`low|medium|high|critical`)
+- summary
+- recommended correction
+
+Severity rules:
+
+- any missing acceptance criterion, decision, or task outcome evidence is automatically at least `medium`
+- any contradicted intent row is automatically at least `high` unless it is trivially clerical
+- any extra behavior that changes scope or semantics is at least `medium`
+
+## Alignment Packet (Hard Gate)
+
+Before adversarial critique, present in chat:
+
+1. artifact intake summary
+2. alignment status counts (`aligned|partial|missing|contradicted|extra`)
+3. ranked actionable alignment findings (`severity >= medium`) with evidence refs
+4. explicit note of anything implemented without approved intent support
+
+Invalid behavior:
+
+- jumping into hardening findings before the alignment packet
+- claiming implementation is aligned without showing the chain coverage in chat
+- treating passing tests as sufficient evidence when the tested behavior does not match approved intent
+
+## Hardening Interrogation Mode (Agent-Led)
+
+Only after the alignment packet, run adversarial review.
 
 Do not ask the user to answer core review questions.
 
@@ -44,18 +114,16 @@ The agent must answer these questions directly from code, artifacts, and executi
 5. Where does implementation violate non-functional constraints?
 6. What likely failures are not observable or recoverable?
 
-For each question, record in `implementation-review.md`:
+For each hardening finding, record in `implementation-review.md` under the same `## Implementation Review Pass - <YYYY-MM-DD>` section:
 
-- critical question
+- finding id (`Hxx`)
+- category: `hardening`
+- critical question answered
 - agent answer
 - evidence refs (`plan.md`, `research.md`, `todo.json`, code/test refs)
 - severity (`low|medium|high|critical`)
 - suggested improvements (minimum 2 for medium+ risks)
 - recommended improvement set
-
-Use section header:
-
-- `## Implementation Review Pass - <YYYY-MM-DD>`
 
 ## User Improvement Decision (Interview Style)
 
@@ -69,6 +137,21 @@ Invalid behavior:
 
 - saying "review is written to file" without showing findings in chat
 - asking for decisions before presenting the specific finding details in chat
+
+### Actionable Findings Rule (Hard Rule)
+
+Only `severity >= medium` findings are approval-gated.
+
+Decision queue order is mandatory:
+
+1. actionable `alignment` findings (`Axx`) in descending severity order
+2. actionable `hardening` findings (`Hxx`) in descending severity order
+
+Low-severity hardening findings:
+
+- record them in `implementation-review.md`
+- present them in a short appendix if useful
+- do not ask the user for yes/no approval on them
 
 ### Question Cadence Rule (Hard Rule)
 
@@ -86,11 +169,10 @@ Each decision question message must include:
 
 ### Decision State Gate (Hard Rule)
 
-Decision order is mandatory:
+For each actionable finding:
 
 1. Ask one finding-level decision at a time: apply this finding's improvement set `yes/no`.
-2. Repeat for each actionable finding (`severity >= medium`) in descending severity order.
-3. If the user rejects the proposed set but still wants changes for that finding, ask one scoped follow-up question at a time until the set boundary is explicit (`alternate set` or `custom`), then record the chosen set and continue.
+2. If the user rejects the proposed set but still wants changes for that finding, ask one scoped follow-up question at a time until the set boundary is explicit (`alternate set` or `custom`), then record the chosen set and continue.
 
 Invalid behavior:
 
@@ -104,31 +186,32 @@ Invalid behavior:
 
 Present in chat:
 
-- ranked implementation issues and rationale
+- ranked actionable findings across `alignment` and `hardening` with severity and evidence refs
 - per-finding recommended improvement sets with concrete changes/tests
+- low-severity hardening appendix when useful
 - alternate narrower/broader sets only when the tradeoff materially changes cost or confidence
 - expected impact on scope/timeline/tests
 
 Then ask finding-level questions one-by-one:
 
-1. Provide finding `Fxx` summary (450-900 chars) + at least one concrete code/test example.
-2. Spell out the proposed improvement set for `Fxx` in concrete terms:
+1. Provide finding `Axx` or `Hxx` summary (450-900 chars) + at least one concrete code/test example.
+2. Spell out the proposed improvement set in concrete terms:
    - files/components/services to change
    - tests or verification to add/update
    - task or acceptance-criteria deltas if applicable
    - if relevant, one alternate narrower or broader set with the tradeoff stated explicitly
 3. If the user already stated a direction such as "keep it minimal" or "harden it", translate that preference into the proposed set now. Do not ask them to restate it later as an abstract profile.
 4. Ask:
-   "Apply the improvement set for `Fxx`? (yes/no)"
-5. Wait for reply and record result before moving to the next finding.
+   "Apply the improvement set for `Axx` or `Hxx`? (yes/no)"
+5. Wait for reply and record result before moving to the next actionable finding.
 
 ### Set Construction Rule
 
 The approval target must always be a concrete set, not an abstract label.
 
-- Preferred: name the exact set in plain language, for example "extract the shared transaction port, add a regression test for deprecated order reuse, and split achievement construction out of the repository".
+- Preferred: name the exact set in plain language, for example "add missing AC3 evidence, tighten the regression test to prove the approved branch, and remove the out-of-scope side effect from the handler".
 - Allowed shorthand: append a parenthetical cue such as `(minimal)` or `(hardening)` only after the concrete set is already stated.
-- If the user wants a different boundary, ask one scoped follow-up question for that finding only. Example: "For `F02`, should I keep this to the shared transaction port extraction and regression test, or also split the repository helper now?"
+- If the user wants a different boundary, ask one scoped follow-up question for that finding only.
 - Do not introduce a global profile or mode question after the findings are discussed.
 
 ## Improvement Patch Protocol
@@ -140,7 +223,8 @@ If user accepts one or more findings and the concrete set for each accepted find
 2. `plan.md`
    - add `## Implementation Review Decision - <YYYY-MM-DD>`:
      - decision: `reviewed`
-     - finding decision ledger (`Fxx -> yes/no`)
+     - alignment summary
+     - finding decision ledger (`Axx|Hxx -> yes/no`)
      - selected sets for accepted findings
      - `forge-iterate` handoff classification:
        - `standard-ready` or `major-candidate`
@@ -160,26 +244,25 @@ If user declines one or more findings:
 - log accepted residual risk per finding in `implementation-review.md`
 - append to `plan.md` under `## Implementation Review Decision - <YYYY-MM-DD>`:
   - decision: `reviewed`
-  - finding decision ledger (`Fxx -> yes/no`)
-  - selected sets: `none`
+  - alignment summary
+  - finding decision ledger (`Axx|Hxx -> yes/no`)
+  - selected sets: `none` when nothing is accepted
   - residual risks accepted (if any)
 
 ## Updated Review Packet (Hard Gate)
 
 Before handoff, provide deterministic in-chat summary:
 
-1. top implementation gaps and selected improvements
-2. acceptance criteria deltas
-3. changed/superseded task ids and dependencies
-4. added verification requirements
-5. residual risks accepted by user
+1. alignment evidence summary and selected corrections
+2. hardening summary and selected improvements
+3. acceptance criteria deltas
+4. changed/superseded task ids and dependencies
+5. added verification requirements
+6. residual risks accepted by user
+7. finding decision ledger (`Axx|Hxx -> yes/no`) and the concrete accepted sets (or `none`)
+8. `forge-iterate` handoff classification (`standard-ready` or `major-candidate`) with hard triggers and weighted risk score
 
 Include traceable refs to anchors and task ids.
-
-Also include:
-
-6. finding decision ledger (`Fxx -> yes/no`) and the concrete accepted sets (or `none`)
-7. `forge-iterate` handoff classification (`standard-ready` or `major-candidate`) with hard triggers and weighted risk score
 
 ### Iteration Handoff Rule
 
@@ -246,18 +329,22 @@ Do not declare completion.
 ## Strict Prohibitions
 
 - no implementation code in this skill
-- no asking user to answer core critical interrogation questions
+- no asking user to answer core review questions
 - no verification completion claim
+- no hardening critique before alignment packet
 - no direct route to completion
 
 ## Common Mistakes
 
-- converting review into user-led analysis instead of agent-led critique
+- treating polished implementation as aligned without proving the full chain from approved intent to evidence
+- reviewing only local refs instead of the full artifacts
+- surfacing hardening critique before fidelity gaps
+- treating passing tests as enough when they do not prove the approved behavior
+- letting low-severity hardening nits dominate the user interview
 - writing findings only to file without showing them in chat
 - asking multiple decision questions in one message
 - asking one global yes/no instead of one-by-one finding decisions
 - asking the user to approve a finding without seeing the actual proposed change set
 - asking for a late abstract profile after the concrete finding interview
-- asking decision questions without medium-length context and an example
 - suggesting improvements without plan/todo synchronization
 - skipping residual-risk logging when user declines improvements
