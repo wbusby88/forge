@@ -97,6 +97,19 @@ For major candidates, ask explicitly:
 - if `yes`: run major iteration lane
 - if `no`: continue standard lane only after logging accepted residual risk and rationale in `iteration.md`
 
+## Change Comprehension Gate (Hard Gate)
+
+Before any artifact update, inspect the actual implementation drift using all relevant evidence that is available:
+
+- the user request and stated acceptance-criteria deltas
+- uncommitted worktree changes
+- local commits not yet reflected in lifecycle artifacts
+- changed implementation/tests/config/docs needed to infer behavior and impact
+
+Do not rely on filenames or the user request alone when code or commits are available. Read enough changed files to understand what behavior changed, what likely motivated it, and what project artifacts/memory are affected.
+
+If the intent or impact remains ambiguous after reading the available evidence, ask one targeted clarification question and stop before any artifact synchronization.
+
 ## Standard Iteration Sync Gate (Hard Gate)
 
 Before any new implementation work, update these artifacts:
@@ -164,6 +177,7 @@ If any major-lane requirement is missing, stop and request correction.
 Maintain `iteration.md` in the active plan folder with:
 
 - trigger and objective
+- change evidence sources reviewed (`worktree diff`, `commit range`, file groups, user notes)
 - current vs desired behavior
 - root-cause hypothesis and evidence
 - impacted files and acceptance criteria ids
@@ -192,17 +206,24 @@ If new discoveries expand scope during major mode:
 
 If user declines, stop and request scope boundary correction before execution.
 
-## Iteration Understanding Summary + Authorization Gate (Hard Gate)
+## Change Summary + Authorization Gate (Hard Gate)
 
-Before any artifact sync work or implementation handoff, present a concise understanding summary for both `standard` and `major` lanes.
+Before any artifact sync work or implementation handoff, present a concise change summary grounded in the inspected implementation drift for both `standard` and `major` lanes.
 
-The summary must be `300-500` words and include:
+The summary must be quick to scan: `6-10` bullets, plain language, no filler. It must include:
 
+- observed implementation changes
+- inferred reason for the changes or the remaining ambiguity
 - requested outcome in plain language
 - current vs desired behavior
-- proposed artifact/file deltas (`research.md`, `plan.md`, `todo.json`, `iteration.md`, plus key implementation file groups if known)
-- task-level impact (new/superseded/changed task ids)
-- top risks and mitigations
+- project impact:
+  - affected behaviors and acceptance criteria
+  - proposed artifact/file deltas (`research.md`, `plan.md`, `todo.json`, `iteration.md`, plus key implementation file groups if known)
+  - task-level impact (new/superseded/changed task ids)
+- memory impact:
+  - candidate `memory.index.json` updates to add/change, or
+  - explicit `no durable memory update needed`
+- top risks and unknowns
 - what will happen immediately after confirmation
 
 Ask explicitly after the summary (single combined gate):
@@ -250,7 +271,8 @@ No completion claim is allowed in this skill.
 - no skipping iteration classification before sync
 - no entering major mode without explicit user confirmation
 - no re-asking the user to choose standard vs major when a valid `standard-ready` handoff from `forge-review-implementation` still matches current facts
-- no implementation confirmation before the understanding summary gate is acknowledged
+- no implementation confirmation before the change summary gate is acknowledged
+- no artifact sync based only on filenames or chat summary when actual code/commit drift is available
 - no silent todo changes without corresponding `plan.md` and `research.md` updates
 - no memory updates without durable value
 - no completion claim without verification
@@ -258,10 +280,11 @@ No completion claim is allowed in this skill.
 ## Common Mistakes
 
 - treating iteration as ad hoc coding without artifact updates
+- summarizing drift from filenames or commit messages without reading changed code
 - skipping major-mode classification for large refactors
 - re-asking the major-mode question after a valid unchanged `standard-ready` review handoff
 - auto-running heavy re-planning for every minor change
-- asking a bare implementation confirmation without first summarizing proposed changes
+- asking a bare implementation confirmation without first summarizing observed changes and project/memory impact
 - updating todo tasks without updating plan/research anchors
 - rewriting completed task history instead of superseding with reason
 - skipping explicit memory decision
