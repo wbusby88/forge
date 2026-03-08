@@ -160,8 +160,10 @@ Do not bundle multiple findings into one decision prompt.
 Each decision question message must include:
 
 - an issue summary between 450 and 900 characters
+- a short opening paragraph that explains the issue and why it matters before the change list
 - at least one concrete example tied to current plan risks/tasks
 - the exact mitigation set being proposed in this question, with concrete artifact/task/test changes
+- a compact implementation summary that names the concrete files/sections or task ids to change and gives a brief "change X here" description for each
 - one explicit decision question at the end
 
 ### Decision State Gate (Hard Rule)
@@ -190,11 +192,11 @@ Present in chat:
 
 Then ask one actionable finding at a time:
 
-1. Provide finding `Axx` or `Hxx` summary (450-900 chars) + at least one concrete plan/task example.
-2. Spell out the proposed mitigation set in concrete terms:
-   - plan/research/todo sections or task ids to change
-   - acceptance criteria, rollback, or verification additions
-   - if relevant, one alternate narrower or broader set with the tradeoff stated explicitly
+1. Start with one short paragraph that explains the issue, why it matters, and at least one concrete plan/task example.
+2. Follow with a compact proposed mitigation summary in concrete terms:
+   - plan/research/todo files or sections to change
+   - task ids, acceptance criteria, rollback, or verification additions
+   - brief per-target descriptions such as "tighten wording here" or "add missing verification check here"
 3. If the user already stated a direction such as "keep it minimal" or "harden this", translate that preference into the proposed set now. Do not ask them to restate it later as an abstract mode.
 4. Ask:
    "Apply the mitigation set for `Axx` or `Hxx`? (yes/no)"
@@ -205,6 +207,7 @@ Then ask one actionable finding at a time:
 The approval target must always be a concrete set, not an abstract label.
 
 - Preferred: name the exact set in plain language, for example "tighten AC2 wording, add a missing verification check for T03, and remove the unapproved file target from T04".
+- Decision prompts should read as two parts: one short issue paragraph, then a concise implementation summary with concrete file/section targets.
 - Allowed shorthand: append a parenthetical cue such as `(minimal)` or `(hardening)` only after the concrete set is already stated.
 - If the user wants a different boundary, ask one scoped follow-up question for that finding only.
 - Do not introduce a global patch mode question after the findings are discussed.
