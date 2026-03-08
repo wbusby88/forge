@@ -163,8 +163,10 @@ Do not bundle multiple findings into one decision prompt.
 Each decision question message must include:
 
 - an issue summary between 450 and 900 characters
+- a short opening paragraph that explains the issue and why it matters before the change list
 - at least one concrete example tied to current implementation/tests
 - the exact improvement set being proposed in this question, with concrete code/test/task changes
+- a compact implementation summary that names the concrete files/components/artifacts to change and gives a brief "change X here" description for each
 - one explicit decision question at the end
 
 ### Decision State Gate (Hard Rule)
@@ -194,12 +196,12 @@ Present in chat:
 
 Then ask finding-level questions one-by-one:
 
-1. Provide finding `Axx` or `Hxx` summary (450-900 chars) + at least one concrete code/test example.
-2. Spell out the proposed improvement set in concrete terms:
-   - files/components/services to change
+1. Start with one short paragraph that explains the issue, why it matters, and at least one concrete code/test example.
+2. Follow with a compact proposed improvement summary in concrete terms:
+   - files/components/services/artifacts to change
    - tests or verification to add/update
    - task or acceptance-criteria deltas if applicable
-   - if relevant, one alternate narrower or broader set with the tradeoff stated explicitly
+   - brief per-target descriptions such as "add AC10 evidence here" or "update residual-risk note here"
 3. If the user already stated a direction such as "keep it minimal" or "harden it", translate that preference into the proposed set now. Do not ask them to restate it later as an abstract profile.
 4. Ask:
    "Apply the improvement set for `Axx` or `Hxx`? (yes/no)"
@@ -210,6 +212,7 @@ Then ask finding-level questions one-by-one:
 The approval target must always be a concrete set, not an abstract label.
 
 - Preferred: name the exact set in plain language, for example "add missing AC3 evidence, tighten the regression test to prove the approved branch, and remove the out-of-scope side effect from the handler".
+- Decision prompts should read as two parts: one short issue paragraph, then a concise implementation summary with concrete file or artifact targets.
 - Allowed shorthand: append a parenthetical cue such as `(minimal)` or `(hardening)` only after the concrete set is already stated.
 - If the user wants a different boundary, ask one scoped follow-up question for that finding only.
 - Do not introduce a global profile or mode question after the findings are discussed.
