@@ -65,6 +65,7 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
 
 Use this section for `forge-review-plan` findings and mitigation decisions.
 
-- Critical questions answered:
-- Ranked findings (`Fxx`, severity, evidence refs):
+- Artifact intake summary:
+- Alignment coverage (`Axx`, status, severity, refs, recommended correction):
+- Hardening findings (`Hxx`, severity, evidence refs):
 - Mitigation options and decisions:

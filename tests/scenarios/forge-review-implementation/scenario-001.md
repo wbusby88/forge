@@ -1,4 +1,4 @@
-# Scenario 001 - Agent-Led Adversarial Implementation Review
+# Scenario 001 - Alignment Evidence Before Adversarial Review
 
 ## Setup
 
@@ -8,8 +8,10 @@
 
 ## Expected Skill Behavior
 
-- compares implementation evidence against plan acceptance criteria
-- answers critical interrogation questions itself with evidence refs
+- summarizes the full approved intent chain before critique
+- runs an explicit alignment coverage pass across research, plan, `todo.json`, code, tests, and execution evidence
+- presents the alignment packet in chat before any adversarial findings
+- answers critical interrogation questions itself with evidence refs after alignment
 - writes `## Implementation Review Pass - <date>` to `implementation-review.md`
 - presents findings in chat before any decision questions
 - does not ask user to perform risk/quality discovery

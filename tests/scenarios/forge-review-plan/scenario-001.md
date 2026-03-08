@@ -1,4 +1,4 @@
-# Scenario 001 - Agent-Led Critical Interrogation
+# Scenario 001 - Alignment Pass Before Adversarial Review
 
 ## Setup
 
@@ -8,7 +8,10 @@
 ## Expected Skill Behavior
 
 - reads all required artifacts
-- runs critical review questions itself and answers with evidence
+- summarizes the full intent chain before critique
+- runs an explicit alignment coverage pass across research, plan, and `todo.json`
+- presents the alignment packet in chat before any adversarial findings
+- runs critical review questions itself and answers with evidence after alignment
 - writes `## Review Pass - <date>` into `research.md`
 - presents findings in chat before any decision prompts
 - does not ask the user to answer risk-discovery questions

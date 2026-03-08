@@ -1,15 +1,18 @@
 ---
 name: forge-review-plan
-description: Use when a full plan exists and needs a hypercritical pre-implementation review that identifies risks, proposes mitigations, and updates planning artifacts before execution.
+description: Use when a full plan exists and needs pre-implementation review for intent alignment, risk discovery, and artifact correction before execution.
 ---
 
 # Forge Review Plan
 
 ## Overview
 
-Review a completed plan with an adversarial lens before implementation.
+Review a completed plan in two ordered passes before implementation:
 
-This skill performs the critical questioning itself, answers with evidence, and then asks the user whether to apply explicit, concrete mitigation sets.
+1. `alignment`: verify the full intent chain still matches user intent and research
+2. `hardening`: run adversarial critique against the aligned plan
+
+This skill performs the core review itself, answers with evidence, and then asks the user whether to apply explicit, concrete mitigation sets for actionable findings.
 
 ## Preconditions
 
@@ -22,13 +25,78 @@ Read first:
 
 If `todo.json.context.*` paths exist, treat them as canonical for locating `plan.md` / `research.md` / downstream artifacts. Do not guess paths.
 
-Then summarize:
+## Full Artifact Intake (Hard Rule)
+
+Read the full artifacts, not only the anchors already cited in `todo.json`.
+
+Before producing findings, summarize:
 
 - current objective and scope
-- highest known risks from artifacts
+- explicit non-goals from the plan and research
+- key research decisions and assumptions
+- acceptance criteria count
+- task count and dependency shape
 - assumptions most likely to fail
 
-## Critical Interrogation Mode (Agent-Led)
+Do not generate adversarial findings until the Alignment Coverage Pass is complete and shown in chat.
+
+## Alignment Coverage Pass (Hard Gate)
+
+Run an explicit fidelity review before any adversarial critique.
+
+The agent must build an alignment matrix across this chain:
+
+1. understanding summary in `research.md`
+2. decision log and assumptions in `research.md`
+3. `plan.md` objective, scope, approach, acceptance criteria, and test strategy
+4. `todo.json` tasks, dependencies, file targets, and verification checks
+
+Check, at minimum:
+
+- research decisions missing from the plan
+- plan elements unsupported by research or user intent
+- acceptance criteria without task or verification coverage
+- tasks without acceptance-criteria or decision linkage
+- file targets or verification checks that do not match intended scope
+- research claims that appear insufficiently supported and need stronger evidence
+
+For each alignment row, record in `research.md` under `## Review Pass - <YYYY-MM-DD>`:
+
+- row id (`Axx`)
+- category: `alignment`
+- intent source
+- research refs
+- plan refs
+- todo refs
+- status (`aligned|partial|missing|contradicted|extra`)
+- severity (`low|medium|high|critical`)
+- summary
+- recommended correction
+
+Severity rules:
+
+- any `missing` alignment row is automatically at least `medium`
+- any `contradicted` alignment row is automatically at least `high` unless it is trivially clerical
+- `extra` work that changes scope or semantics is at least `medium`
+
+## Alignment Packet (Hard Gate)
+
+Before adversarial critique, present in chat:
+
+1. artifact intake summary
+2. alignment status counts (`aligned|partial|missing|contradicted|extra`)
+3. ranked actionable alignment findings (`severity >= medium`) with evidence refs
+4. explicit note of anything unsupported by research or user intent
+
+Invalid behavior:
+
+- jumping into hardening findings before the alignment packet
+- claiming the plan is aligned without showing the chain coverage in chat
+- treating `research.md` or `plan.md` as aligned without reconciling them to `todo.json`
+
+## Hardening Interrogation Mode (Agent-Led)
+
+Only after the alignment packet, run adversarial review.
 
 Do not ask the user to answer core review questions.
 
@@ -41,26 +109,24 @@ The agent must answer these questions directly from artifacts and reasoning:
 5. What missing observability/rollback controls increase blast radius?
 6. Which dependency/order/scope issues can cause rework?
 
-For each question, record in `research.md`:
+For each hardening finding, record in `research.md` under the same `## Review Pass - <YYYY-MM-DD>` section:
 
-- critical question
+- finding id (`Hxx`)
+- category: `hardening`
+- critical question answered
 - agent answer
 - evidence refs (`memory.md`, `research.md`, `plan.md`, `todo.json`)
 - severity (`low|medium|high|critical`)
 - mitigation options (minimum 2 for medium+ risks)
 - recommended patch set
 
-Use section header:
-
-- `## Review Pass - <YYYY-MM-DD>`
-
 ## User Mitigation Decision (Interview Style)
 
-After agent-led interrogation, run a user decision interview focused on mitigation selection, not risk discovery.
+After both review passes, run a user decision interview focused on mitigation selection, not risk discovery.
 
 ### In-Chat Evidence First (Hard Rule)
 
-Before asking any decision question, present the findings in chat.
+Before asking any decision question, present findings in chat.
 
 `research.md` is the system of record, but it cannot be the only place findings are shown.
 
@@ -68,6 +134,21 @@ Invalid behavior:
 
 - saying "I wrote the review to file" without presenting findings in chat
 - asking a decision question before showing the specific finding details in chat
+
+### Actionable Findings Rule (Hard Rule)
+
+Only `severity >= medium` findings are approval-gated.
+
+Decision queue order is mandatory:
+
+1. actionable `alignment` findings (`Axx`) in descending severity order
+2. actionable `hardening` findings (`Hxx`) in descending severity order
+
+Low-severity hardening findings:
+
+- record them in `research.md`
+- present them in a short appendix if useful
+- do not ask the user for yes/no approval on them
 
 ### Question Cadence Rule (Hard Rule)
 
@@ -85,11 +166,10 @@ Each decision question message must include:
 
 ### Decision State Gate (Hard Rule)
 
-Decision order is mandatory:
+For each actionable finding:
 
 1. Ask one finding-level decision at a time: apply this finding's mitigation set `yes/no`.
-2. Repeat for each actionable finding (`severity >= medium`) in descending severity order.
-3. If the user rejects the proposed set but still wants mitigation work for that finding, ask one scoped follow-up question at a time until the set boundary is explicit (`alternate set` or `custom`), then record the chosen set and continue.
+2. If the user rejects the proposed set but still wants mitigation work for that finding, ask one scoped follow-up question at a time until the set boundary is explicit (`alternate set` or `custom`), then record the chosen set and continue.
 
 Invalid behavior:
 
@@ -103,29 +183,30 @@ Invalid behavior:
 
 Present in chat:
 
-- ranked findings with severity and evidence refs
-- recommended mitigation sets for each finding with concrete artifact/task changes
+- ranked actionable findings across `alignment` and `hardening` with severity and evidence refs
+- recommended mitigation sets for each actionable finding with concrete artifact/task changes
+- low-severity hardening appendix when useful
 - alternate narrower/broader sets only when the tradeoff materially changes cost or confidence
 
-Then ask one finding at a time:
+Then ask one actionable finding at a time:
 
-1. Provide finding `Fxx` summary (450-900 chars) + at least one concrete plan/task example.
-2. Spell out the proposed mitigation set for `Fxx` in concrete terms:
+1. Provide finding `Axx` or `Hxx` summary (450-900 chars) + at least one concrete plan/task example.
+2. Spell out the proposed mitigation set in concrete terms:
    - plan/research/todo sections or task ids to change
    - acceptance criteria, rollback, or verification additions
    - if relevant, one alternate narrower or broader set with the tradeoff stated explicitly
 3. If the user already stated a direction such as "keep it minimal" or "harden this", translate that preference into the proposed set now. Do not ask them to restate it later as an abstract mode.
 4. Ask:
-   "Apply the mitigation set for `Fxx`? (yes/no)"
-5. Wait for reply and record result before moving to the next finding.
+   "Apply the mitigation set for `Axx` or `Hxx`? (yes/no)"
+5. Wait for reply and record result before moving to the next actionable finding.
 
 ### Set Construction Rule
 
 The approval target must always be a concrete set, not an abstract label.
 
-- Preferred: name the exact set in plain language, for example "split rollback guidance into its own acceptance criterion, add a failure-observability task, and tighten the ambiguous task boundary in T03/T04".
+- Preferred: name the exact set in plain language, for example "tighten AC2 wording, add a missing verification check for T03, and remove the unapproved file target from T04".
 - Allowed shorthand: append a parenthetical cue such as `(minimal)` or `(hardening)` only after the concrete set is already stated.
-- If the user wants a different boundary, ask one scoped follow-up question for that finding only. Example: "For `F03`, should I keep this to acceptance-criteria clarification plus one rollback task, or also add observability hooks now?"
+- If the user wants a different boundary, ask one scoped follow-up question for that finding only.
 - Do not introduce a global patch mode question after the findings are discussed.
 
 ## Artifact Patch Protocol
@@ -133,12 +214,13 @@ The approval target must always be a concrete set, not an abstract label.
 If user accepts one or more findings and the concrete set for each accepted finding is explicit, update artifacts in this order:
 
 1. `research.md`
-   - append final mitigation choices and accepted mitigation sets
+   - append the alignment matrix and final mitigation choices in the current review pass
    - include rejected options and rationale
 2. `plan.md`
    - add `## Review Plan Decision - <YYYY-MM-DD>`:
      - decision: `reviewed`
-     - finding decision ledger (`Fxx -> yes/no`)
+     - alignment summary
+     - finding decision ledger (`Axx|Hxx -> yes/no`)
      - selected sets for accepted findings
      - residual risks accepted (if any)
    - add `## Review Mitigation Deltas`
@@ -153,25 +235,24 @@ If user declines a specific finding or all findings:
 - log the decision and residual risk acceptance in `research.md`
 - append to `plan.md` under `## Review Plan Decision - <YYYY-MM-DD>`:
   - decision: `reviewed`
-  - finding decision ledger (`Fxx -> yes/no`)
-  - selected sets: `none`
+  - alignment summary
+  - finding decision ledger (`Axx|Hxx -> yes/no`)
+  - selected sets: `none` when nothing is accepted
   - residual risks accepted (if any)
 
 ## Updated Plan Review Packet (Hard Gate)
 
 Before handoff, provide deterministic in-chat summary:
 
-1. top risks and selected mitigations
-2. changes to acceptance criteria
-3. changed task ids/dependencies/files
-4. added verification checks
-5. residual risks accepted by user
+1. alignment summary and selected corrections
+2. hardening summary and selected mitigations
+3. changes to acceptance criteria
+4. changed task ids/dependencies/files
+5. added verification checks
+6. residual risks accepted by user
+7. finding decision ledger (`Axx|Hxx -> yes/no`) and the concrete accepted sets (or `none`)
 
 Include traceable refs to anchors in `research.md`, `plan.md`, and task ids.
-
-Also include:
-
-6. finding decision ledger (`Fxx -> yes/no`) and the concrete accepted sets (or `none`)
 
 ## Final Approval Gate
 
@@ -225,13 +306,16 @@ Do not implement in this skill.
 
 - no implementation code
 - no execution test claims
-- no asking user to answer the core critical interrogation questions
+- no asking user to answer the core review questions
+- no hardening critique before alignment packet
 - no handoff without updated artifact sync and review packet
 
 ## Common Mistakes
 
-- turning review into a generic discussion instead of evidence-backed critique
-- asking user discovery questions the agent should answer itself
+- treating a polished plan as aligned without proving the full chain from research to `todo.json`
+- reviewing only anchor-local snippets instead of the full artifacts
+- surfacing hardening critique before fidelity gaps
+- letting low-severity hardening nits dominate the user interview
 - writing findings only to file without showing them in chat
 - asking one global yes/no instead of one-by-one finding decisions
 - asking the user to approve a finding without seeing the actual proposed mitigation set
