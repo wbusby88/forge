@@ -16,7 +16,7 @@
     "Keep implementation within declared file targets"
   ],
   "execution_policy": {
-    "batch_size": 2,
+    "batch_size": 1,
     "parallelism": "none",
     "on_missing_required_field": "hard_fail",
     "on_scope_expansion": "stop_and_replan",

@@ -9,7 +9,7 @@ This repository contains forge lifecycle skills.
 - forge-scope: Scope vague ideas with project context + research and produce a promotion packet to `forge-plan` / `forge-quick` (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-scope/SKILL.md`)
 - forge-plan: Run brainstorming-style planning and produce canonical `todo.json` v2 with task-level references (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-plan/SKILL.md`)
 - forge-quick: Run accelerated planning from user intent, produce canonical `research.md`/`plan.md`/`todo.json`, and hand off to `forge-implement` after approval (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-quick/SKILL.md`)
-- forge-implement: Execute canonical todo v2 in checkpoints with TDD defaults and hard-fail validation (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-implement/SKILL.md`)
+- forge-implement: Execute canonical todo v2 in one pass by default with TDD defaults and hard-fail validation (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-implement/SKILL.md`)
 - forge-debug: Handle implementation/iteration errors with artifact-aware debugging, test-first defaults, and explicit user verification before closure (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-debug/SKILL.md`)
 - forge-iterate: Handle post-implement change/refactor/redo by syncing plan artifacts before resumed execution (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-iterate/SKILL.md`)
 - forge-verify: Verify evidence and plan coverage before completion claims (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-verify/SKILL.md`)

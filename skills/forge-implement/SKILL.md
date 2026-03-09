@@ -1,13 +1,13 @@
 ---
 name: forge-implement
-description: Use when an approved todo v2 plan exists and tasks must be executed in controlled batches with TDD defaults and review checkpoints.
+description: Use when an approved todo v2 plan exists and implementation should proceed against the canonical task spec with TDD defaults and hard-fail validation.
 ---
 
 # Forge Implement
 
 ## Overview
 
-Execute approved work using `todo.json` schema v2.0 as canonical execution source, with critical preflight review, TDD-first implementation, and checkpointed progress reporting.
+Execute approved work using `todo.json` schema v2.0 as canonical execution source, with critical preflight review, TDD-first implementation, and default single-pass execution.
 
 ## Preconditions
 
@@ -28,7 +28,7 @@ If `todo.json.context.*` is missing or incomplete, stop and ask for correction. 
 Then summarize:
 
 - current phase
-- selected batch scope
+- full execution scope
 - key risks from memory/research
 
 ## Todo v2 Validation Gate (Hard Fail)
@@ -77,7 +77,7 @@ When direct invocation or explicit handoff is used, still run all preflight chec
 
 ## Preflight Context Review
 
-Before executing batch:
+Before execution:
 
 - confirm task references resolve in `plan.md` and `research.md`
 - confirm `memory_refs` ids exist in `memory.index.json` (when any are present)
@@ -105,9 +105,14 @@ During long or multi-agent implementations, keep memory coupled to the executabl
 
 ## Execution Model
 
-### Batch Size
+### Default Pass Size
 
-Use `execution_policy.batch_size` from `todo.json`.
+Execute all actionable tasks in one pass by default.
+
+- Treat `execution_policy.batch_size` as the authored size of the full implementation pass.
+- Do not stop after a partial subset unless the user explicitly requested partial execution.
+- Do not ask whether to continue to another batch; implementation approval already implies completing the approved pass.
+- If `execution_policy.batch_size` is smaller than the actionable task count without an explicit user constraint, continue through the full actionable set and note the mismatch for artifact correction.
 
 ### For Each Task
 
@@ -128,9 +133,9 @@ If requested work touches files or behavior outside declared task scope:
 - record a `scope_expansion` blocker entry describing the out-of-scope request and the required replan
 - trigger replan requirement per policy `stop_and_replan`
 
-## Batch Checkpoint
+## Execution Checkpoint
 
-After each batch, report:
+After the full pass completes, or when a blocker stops the pass, report:
 
 - completed and blocked tasks
 - command outputs vs expected results
@@ -138,7 +143,7 @@ After each batch, report:
 - memory drift (new `memory.index.json` candidates and any `memory_refs` updates applied to remaining tasks)
 - deviations or issues
 
-Then wait for feedback before next batch.
+If a blocker stopped the pass before all actionable tasks completed, stop and ask for clarification. Otherwise continue to the handoff rule without asking about another batch.
 
 ## Memory and Learning Updates
 
@@ -186,6 +191,7 @@ Do not declare final completion.
 - No execution when required fields are missing
 - No final completion claim
 - No skipping implementation review without an explicit skip choice (B) and recorded skip decision
+- No pausing for an extra batch-selection prompt unless the user explicitly asked for partial execution
 
 ## Stop Conditions
 
