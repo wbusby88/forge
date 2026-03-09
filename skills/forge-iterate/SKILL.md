@@ -126,6 +126,7 @@ Before any new implementation work, update these artifacts:
    - regenerate or patch affected tasks using schema `2.0`
    - preserve completed task history
    - mark replaced tasks as superseded with reason (see “Supersede Representation”)
+   - set `execution_policy.batch_size` to the full actionable task count for the resumed implementation pass (normally all non-completed, non-superseded tasks)
    - ensure each new/changed task includes `memory_refs`:
      - if non-empty: ids must exist in `memory.index.json`
      - if empty: `handoff_notes` must include a short “no applicable memory ids” rationale
@@ -165,6 +166,7 @@ If major mode is confirmed, complete this flow before implementation:
    - regenerate/patch affected tasks
    - preserve completed history
    - supersede replaced tasks with reason
+   - set `execution_policy.batch_size` to the full actionable task count for the resumed implementation pass unless the user explicitly requested a smaller pass
 5. Validate major sync
    - required major deltas and refs present
    - `todo.json` v2 required fields valid

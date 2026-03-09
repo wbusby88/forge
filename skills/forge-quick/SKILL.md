@@ -177,6 +177,8 @@ Every task must include required v2 fields, including:
 - `handoff_notes` (if `memory_refs` is empty, include "no applicable memory ids" rationale)
 - ordered steps, commands, expected results, and verification
 
+Set `execution_policy.batch_size` to the full actionable task count for the implementation pass by default (normally `items.length`). Only use a smaller value when the user explicitly requested partial execution.
+
 ## Todo Validation Gate (Hard Fail)
 
 Before presenting approval, validate `todo.json`:

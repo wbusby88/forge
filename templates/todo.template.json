@@ -17,7 +17,7 @@
     "No scope expansion without explicit replan approval"
   ],
   "execution_policy": {
-    "batch_size": 3,
+    "batch_size": 1,
     "parallelism": "none",
     "on_missing_required_field": "hard_fail",
     "on_scope_expansion": "stop_and_replan",

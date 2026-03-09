@@ -297,6 +297,8 @@ After presenting the structured review packet, ask:
 - If no: revise `research.md` and `plan.md`
 - If yes: generate finalized `todo.json` using schema `2.0`
 
+When generating finalized `todo.json`, set `execution_policy.batch_size` to the full actionable task count for the implementation pass by default (normally `items.length`). Only use a smaller value when the user explicitly requested partial execution.
+
 ## Post-Approval Finalization Check (Hard Gate)
 
 After writing finalized `todo.json`, validate it before handoff:
@@ -385,6 +387,8 @@ Every `todo.json` task must include:
 - exact commands and expected results
 - verification checks and acceptance criteria ids
 - one logical-task commit specification
+
+Todo-level execution policy must also set `execution_policy.batch_size` to the number of actionable tasks in the approved implementation pass unless the user explicitly requested a smaller pass.
 
 Do not finalize planning if any required field is missing.
 

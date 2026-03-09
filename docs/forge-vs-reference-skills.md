@@ -28,8 +28,8 @@ Forge intentionally aligns behavior with three reference styles while staying or
 `forge-implement` mirrors execution discipline:
 
 - critical preflight review
-- execution in small batches
-- checkpoint reporting for human feedback
+- execution in one pass by default
+- checkpoint reporting at pass completion or blocker stop
 - stop-and-ask behavior for blockers
 
 ## Deliberate Differences
