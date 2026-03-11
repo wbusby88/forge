@@ -84,20 +84,46 @@ Severity rules:
 - any contradicted intent row is automatically at least `high` unless it is trivially clerical
 - any extra behavior that changes scope or semantics is at least `medium`
 
+## Alignment Finding Classification (Hard Gate)
+
+Before queuing any alignment item for user approval, classify it into exactly one of these buckets:
+
+1. `auto-sync`
+   - correction restores fidelity to already-approved intent and observed evidence without changing the objective, scope boundaries, non-goals, acceptance-criteria meaning, or approved decisions
+   - examples: stale refs, completed-task bookkeeping, missing evidence links, outdated review ledger entries, clerical plan/todo wording that preserves semantics
+2. `approval-gated`
+   - correction would change approved intent or legitimize behavior that was not already approved
+   - examples: rewriting objective text to fit implementation, changing scope semantics, altering acceptance-criteria meaning, changing approved decisions, legitimizing extra behavior
+3. `hygiene-debt`
+   - unrelated artifact or memory cleanup not required to judge the current implementation against approved intent
+   - examples: stale memory entries or old artifact debt outside the current review chain
+
+Rules:
+
+- apply `auto-sync` corrections during the review and record them in artifacts before the user interview
+- present `auto-sync` corrections in chat as already-applied fidelity repairs, not as decision prompts
+- do not ask "should I update the plan/artifacts?" when the change is `auto-sync`
+- keep `hygiene-debt` out of the actionable review queue; log it separately as non-blocking follow-up
+- only `approval-gated` alignment findings may enter the one-by-one improvement interview
+- never resolve implementation drift by rewriting top-level objectives to match the code
+
 ## Alignment Packet (Hard Gate)
 
 Before adversarial critique, present in chat:
 
 1. artifact intake summary
 2. alignment status counts (`aligned|partial|missing|contradicted|extra`)
-3. ranked actionable alignment findings (`severity >= medium`) with evidence refs
-4. explicit note of anything implemented without approved intent support
+3. auto-synced fidelity corrections already applied during review
+4. ranked actionable alignment findings (`severity >= medium`, `approval-gated` only) with evidence refs
+5. explicit note of anything implemented without approved intent support
+6. non-blocking hygiene debt, if any
 
 Invalid behavior:
 
 - jumping into hardening findings before the alignment packet
 - claiming implementation is aligned without showing the chain coverage in chat
 - treating passing tests as sufficient evidence when the tested behavior does not match approved intent
+- asking the user to approve clerical or traceability-only artifact sync
 
 ## Hardening Interrogation Mode (Agent-Led)
 
@@ -142,9 +168,12 @@ Invalid behavior:
 
 Only `severity >= medium` findings are approval-gated.
 
+`auto-sync` alignment corrections are never approval-gated.
+`hygiene-debt` items are never approval-gated.
+
 Decision queue order is mandatory:
 
-1. actionable `alignment` findings (`Axx`) in descending severity order
+1. actionable `alignment` findings (`Axx`, `approval-gated` only) in descending severity order
 2. actionable `hardening` findings (`Hxx`) in descending severity order
 
 Low-severity hardening findings:
@@ -222,11 +251,12 @@ The approval target must always be a concrete set, not an abstract label.
 If user accepts one or more findings and the concrete set for each accepted finding is explicit, update artifacts in this order:
 
 1. `research.md`
-   - append implementation-review findings and selected improvement sets
+   - append implementation-review findings, `auto-sync` corrections, non-blocking hygiene debt, and selected improvement sets
 2. `plan.md`
    - add `## Implementation Review Decision - <YYYY-MM-DD>`:
      - decision: `reviewed`
      - alignment summary
+     - auto-synced fidelity corrections
      - finding decision ledger (`Axx|Hxx -> yes/no`)
      - selected sets for accepted findings
      - `forge-iterate` handoff classification:
@@ -234,11 +264,12 @@ If user accepts one or more findings and the concrete set for each accepted find
        - hard triggers found (or `none`)
        - weighted risk score and breakdown
        - short rationale for the classification
+     - deferred hygiene debt (if any)
      - residual risks accepted (if any)
    - add `## Implementation Review Deltas`
    - update acceptance criteria/test strategy/risks where needed
 3. `todo.json`
-   - patch or regenerate affected tasks (schema `2.0`)
+   - patch or regenerate affected tasks for accepted improvements and any `auto-sync` fidelity repairs (schema `2.0`)
    - preserve completed history and supersede changed tasks with reason
    - include one logical-task commit specification per task
 
@@ -248,22 +279,25 @@ If user declines one or more findings:
 - append to `plan.md` under `## Implementation Review Decision - <YYYY-MM-DD>`:
   - decision: `reviewed`
   - alignment summary
+  - auto-synced fidelity corrections
   - finding decision ledger (`Axx|Hxx -> yes/no`)
   - selected sets: `none` when nothing is accepted
+  - deferred hygiene debt (if any)
   - residual risks accepted (if any)
 
 ## Updated Review Packet (Hard Gate)
 
 Before handoff, provide deterministic in-chat summary:
 
-1. alignment evidence summary and selected corrections
+1. alignment evidence summary, including auto-synced fidelity corrections
 2. hardening summary and selected improvements
 3. acceptance criteria deltas
 4. changed/superseded task ids and dependencies
 5. added verification requirements
-6. residual risks accepted by user
-7. finding decision ledger (`Axx|Hxx -> yes/no`) and the concrete accepted sets (or `none`)
-8. `forge-iterate` handoff classification (`standard-ready` or `major-candidate`) with hard triggers and weighted risk score
+6. non-blocking hygiene debt, if any
+7. residual risks accepted by user
+8. finding decision ledger (`Axx|Hxx -> yes/no`) and the concrete accepted sets (or `none`)
+9. `forge-iterate` handoff classification (`standard-ready` or `major-candidate`) with hard triggers and weighted risk score
 
 Include traceable refs to anchors and task ids.
 
@@ -347,6 +381,9 @@ Do not declare completion.
 - writing findings only to file without showing them in chat
 - asking multiple decision questions in one message
 - asking one global yes/no instead of one-by-one finding decisions
+- asking permission for `auto-sync` artifact reconciliation that preserves approved intent
+- using memory or artifact hygiene debt to block review when it is unrelated to the current implementation
+- editing top-level objectives just to make implementation appear aligned
 - asking the user to approve a finding without seeing the actual proposed change set
 - asking for a late abstract profile after the concrete finding interview
 - suggesting improvements without plan/todo synchronization
