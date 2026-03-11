@@ -79,20 +79,46 @@ Severity rules:
 - any `contradicted` alignment row is automatically at least `high` unless it is trivially clerical
 - `extra` work that changes scope or semantics is at least `medium`
 
+## Alignment Finding Classification (Hard Gate)
+
+Before queuing any alignment item for user approval, classify it into exactly one of these buckets:
+
+1. `auto-sync`
+   - correction restores fidelity to already-approved intent without changing the objective, scope boundaries, non-goals, acceptance-criteria meaning, or approved decisions
+   - examples: stale refs, task/status drift, missing traceability notes, outdated mitigation ledger, clerical plan/todo wording that preserves semantics
+2. `approval-gated`
+   - correction would change intent or legitimize work not already approved
+   - examples: rewriting objective text, changing scope semantics, altering acceptance-criteria meaning, changing approved decisions, adding/removing non-goals, legitimizing extra scope
+3. `hygiene-debt`
+   - unrelated artifact or memory cleanup not required to judge the current plan's alignment
+   - examples: stale memory entries or old plan debt that does not affect the current intent chain
+
+Rules:
+
+- apply `auto-sync` corrections during the review and record them in artifacts before the user interview
+- present `auto-sync` corrections in chat as already-applied fidelity repairs, not as decision prompts
+- do not ask "should I update the plan/artifacts?" when the change is `auto-sync`
+- keep `hygiene-debt` out of the actionable alignment queue; log it separately as non-blocking follow-up
+- only `approval-gated` alignment findings may enter the one-by-one mitigation interview
+- never resolve a contradiction by editing top-level objectives to match downstream artifacts
+
 ## Alignment Packet (Hard Gate)
 
 Before adversarial critique, present in chat:
 
 1. artifact intake summary
 2. alignment status counts (`aligned|partial|missing|contradicted|extra`)
-3. ranked actionable alignment findings (`severity >= medium`) with evidence refs
-4. explicit note of anything unsupported by research or user intent
+3. auto-synced fidelity corrections already applied during review
+4. ranked actionable alignment findings (`severity >= medium`, `approval-gated` only) with evidence refs
+5. explicit note of anything unsupported by research or user intent
+6. non-blocking hygiene debt, if any
 
 Invalid behavior:
 
 - jumping into hardening findings before the alignment packet
 - claiming the plan is aligned without showing the chain coverage in chat
 - treating `research.md` or `plan.md` as aligned without reconciling them to `todo.json`
+- asking the user to approve clerical or traceability-only artifact sync
 
 ## Hardening Interrogation Mode (Agent-Led)
 
@@ -139,9 +165,12 @@ Invalid behavior:
 
 Only `severity >= medium` findings are approval-gated.
 
+`auto-sync` alignment corrections are never approval-gated.
+`hygiene-debt` items are never approval-gated.
+
 Decision queue order is mandatory:
 
-1. actionable `alignment` findings (`Axx`) in descending severity order
+1. actionable `alignment` findings (`Axx`, `approval-gated` only) in descending severity order
 2. actionable `hardening` findings (`Hxx`) in descending severity order
 
 Low-severity hardening findings:
@@ -217,19 +246,21 @@ The approval target must always be a concrete set, not an abstract label.
 If user accepts one or more findings and the concrete set for each accepted finding is explicit, update artifacts in this order:
 
 1. `research.md`
-   - append the alignment matrix and final mitigation choices in the current review pass
+   - append the alignment matrix, `auto-sync` corrections, non-blocking hygiene debt, and final mitigation choices in the current review pass
    - include rejected options and rationale
 2. `plan.md`
    - add `## Review Plan Decision - <YYYY-MM-DD>`:
      - decision: `reviewed`
      - alignment summary
+     - auto-synced fidelity corrections
      - finding decision ledger (`Axx|Hxx -> yes/no`)
      - selected sets for accepted findings
+     - deferred hygiene debt (if any)
      - residual risks accepted (if any)
    - add `## Review Mitigation Deltas`
    - update acceptance criteria, risks, and test strategy as needed
 3. `todo.json`
-   - regenerate/patch tasks to include mitigation work
+   - regenerate/patch tasks to include accepted mitigation work and any `auto-sync` fidelity repairs
    - maintain schema `2.0`
    - ensure one logical-task commit specification per task
 
@@ -239,21 +270,24 @@ If user declines a specific finding or all findings:
 - append to `plan.md` under `## Review Plan Decision - <YYYY-MM-DD>`:
   - decision: `reviewed`
   - alignment summary
+  - auto-synced fidelity corrections
   - finding decision ledger (`Axx|Hxx -> yes/no`)
   - selected sets: `none` when nothing is accepted
+  - deferred hygiene debt (if any)
   - residual risks accepted (if any)
 
 ## Updated Plan Review Packet (Hard Gate)
 
 Before handoff, provide deterministic in-chat summary:
 
-1. alignment summary and selected corrections
+1. alignment summary, including auto-synced fidelity corrections
 2. hardening summary and selected mitigations
 3. changes to acceptance criteria
 4. changed task ids/dependencies/files
 5. added verification checks
-6. residual risks accepted by user
-7. finding decision ledger (`Axx|Hxx -> yes/no`) and the concrete accepted sets (or `none`)
+6. non-blocking hygiene debt, if any
+7. residual risks accepted by user
+8. finding decision ledger (`Axx|Hxx -> yes/no`) and the concrete accepted sets (or `none`)
 
 Include traceable refs to anchors in `research.md`, `plan.md`, and task ids.
 
@@ -321,6 +355,9 @@ Do not implement in this skill.
 - letting low-severity hardening nits dominate the user interview
 - writing findings only to file without showing them in chat
 - asking one global yes/no instead of one-by-one finding decisions
+- asking permission for `auto-sync` artifact reconciliation that preserves approved intent
+- using memory or artifact hygiene debt to block review when it is unrelated to the current plan
+- editing top-level objectives just to make downstream artifacts appear aligned
 - asking the user to approve a finding without seeing the actual proposed mitigation set
 - asking for a late abstract patch mode after the concrete finding interview
 - asking decision questions without medium-length context and an example
