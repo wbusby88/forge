@@ -117,7 +117,7 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
 ### Entry 12
 
 - Question: How should the Kanban app store its own state (tickets, agent runs, prompts/answers, lane status), given `.forge/` is gitignored? A) SQLite DB at `.forge/kanban.sqlite`, B) File-per-ticket under `.forge/tickets/<id>/...json`, C) No DB; derive state purely from git branches + forge artifacts.
-- User Response: SQLite is good, but asked how hard it is to pick up tickets based on planning artifacts already in a project’s plans folder. Wants the UI to render planning artifacts + agent summaries per ticket, supporting legacy projects already using forge and engineers doing more CLI-based forging.
+- User Response: SQLite is good, but asked how hard it is to pick up tickets based on planning artifacts already in a project’s plans folder. Wants the UI to render planning artifacts + agent summaries per ticket, supporting projects already using forge and engineers doing more CLI-based forging.
 - Interpretation: Use SQLite for local UI/runtime state, but treat forge artifacts on disk as discoverable inputs so the Kanban UI can (re)hydrate tickets from existing plans folders and stay compatible with CLI-driven workflows.
 - Interim Research:
   - Forge artifacts provide a strong basis for discovery: `todo.json` (schema 2.0) has `task_id`, `mode`, and `context.*` paths; planning artifacts have consistent filenames (`research.md`, `plan.md`) and lifecycle artifacts (`verification.md`, `implementation-review.md`, etc.).
@@ -127,7 +127,7 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
 <a id="entry-13"></a>
 ### Entry 13
 
-- Question: For legacy/CLI projects, what should be canonical: A) Artifact-first (artifacts are source-of-truth; SQLite is a cache/index rebuilt from disk), B) DB-first, C) Manual per-plans-folder import only.
+- Question: For CLI projects, what should be canonical: A) Artifact-first (artifacts are source-of-truth; SQLite is a cache/index rebuilt from disk), B) DB-first, C) Manual per-plans-folder import only.
 - User Response: A.
 - Interpretation: Treat forge artifacts (plan/research/todo/verify/etc) as the durable source of truth; SQLite is a derived index/event log and can be rebuilt by rescanning the project.
 - Interim Research: This aligns with forge’s artifact-first contract (`todo.json` as canonical execution spec and markdown artifacts as durable context), and improves compatibility with CLI-only workflows.
@@ -136,7 +136,7 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
 <a id="entry-14"></a>
 ### Entry 14
 
-- Question: When Kanban runs in a project, where should it scan to find existing/legacy forge tickets? A) Only the plans folder(s) referenced by `memory.md` (plus any extra roots configured in `.forge/`), B) Scan the whole repo for `todo.json` / `quick-todo.json`, C) Don’t scan by default; user picks folders each time.
+- Question: When Kanban runs in a project, where should it scan to find existing forge tickets? A) Only the plans folder(s) referenced by `memory.md` (plus any extra roots configured in `.forge/`), B) Scan the whole repo for `todo.json`, C) Don’t scan by default; user picks folders each time.
 - User Response: A is fine. Show a CLI warning if no plans folder found.
 - Interpretation: Default discovery is scoped and explicit: use plans folder(s) from `memory.md` (and any configured extra roots), and warn clearly when missing instead of doing expensive/ambiguous repo-wide scanning.
 - Interim Research: This aligns with the Memory v2 emphasis on stable defaults and avoids surprising results in large repos.
@@ -421,7 +421,7 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
 <a id="decision-2"></a>
 - Decision: Use artifact-first state with SQLite as a rebuildable projection cache.
   - Alternatives considered: DB-first canonical state; no DB with pure filesystem rendering.
-  - Why chosen: Supports legacy CLI workflows and deterministic rebuild while retaining responsive UI queries.
+  - Why chosen: Supports CLI workflows and deterministic rebuild while retaining responsive UI queries.
   - Risks: Projection bugs could cause temporary UI drift if scanner logic is incorrect.
 
 <a id="decision-3"></a>
@@ -492,7 +492,7 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
   - Suitability: Good for a short-lived prototype, weak for company-wide maintainability.
 - Option B — Adapter-first bounded contexts (recommended)
   - Summary: Keep orchestration core independent from runner type; isolate artifact scanner/projection and policy/config subsystems with explicit interfaces, implemented in a pnpm+turbo monorepo.
-  - Pros: Strong maintainability, easy adapter growth, clear test seams, compatible with artifact-first/legacy import requirements.
+  - Pros: Strong maintainability, easy adapter growth, clear test seams, compatible with artifact-first import requirements.
   - Cons: Slightly higher upfront structure and contract design.
   - Suitability: Best fit for MVP that is expected to scale within corporate environments.
 - Option C — Workflow-engine-first
@@ -514,7 +514,7 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
 - Risk: `.forge/` candidate memory files are local-only and could be lost.
   - Impact: Durable insights may never reach canonical memory.
   - Mitigation: Add periodic candidate snapshots to ticket logs and pre-merge checks that block `Done` if candidates are unsynced.
-- Risk: Artifact scanning may mis-detect ticket state in partial/legacy folders.
+- Risk: Artifact scanning may mis-detect ticket state in partial folders.
   - Impact: Incorrect lane placement and user confusion.
   - Mitigation: Mark ambiguous imports as `needs-triage` with explicit user confirmation.
 - Risk: Team policy (`forge.config.json`) overriding local config may cause confusion.

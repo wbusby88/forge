@@ -1,203 +1,32 @@
 ---
 name: forge-implement
-description: Use when an approved todo v2 plan exists and implementation should proceed against the canonical task spec with TDD defaults and hard-fail validation.
+description: Execute canonical todo v2 tasks with targeted reads, TDD defaults, and hard-fail validation.
 ---
-
-# Forge Implement
-
-## Overview
-
-Execute approved work using `todo.json` schema v2.0 as canonical execution source, with critical preflight review, TDD-first implementation, and default single-pass execution.
-
-## Preconditions
-
-Read before any implementation:
-
-- root `memory.md`
-- `memory.index.json` (from `todo.json.context.memory_index_path` when present)
-- `research.md`
-- `plan.md`
+Read:
 - `todo.json`
-
-## Artifact Location Rule (Hard Rule)
-
-Use `todo.json.context.*` paths as canonical for locating and updating artifacts (`memory.md`, `plan.md`, `research.md`, `verification.md`, etc.).
-
-If `todo.json.context.*` is missing or incomplete, stop and ask for correction. Do not guess paths.
-
-Then summarize:
-
-- current phase
-- full execution scope
-- key risks from memory/research
-
-## Todo v2 Validation Gate (Hard Fail)
-
-Before executing any task, validate `todo.json`:
-
-- `schema_version` must be `2.0`
-- required top-level fields must exist
-- every task must include required task fields
-- each full-mode task must include non-empty `plan_refs` and `research_refs`
-- each task must include `memory_refs` (may be empty, but must exist)
-- each step must map to known command/expected-result refs where required
-
-If validation fails:
-
-- mark affected task as `blocked`
-- record validation error in the affected task’s blocker notes (see “Blocked Task Recording”)
-- stop execution and request a corrected todo
-
-Do not improvise missing fields.
-
-## Blocked Task Recording (Hard Rule)
-
-When marking a task `blocked`, record the reason *in `todo.json`* so another agent (or you later) can resume deterministically.
-
-Minimum required fields to add/update on the blocked item:
-
-- `blockers`: append an entry with:
-  - `date` (`YYYY-MM-DD`)
-  - `kind` (`invalid_todo|needs_clarification|scope_expansion|failing_verification|environment`)
-  - `summary` (1-2 sentences)
-  - `unblock_requires` (bullets of what is needed to proceed)
-
-## Invocation-Aware Confirmation Gate
-
-Determine how `forge-implement` was entered:
-
-- Direct invocation (`forge-implement` explicitly requested): treat invocation as implementation confirmation.
-- Explicit handoff from a prior phase (user explicitly selected a “continue to `forge-implement`” option or answered a combined gate that authorizes continuing): treat that selection as implementation confirmation.
-- Routed or implicit handoff (for example, from `forge-plan` summary): ask explicitly:
-  "Do you confirm implementation should begin?"
-
-If explicit confirmation is required and missing, do not proceed.
-
-When direct invocation or explicit handoff is used, still run all preflight checks and then start task 1 without asking a duplicate confirmation question.
-
-## Preflight Context Review
-
-Before execution:
-
-- confirm task references resolve in `plan.md` and `research.md`
-- confirm `memory_refs` ids exist in `memory.index.json` (when any are present)
-- if a task has empty `memory_refs`, confirm it includes a short “no applicable memory ids” rationale in `handoff_notes`
-- identify ambiguity or contradictions
-- identify mismatched acceptance criteria
-
-## Memory Compliance (Hard Rule)
-
-For each task, read the indexed memory entries referenced by `memory_refs` and treat them as execution constraints (do not “forget” them mid-task).
-
-If a referenced memory entry is unclear or contradicts the plan, stop and ask for clarification rather than guessing.
-
-If blockers exist, stop and ask for clarification. Do not guess.
-
-## Memory Continuation (Hard Rule)
-
-During long or multi-agent implementations, keep memory coupled to the executable plan:
-
-- If you discover a new durable constraint/pitfall/decision/learning:
-  - add/update an entry in `memory.index.json` as `status: candidate`
-  - add full details to `memory.archive.md`
-  - update `memory_refs` on any remaining `pending` tasks in `todo.json` where the new memory item applies
-- Do not bloat `memory.md` working set during implementation; leave promotion/compaction for verification unless the user explicitly requests otherwise.
-
-## Execution Model
-
-### Default Pass Size
-
-Execute all actionable tasks in one pass by default.
-
-- Treat `execution_policy.batch_size` as the authored size of the full implementation pass.
-- Do not stop after a partial subset unless the user explicitly requested partial execution.
-- Do not ask whether to continue to another batch; implementation approval already implies completing the approved pass.
-- If `execution_policy.batch_size` is smaller than the actionable task count without an explicit user constraint, continue through the full actionable set and note the mismatch for artifact correction.
-
-### For Each Task
-
-1. Mark task `in_progress` in `todo.json`
-2. Follow task `steps` in order exactly
-3. Run only declared task commands unless user approves replan
-4. Default to TDD unless task explicitly overrides
-5. Create one commit for completed logical task using task commit policy
-6. Run required verifications from task and execution policy
-7. Mark task `completed` or `blocked`
-
-## Scope Control
-
-If requested work touches files or behavior outside declared task scope:
-
-- stop task
-- set status to `blocked`
-- record a `scope_expansion` blocker entry describing the out-of-scope request and the required replan
-- trigger replan requirement per policy `stop_and_replan`
-
-## Execution Checkpoint
-
-After the full pass completes, or when a blocker stops the pass, report:
-
-- completed and blocked tasks
-- command outputs vs expected results
-- verification evidence
-- memory drift (new `memory.index.json` candidates and any `memory_refs` updates applied to remaining tasks)
-- deviations or issues
-
-If a blocker stopped the pass before all actionable tasks completed, stop and ask for clarification. Otherwise continue to the handoff rule without asking about another batch.
-
-## Memory and Learning Updates
-
-When significant implementation learnings occur, persist them without bloating the working set:
-
-- add/update an entry in `memory.index.json` (status `candidate`)
-- keep full details in `memory.archive.md`
-- promote into `memory.md` working set only if it is high-risk/high-frequency and the cap is preserved
-
-Use task `memory_update_candidate` as starting point.
-
-## Handoff Rule
-
-After all implementation tasks complete, ask:
-
-"Implementation tasks are complete. Choose next step (reply A/B/C):
-
-A) invoke `forge-review-implementation` (recommended) and continue immediately
-B) skip implementation review and continue to `forge-verify` (records skip decision + rationale + residual risks in `implementation-review.md`) and continue immediately
-C) stop/pause (do not proceed to the next skill)
-
-If the user replies `yes` without specifying an option, treat it as A (recommended)."
-
-If user chooses B:
-
-- create or update `implementation-review.md` with:
-  - decision: skipped
-  - user rationale
-  - residual risks acknowledged
-  - note that no adversarial implementation review was performed
-  - prefer writing to `todo.json.context.implementation_review_path` when present
-  - if the file does not exist yet, create it by copying `../../templates/implementation-review.template.md` verbatim, then fill in the skip decision section
-- proceed directly to `forge-verify` (no extra confirmation prompt)
-
-Do not proceed to the next skill unless the user selected A or B (or replied `yes`, which maps to A).
-If the environment cannot auto-invoke skills, instruct the user which next skill to invoke and stop (do not ask an extra confirmation question).
-
-Do not declare final completion.
-
-## Strict Prohibitions
-
-- No scope expansion without replan
-- No skipping verifications
-- No skipping per-task logical commits
-- No execution when required fields are missing
-- No final completion claim
-- No skipping implementation review without an explicit skip choice (B) and recorded skip decision
-- No pausing for an extra batch-selection prompt unless the user explicitly asked for partial execution
-
-## Stop Conditions
-
-Stop and ask for help when:
-
-- validation or reference resolution fails
-- blocker prevents task completion
-- verification repeatedly fails
-- plan instructions conflict with canonical todo steps
+- `forge-session.json` when present
+- root `memory.md`
+- indexed memory entries named in `memory_refs`
+- targeted `plan_refs` and `research_refs`
+Escalate to broader artifact intake only when session freshness, refs, or scope are ambiguous.
+Before execution, validate `todo.json`:
+- schema version is `2.0`
+- required top-level fields exist
+- required task fields exist
+- refs resolve
+- `memory_refs` ids exist when non-empty
+If validation fails, stop and record blocker evidence.
+1. mark task `in_progress`
+2. perform TDD-first execution unless an explicit override applies
+3. stay within task boundaries
+4. run required checks
+5. update task status at task boundary
+6. update `forge-session.json` batch state
+7. follow `execution_policy.commit_policy`
+- missing required fields
+- unresolved refs
+- scope expansion
+- blockers that need clarification
+- do not reread full planning artifacts by default
+- do not silently expand scope
+- do not skip required verification checks

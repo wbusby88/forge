@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "cycle_id": "2026-03-12-example-cycle",
+  "paths": {
+    "memory_path": "memory.md",
+    "memory_index_path": "memory.index.json",
+    "memory_archive_path": "memory.archive.md",
+    "research_path": "plans/research.md",
+    "plan_path": "plans/plan.md",
+    "todo_path": "plans/todo.json",
+    "iteration_path": "plans/iteration.md",
+    "implementation_review_path": "plans/implementation-review.md",
+    "verification_path": "plans/verification.md"
+  },
+  "artifact_state": {
+    "research": {
+      "exists": true,
+      "hash": "sha256:replace-me",
+      "last_loaded_at": "2026-03-12T00:00:00Z"
+    },
+    "plan": {
+      "exists": true,
+      "hash": "sha256:replace-me",
+      "last_loaded_at": "2026-03-12T00:00:00Z"
+    },
+    "todo": {
+      "exists": true,
+      "hash": "sha256:replace-me",
+      "last_loaded_at": "2026-03-12T00:00:00Z"
+    }
+  },
+  "phase": {
+    "state": "planned",
+    "rationale": "Example only",
+    "blockers": []
+  },
+  "digests": {
+    "startup_context": [],
+    "memory_refs_in_scope": [],
+    "project_specific_considerations": [],
+    "objective_scope_digest": []
+  },
+  "review_state": {
+    "understanding_lock_summary": [],
+    "alignment_summary": [],
+    "hardening_summary": [],
+    "verification_summary": []
+  },
+  "execution_state": {
+    "active_task_ids": [],
+    "blocked_task_ids": [],
+    "last_completed_batch": [],
+    "pending_handoff_target": null
+  },
+  "chat_optimization": {
+    "packet_fragments": []
+  }
+}

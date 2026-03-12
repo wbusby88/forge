@@ -19,7 +19,7 @@ Deliver a standalone local-first Kanban runtime (`forge run`) as a pnpm + Turbor
   - Integration setup in UI with persisted local config in `.forge/` and optional tracked `forge.config.json`.
   - Auto-add `.forge/` to `.gitignore`.
   - Model selection in ticket header with per-run override capability.
-  - Artifact-first projection (legacy/CLI-compatible imports from plans folder references in `memory.md`).
+  - Artifact-first projection (artifact-based imports from plans folder references in `memory.md`).
   - Security guardrail for outbound model payloads (secret detection/redaction + fail-closed).
   - Verify gate evidence and Done semantics aligned to merge + memory sync.
   - Frontend UX target is Jira-esque: neat, dense, enterprise dashboard-grade interaction design.
@@ -109,7 +109,7 @@ Deliver a standalone local-first Kanban runtime (`forge run`) as a pnpm + Turbor
 
 ### Phase 3: Artifact Projection + UI
 
-- Goal: render macro lanes and ticket detail from artifact-first projections with legacy import support.
+- Goal: render macro lanes and ticket detail from artifact-first projections with artifact import support.
 - Dependencies: phases 1–2.
 - Deliverables: artifact scanner, projection worker, board UI, ticket detail UI, review/iterate controls, model dropdown.
 
@@ -254,7 +254,7 @@ Use explicit HTML anchors so `todo.json.plan_refs` can be stable:
 - Planned commands:
   - `pnpm --filter @forge-kanban/backend test artifact-scanner`
   - `pnpm --filter @forge-kanban/backend test projection.worker`
-- Expected command results: scanner imports legacy plans; ambiguous tickets marked `needs-triage`; warning shown when no plans roots found.
+- Expected command results: scanner imports plans; ambiguous tickets marked `needs-triage`; warning shown when no plans roots found.
 - Commit intent/message pattern: `feat: add artifact-first ticket projection`.
 - Acceptance criteria ids: `AC7`.
 - Research refs expected in todo: `research.md#entry-12`, `research.md#entry-13`, `research.md#entry-14`.
@@ -387,7 +387,7 @@ Use explicit HTML anchors so `todo.json.plan_refs` can be stable:
   - Verification method: registry tests and adapter selection API tests.
 
 <a id="acceptance-ac7"></a>
-- AC7: Artifact-first scanner can import legacy plans folders and rebuild projections after restart.
+- AC7: Artifact-first scanner can import plans folders and rebuild projections after restart.
   - Verification method: scanner fixtures + restart/rebuild integration test.
 
 <a id="acceptance-ac8"></a>
@@ -423,7 +423,7 @@ Use explicit HTML anchors so `todo.json.plan_refs` can be stable:
 - End-to-end:
   - Simulated ticket from creation through full flow and quick flow, including verify and done gates, plus frontend board interactions in Vite app.
 - Regression:
-  - Fixture-based tests for legacy artifact import and malformed artifact handling (`needs-triage` cases).
+  - Fixture-based tests for artifact import and malformed artifact handling (`needs-triage` cases).
   - Contract compatibility tests for runner event versions.
   - Visual/interaction regression checks for Jira-like board hierarchy and dense ticket detail rendering in both themes.
 
@@ -432,7 +432,7 @@ Use explicit HTML anchors so `todo.json.plan_refs` can be stable:
 - Trigger:
   - Critical regression in lifecycle gating, security scanner, or merge/memory-sync flow.
 - Rollback method:
-  - Feature-flag risky modules (`memory-sync`, `secret-gate`, `legacy-import`) and fall back to read-only board mode.
+  - Feature-flag risky modules (`memory-sync`, `secret-gate`, `artifact-import`) and fall back to read-only board mode.
   - Re-run projection from artifacts to rebuild SQLite state.
   - Keep runner processes isolated; failed run records stay resumable after service restart.
 

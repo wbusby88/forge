@@ -27,7 +27,7 @@ Make each Forge lifecycle skill uniquely valuable (not ceremonial), and tighten 
 
 3. **Artifact discovery is too implicit.**
    - Many skills assume paths (`plan.md`, `research.md`) but todo v2 already supports a `context` map.
-   - Fix: prefer `todo.json.context.*` (and `quick-todo.json.context.*`) for reading/writing artifact paths; fall back to plan folder recorded in `memory.md`.
+   - Fix: prefer `todo.json.context.*`  for reading/writing artifact paths; fall back to plan folder recorded in `memory.md`.
 
 4. **Profiles exist without definition.**
    - `minimal|hardening|custom` is meaningful only if it has a stable, documented scope.
@@ -168,7 +168,7 @@ Make each Forge lifecycle skill uniquely valuable (not ceremonial), and tighten 
 - Quick todo validation requirements are not enumerated.
 
 **Recommended changes**
-- Require bootstrapping `quick.md` / `quick-todo.json` from templates.
+- Require bootstrapping canonical planning artifacts from templates.
 - Tighten the validation gate by referencing the quick todo template as canonical required shape.
 
 ## Optional (Higher Ambition) Enhancements

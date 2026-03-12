@@ -1,0 +1,353 @@
+{
+  "schema_version": "2.0",
+  "task_id": "forge-performance-canonicalization",
+  "mode": "full",
+  "context": {
+    "memory_path": "memory.md",
+    "memory_index_path": "memory.index.json",
+    "memory_archive_path": "memory.archive.md",
+    "plan_path": "docs/plans/2026-03-12-forge-performance/plan.md",
+    "research_path": "docs/plans/2026-03-12-forge-performance/research.md",
+    "todo_path": "docs/plans/2026-03-12-forge-performance/todo.json",
+    "forge_session_path": "docs/plans/2026-03-12-forge-performance/forge-session.json",
+    "iteration_artifact_path": "docs/plans/2026-03-12-forge-performance/iteration.md",
+    "implementation_review_path": "docs/plans/2026-03-12-forge-performance/implementation-review.md",
+    "verification_artifact_path": "docs/plans/2026-03-12-forge-performance/verification.md"
+  },
+  "global_constraints": [
+    "Canonical forge workflow only",
+    "No new root-level session artifact",
+    "Preserve validation, review, and verification quality gates",
+    "Stop and replan on scope expansion"
+  ],
+  "execution_policy": {
+    "batch_size": 12,
+    "parallelism": "none",
+    "on_missing_required_field": "hard_fail",
+    "on_scope_expansion": "stop_and_replan",
+    "commit_policy": "per_phase",
+    "required_checks": [
+      "repo-search-for-removed-compatibility-references",
+      "template-context-validation",
+      "scenario-consistency-review"
+    ]
+  },
+  "items": [
+    {
+      "id": "T01",
+      "title": "Canonicalize docs, templates, and skills around forge-session",
+      "status": "pending",
+      "depends_on": [],
+      "objective": "Introduce forge-session and remove deprecated compatibility branches across the canonical contract.",
+      "scope_in": [
+        "docs",
+        "templates",
+        "skills",
+        "examples"
+      ],
+      "scope_out": [
+        "unrelated repo cleanup"
+      ],
+      "file_targets": {
+        "create": [
+          "templates/forge-session.template.json"
+        ],
+        "modify": [
+          "README.md",
+          "docs/lifecycle-contract.md",
+          "docs/memory-propagation-rules.md",
+          "memory.md",
+          "memory.index.json",
+          "templates/todo.template.json",
+          "examples/sample-project-artifacts/plans/todo.json",
+          "skills/forge/SKILL.md",
+          "skills/forge-init/SKILL.md",
+          "skills/forge-scope/SKILL.md",
+          "skills/forge-plan/SKILL.md",
+          "skills/forge-quick/SKILL.md",
+          "skills/forge-implement/SKILL.md",
+          "skills/forge-iterate/SKILL.md",
+          "skills/forge-debug/SKILL.md",
+          "skills/forge-review-plan/SKILL.md",
+          "skills/forge-review-implementation/SKILL.md",
+          "skills/forge-verify/SKILL.md"
+        ],
+        "test": []
+      },
+      "plan_refs": [
+        "plan.md#task-t01",
+        "plan.md#task-t02",
+        "plan.md#task-t03",
+        "plan.md#task-t04",
+        "plan.md#task-t05",
+        "plan.md#task-t06",
+        "plan.md#acceptance-ac1",
+        "plan.md#acceptance-ac2",
+        "plan.md#acceptance-ac3",
+        "plan.md#acceptance-ac4",
+        "plan.md#acceptance-ac5",
+        "plan.md#acceptance-ac6",
+        "plan.md#acceptance-ac7",
+        "plan.md#acceptance-ac8",
+        "plan.md#acceptance-ac9",
+        "plan.md#acceptance-ac10",
+        "plan.md#acceptance-ac11",
+        "plan.md#acceptance-ac12"
+      ],
+      "research_refs": [
+        "research.md#entry-1",
+        "research.md#decision-1",
+        "research.md#entry-2",
+        "research.md#decision-2",
+        "research.md#entry-3",
+        "research.md#decision-3",
+        "research.md#entry-4",
+        "research.md#decision-4",
+        "research.md#entry-5",
+        "research.md#decision-5",
+        "research.md#entry-6",
+        "research.md#decision-6"
+      ],
+      "memory_refs": [
+        "CON-001",
+        "CON-002",
+        "CON-003",
+        "DEC-001",
+        "DEC-002",
+        "LRN-001",
+        "LRN-002"
+      ],
+      "steps": [
+        {
+          "step_id": "T01-S1",
+          "kind": "edit",
+          "instruction": "Add forge-session template and canonical context path updates.",
+          "command_ref": "C1",
+          "expected_result_ref": "E1"
+        },
+        {
+          "step_id": "T01-S2",
+          "kind": "edit",
+          "instruction": "Rewrite lifecycle docs and skill prompts to canonical-only, session-aware rules.",
+          "command_ref": "C2",
+          "expected_result_ref": "E2"
+        },
+        {
+          "step_id": "T01-S3",
+          "kind": "edit",
+          "instruction": "Remove deprecated quick templates and references.",
+          "command_ref": "C3",
+          "expected_result_ref": "E3"
+        }
+      ],
+      "commands": [
+        {
+          "id": "C1",
+          "run": "apply_patch for templates, docs, examples, and skill prompts"
+        },
+        {
+          "id": "C2",
+          "run": "rg -n 'forge-session|targeted-read|commit_policy|quick\\.md|quick-todo\\.json' README.md docs templates skills examples memory.md memory.index.json"
+        },
+        {
+          "id": "C3",
+          "run": "apply_patch to delete deprecated quick templates and references"
+        }
+      ],
+      "expected_results": [
+        {
+          "id": "E1",
+          "expect": "forge-session is part of the canonical artifact contract"
+        },
+        {
+          "id": "E2",
+          "expect": "skills and docs are aligned to the canonical-only, session-aware lifecycle"
+        },
+        {
+          "id": "E3",
+          "expect": "deprecated quick artifact references are removed from the active repo surface"
+        }
+      ],
+      "verification": {
+        "checks": [
+          "rg -n 'quick\\.md|quick-todo\\.json|deprecated compatibility' README.md docs templates skills examples memory.md memory.index.json",
+          "rg -n 'forge_session_path|forge-session' README.md docs templates skills examples"
+        ],
+        "acceptance_criteria_ids": [
+          "AC1",
+          "AC2",
+          "AC3",
+          "AC4",
+          "AC5",
+          "AC6",
+          "AC7",
+          "AC8",
+          "AC9",
+          "AC10",
+          "AC11",
+          "AC12"
+        ]
+      },
+      "commit": {
+        "message_template": "refactor(forge): canonicalize session-aware lifecycle prompts",
+        "paths": [
+          "README.md",
+          "docs/lifecycle-contract.md",
+          "docs/memory-propagation-rules.md",
+          "memory.md",
+          "memory.index.json",
+          "templates/forge-session.template.json",
+          "templates/todo.template.json",
+          "examples/sample-project-artifacts/plans/todo.json",
+          "skills/forge/SKILL.md",
+          "skills/forge-init/SKILL.md",
+          "skills/forge-scope/SKILL.md",
+          "skills/forge-plan/SKILL.md",
+          "skills/forge-quick/SKILL.md",
+          "skills/forge-implement/SKILL.md",
+          "skills/forge-iterate/SKILL.md",
+          "skills/forge-debug/SKILL.md",
+          "skills/forge-review-plan/SKILL.md",
+          "skills/forge-review-implementation/SKILL.md",
+          "skills/forge-verify/SKILL.md"
+        ]
+      },
+      "handoff_notes": "T02 refreshes scenarios to match the new canonical contract.",
+      "memory_update_candidate": "Cycle-local reusable context should live in forge-session, not in root memory."
+    },
+    {
+      "id": "T02",
+      "title": "Refresh scenarios and examples for canonical-only forge",
+      "status": "pending",
+      "depends_on": [
+        "T01"
+      ],
+      "objective": "Align regression coverage and sample artifacts with the canonical session-aware lifecycle.",
+      "scope_in": [
+        "scenarios",
+        "sample artifacts"
+      ],
+      "scope_out": [
+        "new external tooling"
+      ],
+      "file_targets": {
+        "create": [
+          "tests/scenarios/forge-implement/scenario-008.md",
+          "tests/scenarios/forge-verify/scenario-002.md",
+          ".gitignore"
+        ],
+        "modify": [
+          "tests/scenarios/forge-router/scenario-001.md",
+          "tests/scenarios/forge-quick/scenario-001.md",
+          "tests/scenarios/forge-plan/scenario-001.md",
+          "tests/scenarios/forge-implement/scenario-001.md",
+          "tests/scenarios/forge-iterate/scenario-001.md",
+          "tests/scenarios/forge-debug/scenario-001.md",
+          "tests/scenarios/forge-review-plan/scenario-001.md",
+          "tests/scenarios/forge-review-implementation/scenario-001.md",
+          "tests/scenarios/forge-verify/scenario-001.md",
+          "examples/sample-project-artifacts/plans/plan.md",
+          "examples/sample-project-artifacts/plans/research.md"
+        ],
+        "test": [
+          "tests/scenarios/forge-router/scenario-001.md",
+          "tests/scenarios/forge-implement/scenario-008.md",
+          "tests/scenarios/forge-verify/scenario-002.md"
+        ]
+      },
+      "plan_refs": [
+        "plan.md#acceptance-ac12",
+        "plan.md#acceptance-ac13"
+      ],
+      "research_refs": [
+        "research.md#entry-10",
+        "research.md#entry-12"
+      ],
+      "memory_refs": [
+        "LRN-002"
+      ],
+      "steps": [
+        {
+          "step_id": "T02-S1",
+          "kind": "edit",
+          "instruction": "Update existing scenarios and sample artifacts to match canonical-only forge terminology and session behavior.",
+          "command_ref": "C1",
+          "expected_result_ref": "E1"
+        },
+        {
+          "step_id": "T02-S2",
+          "kind": "edit",
+          "instruction": "Add targeted-read and stale-session fallback scenarios.",
+          "command_ref": "C2",
+          "expected_result_ref": "E2"
+        },
+        {
+          "step_id": "T02-S3",
+          "kind": "verify",
+          "instruction": "Search scenario corpus for canonical-only terminology and session-aware coverage.",
+          "command_ref": "C3",
+          "expected_result_ref": "E3"
+        }
+      ],
+      "commands": [
+        {
+          "id": "C1",
+          "run": "apply_patch for scenarios and sample plan artifacts"
+        },
+        {
+          "id": "C2",
+          "run": "apply_patch to add stale-session and targeted-read scenarios"
+        },
+        {
+          "id": "C3",
+          "run": "rg -n 'quick\\.md|quick-todo\\.json|forge-session|targeted-read|fallback' tests/scenarios examples"
+        }
+      ],
+      "expected_results": [
+        {
+          "id": "E1",
+          "expect": "scenarios and examples reflect only the canonical session-aware lifecycle"
+        },
+        {
+          "id": "E2",
+          "expect": "scenario coverage includes targeted-read and stale-session fallback"
+        },
+        {
+          "id": "E3",
+          "expect": "search results confirm canonical-only wording and session-aware test coverage"
+        }
+      ],
+      "verification": {
+        "checks": [
+          "rg -n 'quick\\.md|quick-todo\\.json|deprecated compatibility' tests/scenarios examples",
+          "rg -n 'forge-session|targeted-read|fallback' tests/scenarios examples"
+        ],
+        "acceptance_criteria_ids": [
+          "AC12",
+          "AC13"
+        ]
+      },
+      "commit": {
+        "message_template": "test(forge): refresh scenarios for canonical session workflow",
+        "paths": [
+          "tests/scenarios/forge-router/scenario-001.md",
+          "tests/scenarios/forge-quick/scenario-001.md",
+          "tests/scenarios/forge-plan/scenario-001.md",
+          "tests/scenarios/forge-implement/scenario-001.md",
+          "tests/scenarios/forge-implement/scenario-008.md",
+          "tests/scenarios/forge-iterate/scenario-001.md",
+          "tests/scenarios/forge-debug/scenario-001.md",
+          "tests/scenarios/forge-review-plan/scenario-001.md",
+          "tests/scenarios/forge-review-implementation/scenario-001.md",
+          "tests/scenarios/forge-verify/scenario-001.md",
+          "tests/scenarios/forge-verify/scenario-002.md",
+          "examples/sample-project-artifacts/plans/plan.md",
+          "examples/sample-project-artifacts/plans/research.md",
+          ".gitignore"
+        ]
+      },
+      "handoff_notes": "After T02, proceed to implementation review and verification for the new canonical contract.",
+      "memory_update_candidate": "Scenario-driven regression coverage is essential for prompt and lifecycle refactors."
+    }
+  ]
+}

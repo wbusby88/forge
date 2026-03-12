@@ -30,7 +30,7 @@
 
 <a id="con-003"></a>
 - **CON-003**:
-  - Constraint: `todo.json` / `quick-todo.json` must use schema `2.0` and hard-fail on missing required fields.
+  - Constraint: `todo.json` must use schema `2.0` and hard-fail on missing required fields.
   - How to comply:
     - Start from canonical templates in `templates/`.
     - Run the post-write validation gates described in skills before handoff.
@@ -93,9 +93,9 @@
 
 <a id="lrn-003"></a>
 - **LRN-003**:
-  - Learning: Quick mode is valuable for low-risk scoped changes, but must remain separate from full planning to preserve guarantees.
-  - When it applies: Tiny refactors, doc tweaks, small bugfixes with low blast radius.
-  - How to apply: Use `quick.md` + `quick-todo.json` and record verification evidence inside quick artifacts.
+  - Learning: Cycle-local execution and review context should live in `forge-session.json`, not in root memory.
+  - When it applies: Any lifecycle run that would otherwise repeat the same discovery or packet summaries.
+  - How to apply: Keep durable facts in Memory v2 and write reusable per-cycle summaries into the active plan folder session artifact.
   - Evidence: `docs/lifecycle-contract.md`
 
 ### Operational Defaults

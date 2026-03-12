@@ -2,13 +2,13 @@
 
 ## Setup
 
-- Project has an existing `memory.md` in legacy (v1) format.
+- Project has an existing `memory.md` in incomplete canonical format.
 - `memory.index.json` is missing.
 - `memory.archive.md` is missing.
 
 ## Expected Skill Behavior
 
-- Detects legacy memory (missing index) and migrates before continuing.
+- Detects incomplete canonical memory and normalizes it before continuing.
 - Runs the migration tool in-place (with backup) or instructs the user how to run it.
 - Produces Memory v2 artifacts at project root:
   - `memory.md` with a bounded Working Set (cap enforced)

@@ -68,14 +68,13 @@
       "id": "CON-003",
       "type": "constraint",
       "status": "working",
-      "summary": "todo.json / quick-todo.json must use schema 2.0 and hard-fail on missing required fields.",
+      "summary": "todo.json must use schema 2.0 and hard-fail on missing required fields.",
       "tags": [
         "process",
         "todo"
       ],
       "applies_to": [
         "templates/todo.template.json",
-        "templates/quick-todo.template.json",
         "docs/lifecycle-contract.md"
       ],
       "how_to_comply": [
@@ -289,19 +288,18 @@
       "id": "LRN-003",
       "type": "learning",
       "status": "working",
-      "summary": "Quick mode must stay separate from full planning to preserve guarantees; keep verification evidence inside quick artifacts.",
+      "summary": "Cycle-local lifecycle context should live in forge-session.json rather than root memory.",
       "tags": [
         "process",
-        "quick"
+        "session"
       ],
       "applies_to": [
-        "skills/forge-quick/SKILL.md",
-        "templates/quick.template.md",
-        "templates/quick-todo.template.json"
+        "templates/forge-session.template.json",
+        "docs/lifecycle-contract.md"
       ],
       "how_to_comply": [
-        "Use quick.md + quick-todo.json for eligible low-risk scoped work.",
-        "Record full-suite verification evidence inside quick artifacts."
+        "Store reusable packet summaries, phase state, and artifact freshness in forge-session.json.",
+        "Keep durable long-lived facts in Memory v2 artifacts only."
       ],
       "evidence_refs": [
         "docs/lifecycle-contract.md"

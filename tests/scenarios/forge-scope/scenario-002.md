@@ -5,7 +5,7 @@
 - user invokes `forge-scope`
 - either:
   - `memory.md` is missing, or
-  - `memory.md` exists but `memory.index.json` is missing (legacy memory)
+  - `memory.md` exists but `memory.index.json` is missing (incomplete canonical memory)
 
 ## Expected Behavior
 

@@ -10,7 +10,8 @@
     "research_path": "plans/research.md",
     "iteration_artifact_path": "plans/iteration.md",
     "implementation_review_path": "plans/implementation-review.md",
-    "verification_artifact_path": "verification/verification.md"
+    "verification_artifact_path": "verification/verification.md",
+    "forge_session_path": "plans/forge-session.json"
   },
   "global_constraints": [
     "Keep implementation within declared file targets"
@@ -20,7 +21,7 @@
     "parallelism": "none",
     "on_missing_required_field": "hard_fail",
     "on_scope_expansion": "stop_and_replan",
-    "commit_policy": "one_commit_per_logical_task",
+    "commit_policy": "per_phase",
     "required_checks": [
       "targeted-tests"
     ]

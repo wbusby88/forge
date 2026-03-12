@@ -1,87 +1,66 @@
-# Forge Lifecycle Contract
-
-## States
-
-- `uninitialized`: no `memory.md`
-- `initialized`: `memory.md` exists
-- `planned`: `research.md`, `plan.md`, and `todo.json` (schema `2.0`) exist in chosen plans folder
-- `reviewed`: full plan artifacts were critically reviewed, mitigations were decided, and `todo.json` was revalidated
-- `implemented`: `todo.json` tasks complete for current scope
-- `implementation-reviewed`: implementation was critically reviewed against plan and post-implement improvements were accepted or explicitly declined
-- `iterating`: post-implement deltas are being synchronized in `research.md`, `plan.md`, `todo.json`, and `iteration.md`
-- `verified`: `verification.md` confirms evidence and coverage
-
-## Required Transitions
-
-1. `uninitialized -> initialized` via `forge-init`
-2. `initialized -> planned` via `forge-plan` or `forge-quick` (accelerated planning path)
-3. `planned -> reviewed` via `forge-review-plan`
-4. `reviewed -> implemented` via `forge-implement`
-5. `planned -> implemented` via `forge-implement` only when review skip decision is explicitly recorded in `plan.md`
-6. `implemented -> implementation-reviewed` via `forge-review-implementation`
-7. `implemented -> iterating` via `forge-iterate` (manual user-invoked correction loop before implementation review or verify)
-8. `implementation-reviewed -> iterating` via `forge-iterate` (if improvement changes are accepted)
-9. `iterating -> implemented` via `forge-implement` using updated todo tasks
-10. `implementation-reviewed -> verified` via `forge-verify`
-11. `implemented -> verified` via `forge-verify` only when implementation review skip decision is explicitly recorded in `implementation-review.md`
-
-## Optional Pre-Planning (Non-State)
-
-- `forge-scope` is an optional scoping + research precursor used when an idea is still vague and you are not ready to commit to planning artifacts.
-- `forge-scope` does not create lifecycle states and does not change required transitions.
-
-## Auxiliary Skills (Non-Phase)
-
-- `forge-debug` is a manual, user-invoked execution helper for error handling during implementation or iteration.
-- `forge-debug` does not add lifecycle states and does not modify required transitions.
-- After `forge-debug` work, execution should return to the owning phase skill (`forge-implement` or `forge-iterate`).
-
-## Invariants
-
-- `memory.md` is always at project root.
-- Memory v2 artifacts exist at project root after init/migration:
-  - `memory.index.json` (canonical registry)
-  - `memory.archive.md` (long tail)
-- `forge-plan` and `forge-quick` resolve a plans root (prefer persisted root, fallback `docs/plans/`) and create a new dated active plan folder by default for each new planning session.
-- `forge-quick` generates canonical full planning artifacts (`research.md`, `plan.md`, `todo.json`) and does not rely on quick-specific artifacts.
-- No implementation before plan approval gate.
-- Full-path implementation requires either plan review (`forge-review-plan`) or an explicit recorded skip decision before `forge-implement`.
-- Full-path verification requires either implementation review (`forge-review-implementation`) or an explicit recorded skip decision before `forge-verify`.
-- No completion claim before verification evidence.
-- Durable learnings are recorded in `memory.index.json` and promoted into `memory.md` working set only via the bounded-cap promotion/compaction rule.
-- Canonical execution source is `todo.json` v2 (`schema_version: 2.0`).
-- Missing required todo fields or unresolved refs causes hard fail and stop.
-- Iteration must inspect actual implementation drift and summarize project impact plus memory impact before artifact synchronization.
-- Iteration changes must update `research.md`, `plan.md`, and `todo.json` before new implementation begins.
-
-## Artifact Commit Discipline (Hard Rule)
-
-- If a forge skill modifies tracked lifecycle artifacts, commit those artifact changes before handoff to the next skill or before completion confirmation.
-- Lifecycle artifacts include:
-  - planning: `research.md`, `plan.md`, `todo.json`
-  - iteration/review/verify: `iteration.md`, `implementation-review.md`, `verification.md`
-  - memory: `memory.md`, `memory.index.json`, `memory.archive.md`
-- Commit may be skipped only when:
-  - user explicitly requests no commit, or
-  - the relevant artifact folder is gitignored
-- If commit is skipped, the agent must:
-  - state the exact skip reason in chat, and
-  - record skip rationale in the phase artifact decision section when available
-- For `forge-plan`, apply commit discipline only after plan approval and `todo.json` validation, and before `forge-review-plan` / `forge-implement` handoff.
-- For `forge-quick`, apply commit discipline only after quick-plan approval and `todo.json` validation, and before `forge-implement` handoff.
-
-## Gate Questions
-
-- Planning gate (`forge-plan`): "Do you approve this plan before implementation?"
-- Plan handoff choice gate (`forge-plan`): "`todo.json` is validated. Choose next step (A/B/C): A) invoke `forge-review-plan` (recommended) and continue immediately, B) skip review and continue to `forge-implement` (records skip decision + residual risks), C) stop/pause. If the user replies `yes`, treat it as A."
-  - If A/B is selected (or implicit `yes` -> A), run the plan artifact commit gate before handoff unless commit is explicitly skipped per commit-discipline exceptions.
-- Quick planning gate (`forge-quick`): "Do you approve this quick plan and continue to `forge-implement`?"
-  - Run the plan artifact commit gate before handoff unless commit is explicitly skipped per commit-discipline exceptions.
-- Review patch decisions: one finding at a time, with the concrete mitigation set spelled out in the same message, then ask "Apply the mitigation set for `Fxx`? (yes/no)". If the user rejects the proposed set but wants different boundaries, ask one scoped follow-up question for that finding only.
-- Review approval gate: "Do you approve this reviewed plan and continue to implementation? (`yes` continues; `yes, stop` pauses; `no` revises)"
-- Implementation gate: direct `forge-implement` invocation or an explicit handoff selection acts as confirmation; otherwise ask "Do you confirm implementation should begin?"
-- Implementation handoff choice gate: "Implementation tasks are complete. Choose next step (A/B/C): A) invoke `forge-review-implementation` (recommended) and continue immediately, B) skip review and continue to `forge-verify` (records skip decision + residual risks), C) stop/pause. If the user replies `yes`, treat it as A."
-- Implementation review decisions: one finding at a time, with the concrete improvement set spelled out in the same message, then ask "Apply the improvement set for `Fxx`? (yes/no)". If the user rejects the proposed set but wants different boundaries, ask one scoped follow-up question for that finding only.
-- Implementation review approval gate: "Do you approve this reviewed implementation state and continue? (`yes` continues to verify; `yes, stop` pauses; `no` continues discussion or routes to iteration when improvements are pending)"
-- Iterate gate: "After a concise change summary grounded in actual implementation drift, ask one combined authorization: `yes` (ack + authorize artifact sync + continue to `forge-implement`), `yes, sync-only` (ack + sync-only), or `no + corrections`."
-- Completion gate (full): "Do you confirm this is complete based on verification evidence?"
+Required project-root memory:
+- `memory.md`
+- `memory.index.json`
+- `memory.archive.md`
+Required plan-cycle artifacts in the active plan folder:
+- `research.md`
+- `plan.md`
+- `todo.json`
+- `forge-session.json`
+Optional or phase-specific artifacts in the same plan folder:
+- `iteration.md`
+- `implementation-review.md`
+- `verification.md`
+- `uninitialized`: required memory artifacts are incomplete
+- `initialized`: memory exists but no approved plan artifacts exist
+- `planned`: `research.md`, `plan.md`, and valid `todo.json` exist but no review decision exists
+- `reviewed`: plan review evidence exists and executable tasks remain
+- `implemented`: all implementation tasks are complete and implementation review evidence is missing
+- `implementation-reviewed`: implementation review exists and verification evidence is missing
+- `iterating`: user requested post-implementation changes before verification
+- `verified`: verification evidence exists and is current for the present scope
+1. Read root memory artifacts.
+2. Resolve the active plan folder from canonical artifact paths already on disk.
+3. Read `todo.json.context.*` when present and treat those paths as canonical.
+4. Resolve `forge-session.json` from the active plan folder when present.
+5. Never guess paths when canonical artifact paths are available.
+`forge-session.json` is derived plan-cycle state. It may cache:
+- resolved canonical paths
+- artifact freshness hashes
+- phase summary and blockers
+- startup digest and project-specific considerations
+- normalized planning, review, and verification packet fragments
+- active execution batch state
+It must never replace durable memory. If the session file is missing, stale, or ambiguous, the current phase must reread the required canonical artifacts.
+Full artifact intake is required for:
+- `forge`
+- `forge-review-plan`
+- `forge-review-implementation`
+Targeted-read mode is the default for:
+- `forge-plan`
+- `forge-quick`
+- `forge-implement`
+- `forge-iterate`
+- `forge-debug`
+- `forge-verify`
+Targeted-read mode must fall back to broader intake when:
+- `forge-session.json` is missing
+- a required artifact hash changed
+- refs do not resolve cleanly
+- blockers or scope are ambiguous
+These gates are mandatory:
+- Understanding Lock before planning design output
+- explicit plan approval before finalized `todo.json`
+- review decisions for findings that change approved intent
+- verification gap handling before completion
+- explicit completion confirmation after verification packet
+- `todo.json` must validate before implementation begins
+- `memory_refs` must exist in `memory.index.json`
+- implementation must stay within declared task boundaries or stop and replan
+- `todo.json` status updates happen at task boundaries unless blocker evidence requires immediate persistence
+- durable learnings go to Memory v2; cycle-local summaries go to `forge-session.json`
+Follow `execution_policy.commit_policy` rather than a hardcoded commit pattern.
+- `per_task`: commit after each logical task
+- `per_phase`: commit once for the current phase handoff
+- `deferred_until_review`: defer commits but preserve execution trace in artifacts
+- `manual`: record commit intent but do not require an automatic commit gate
