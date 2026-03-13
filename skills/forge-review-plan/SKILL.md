@@ -22,6 +22,7 @@ Show before hardening:
 - ranked actionable alignment findings
 - unsupported assumptions or scope mismatches
 - non-blocking hygiene debt
+- if `todo.json` uses legacy `items`, carries completed tasks from a superseded scope, or its refs no longer resolve, regenerate `todo.json` before implementation handoff
 - no critique before alignment packet
 - no asking permission for clerical auto-sync
 - no implementation changes

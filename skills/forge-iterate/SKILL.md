@@ -17,5 +17,6 @@ After summarizing the synchronized changes, ask for one combined decision:
 - `yes` = continue to implementation
 - `yes, sync-only` = stop after synchronization
 - `no + corrections` = revise the sync summary first
+- when synchronized scope or anchors change, regenerate `todo.json` from current artifacts instead of preserving stale completed tasks or unresolved refs
 - no implementation before artifact synchronization
 - no classification from filenames alone when actual changes are available

@@ -25,6 +25,9 @@ Present exactly these sections before approval:
 4. `Project Specific Considerations`
 Then ask exactly:
 "Do you approve this quick plan and continue to `forge-implement`?"
+- finalized `todo.json` must use top-level `tasks`; legacy `items` is invalid
+- finalized tasks must reflect the approved current scope and begin in a pending/actionable state
+- if the quick plan narrows or changes scope, regenerate the full task list and re-resolve refs against the refreshed `plan.md` and `research.md`
 - no implementation
 - no refusal based only on scope size
 - no handoff without validated `todo.json`

@@ -28,7 +28,7 @@
       "integration-tests"
     ]
   },
-  "items": [
+  "tasks": [
     {
       "id": "T01",
       "title": "Add failing test for expired token refresh",

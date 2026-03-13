@@ -11,10 +11,12 @@ Read:
 Escalate to broader artifact intake only when session freshness, refs, or scope are ambiguous.
 Before execution, validate `todo.json`:
 - schema version is `2.0`
-- required top-level fields exist
+- required top-level fields exist, including `tasks`
+- legacy top-level `items` is a hard failure
 - required task fields exist
 - refs resolve
 - `memory_refs` ids exist when non-empty
+- at least one task is still actionable for the current scope; a fully completed or stale carryover plan must stop and route back for regeneration
 If validation fails, stop and record blocker evidence.
 1. mark task `in_progress`
 2. perform TDD-first execution unless an explicit override applies

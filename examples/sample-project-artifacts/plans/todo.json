@@ -26,11 +26,11 @@
       "targeted-tests"
     ]
   },
-  "items": [
+  "tasks": [
     {
       "id": "T01",
       "title": "Capture research interview summary",
-      "status": "completed",
+      "status": "pending",
       "depends_on": [],
       "objective": "Persist interview results in durable artifact",
       "scope_in": [
@@ -94,7 +94,7 @@
           "plans/research.md"
         ]
       },
-      "handoff_notes": "T02 may proceed once research summary is accepted.",
+      "handoff_notes": "Memory: no additional durable memory ids apply beyond the listed refs. T02 may proceed once research summary is accepted.",
       "memory_update_candidate": "Structured interview log improves repeatability."
     }
   ]

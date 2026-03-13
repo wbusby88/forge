@@ -17,7 +17,7 @@ Then resolve or create the active plan folder and canonical planning artifacts:
 4. Create or update `research.md` continuously once the active plan folder is ready.
 5. Build an Understanding Lock summary before design output.
 6. Present the review packet before asking for approval.
-7. Generate `todo.json` only after approval.
+7. Generate a fresh `todo.json` only after approval.
 8. Validate `todo.json` before handoff.
 9. Update `forge-session.json` with normalized digests, current phase, and packet fragments.
 Before design output, show:
@@ -41,12 +41,15 @@ Ask exactly:
 "Do you approve this plan before implementation?"
 If approved, write and validate canonical `todo.json`.
 - schema `2.0`
+- top-level executable collection field is exactly `tasks` and legacy `items` must not appear
 - canonical `context.*` paths including `forge_session_path`
 - `plan_refs`
 - `research_refs`
 - `memory_refs`
 - executable steps, commands, expected results, and verification
 - explicit `execution_policy.commit_policy`
+- every generated task starts as actionable current-scope work; do not carry forward `completed` tasks from older drafts or broader plans
+- if the approved plan, anchors, or scope changed, regenerate the entire task list from the current approved artifacts instead of patching stale tasks
 - no implementation
 - no `todo.json` before approval
 - no handoff with invalid refs or missing required fields

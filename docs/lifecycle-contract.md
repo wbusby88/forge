@@ -55,7 +55,9 @@ These gates are mandatory:
 - verification gap handling before completion
 - explicit completion confirmation after verification packet
 - `todo.json` must validate before implementation begins
+- `todo.json` must use top-level `tasks`; legacy `items` is invalid
 - `memory_refs` must exist in `memory.index.json`
+- planning-generated implementation tasks must start actionable for the current approved scope; if scope or anchors change, regenerate the task list and refs
 - implementation must stay within declared task boundaries or stop and replan
 - `todo.json` status updates happen at task boundaries unless blocker evidence requires immediate persistence
 - durable learnings go to Memory v2; cycle-local summaries go to `forge-session.json`

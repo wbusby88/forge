@@ -32,7 +32,7 @@
       "scenario-consistency-review"
     ]
   },
-  "items": [
+  "tasks": [
     {
       "id": "T01",
       "title": "Canonicalize docs, templates, and skills around forge-session",
