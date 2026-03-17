@@ -14,7 +14,8 @@
 - queues actionable alignment findings before actionable hardening findings
 - keeps low-severity hardening findings out of the approval queue
 - each decision question starts with a short paragraph explaining the issue and why it matters
-- each decision question includes a 450-900 character issue summary, a concrete example, and the exact proposed mitigation set
+- each decision question includes a meaningful issue summary, a concrete example, and the exact proposed mitigation set
 - each decision question follows with a compact implementation summary naming the concrete files/sections or task ids to change and a brief per-target change description
+- each decision question ends by asking whether to apply the concrete mitigation set for the active finding
 - updates `research.md` as user clarifies alternate/custom mitigation boundaries
 - treats file-only findings and asking abstract profile/mode questions as invalid behavior
