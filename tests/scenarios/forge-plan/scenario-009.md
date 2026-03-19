@@ -10,6 +10,7 @@
 ## Expected Skill Behavior
 
 - completes startup Gate A (`AGENTS.md` + `memory.md` + lightweight memory digest + request parsing)
+- Gate A memory digest is selected from `memory.index.json` using request scope, likely repo surfaces, and `tags` / `applies_to`
 - asks the first functional clarifying question immediately after Gate A
 - when parallel capability exists, runs plans-root resolution, shallow repo research, and artifact bootstrapping in background
 - when parallel capability is unavailable, uses deterministic sequential fallback while preserving the same gate semantics

@@ -6,7 +6,9 @@ Produce a high-quality executable plan with less interview overhead when the use
 Read first:
 - `AGENTS.md`
 - `memory.md`
-- relevant digest from `memory.index.json`
+- `memory.index.json`
+- build a startup memory digest by filtering index entries using request intent, likely repo surfaces, and known constraints against `tags` and `applies_to`
+- read `memory.archive.md` for selected ids when the summary is too thin to safely compress planning
 Then resolve or create the active plan folder and canonical artifacts:
 - `research.md`
 - `plan.md`
@@ -18,6 +20,7 @@ Then resolve or create the active plan folder and canonical artifacts:
 5. Present the quick review packet.
 6. After approval, generate and validate canonical `todo.json`.
 7. Update `forge-session.json` with normalized digests and handoff state.
+8. Carry the selected memory ids into task-level `memory_refs` so `forge-implement` can stay in targeted-read mode safely.
 Present exactly these sections before approval:
 1. `Scope and Assumptions`
 2. `Files to change`
@@ -26,6 +29,7 @@ Present exactly these sections before approval:
 Then ask exactly:
 "Do you approve this quick plan and continue to `forge-implement`?"
 - finalized `todo.json` must use top-level `tasks`; legacy `items` is invalid
+- finalized tasks must include `memory_refs`; when no ids apply, keep the empty list and explain why in `handoff_notes`
 - finalized tasks must reflect the approved current scope and begin in a pending/actionable state
 - if the quick plan narrows or changes scope, regenerate the full task list and re-resolve refs against the refreshed `plan.md` and `research.md`
 - no implementation

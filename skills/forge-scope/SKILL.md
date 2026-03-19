@@ -6,7 +6,9 @@ Turn a vague request into a scoped concept without creating planning artifacts b
 Read:
 - `AGENTS.md`
 - `memory.md`
-- relevant digest items from `memory.index.json`
+- `memory.index.json`
+- retrieve relevant memory ids by matching request intent, likely repo surfaces, and current constraints against `tags` and `applies_to`
+- open `memory.archive.md` at indexed anchors when an index summary is too thin to guide scoping safely
 - ask one question at a time
 - prefer multiple-choice questions
 - keep a running decision log in chat
@@ -15,7 +17,7 @@ Read:
 2. options with trade-offs and recommendation
 3. research notes
 4. decision log
-5. promotion packet for `forge-plan` or `forge-quick`
+5. promotion packet for `forge-plan` or `forge-quick`, including the memory ids that should carry forward
 - no implementation
 - no `todo.json`
 - no completion claims

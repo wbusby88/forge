@@ -7,6 +7,8 @@ Read:
 - `forge-session.json` when present
 - root `memory.md`
 - indexed memory entries named in `memory_refs`
+- `memory.index.json` when task `memory_refs` are present or when freshness checks require re-selection
+- `memory.archive.md` at selected anchors when indexed summaries are insufficient to execute or verify the task safely
 - targeted `plan_refs` and `research_refs`
 Escalate to broader artifact intake only when session freshness, refs, or scope are ambiguous.
 Before execution, validate `todo.json`:
@@ -16,6 +18,7 @@ Before execution, validate `todo.json`:
 - required task fields exist
 - refs resolve
 - `memory_refs` ids exist when non-empty
+- when task file targets, scope, or blockers indicate an unreferenced high-risk memory item, stop and route back for plan or iteration sync instead of guessing
 - at least one task is still actionable for the current scope; a fully completed or stale carryover plan must stop and route back for regeneration
 If validation fails, stop and record blocker evidence.
 1. mark task `in_progress`
@@ -30,5 +33,6 @@ If validation fails, stop and record blocker evidence.
 - scope expansion
 - blockers that need clarification
 - do not reread full planning artifacts by default
+- do not treat archive-backed memory as optional when the index points to relevant long-form guidance
 - do not silently expand scope
 - do not skip required verification checks

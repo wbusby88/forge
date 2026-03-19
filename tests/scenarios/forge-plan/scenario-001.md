@@ -15,6 +15,8 @@
 
 - Reads `AGENTS.md` and `memory.md` first
 - Pulls a lightweight memory digest from `memory.index.json` when present
+- selects digest entries by current request, likely file surfaces, and `tags` / `applies_to` rather than by arbitrary recall
+- dereferences `memory.archive.md` when selected summaries are too thin to define task boundaries, risks, or acceptance criteria
 - Asks one clarifying question at a time
 - Asks the first functional clarifying question immediately after startup Gate A (AGENTS + memory + user request), without waiting for full plans-root/artifact setup
 - Completes plans-root resolution, folder creation, shallow project scan, and artifact bootstrapping before Understanding Lock and before writing planning artifacts
@@ -23,4 +25,5 @@
 - Uses a soft cap of 5 planning questions by default
 - Avoids proactive non-functional interrogation (for example p95 targets, concurrency forecasts, audience profiling) unless user explicitly requests it
 - Requires understanding lock before design
+- converts the planning memory digest into task-level `memory_refs` or explicit empty-list rationale during `todo.json` generation
 - Refuses implementation

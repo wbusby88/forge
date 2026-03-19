@@ -24,6 +24,7 @@ Optional or phase-specific artifacts in the same plan folder:
 3. Read `todo.json.context.*` when present and treat those paths as canonical.
 4. Resolve `forge-session.json` from the active plan folder when present.
 5. Never guess paths when canonical artifact paths are available.
+6. In targeted-read phases, select relevant memory from `memory.index.json` using request scope, affected files, acceptance criteria, `tags`, and `applies_to`; dereference `memory.archive.md` when summaries are insufficient.
 `forge-session.json` is derived plan-cycle state. It may cache:
 - resolved canonical paths
 - artifact freshness hashes
@@ -57,6 +58,7 @@ These gates are mandatory:
 - `todo.json` must validate before implementation begins
 - `todo.json` must use top-level `tasks`; legacy `items` is invalid
 - `memory_refs` must exist in `memory.index.json`
+- planning and iteration sync must refresh task `memory_refs` when scope, file targets, anchors, or risks change
 - planning-generated implementation tasks must start actionable for the current approved scope; if scope or anchors change, regenerate the task list and refs
 - implementation must stay within declared task boundaries or stop and replan
 - `todo.json` status updates happen at task boundaries unless blocker evidence requires immediate persistence

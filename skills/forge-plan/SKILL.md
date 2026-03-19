@@ -6,7 +6,9 @@ Produce a full plan through structured questioning, project research, and canoni
 Read first:
 - `AGENTS.md`
 - `memory.md`
-- relevant digest from `memory.index.json`
+- `memory.index.json`
+- build a relevant memory digest by filtering index entries using current request, likely files/surfaces, and known constraints against `tags` and `applies_to`
+- read `memory.archive.md` for any selected ids whose index summaries are insufficient for planning decisions, acceptance criteria, or task boundaries
 Then resolve or create the active plan folder and canonical planning artifacts:
 - `research.md`
 - `plan.md`
@@ -20,6 +22,7 @@ Then resolve or create the active plan folder and canonical planning artifacts:
 7. Generate a fresh `todo.json` only after approval.
 8. Validate `todo.json` before handoff.
 9. Update `forge-session.json` with normalized digests, current phase, and packet fragments.
+10. Ensure the memory digest materially influences plan scope, task boundaries, and `memory_refs` selection rather than appearing as a clerical appendix.
 Before design output, show:
 - understanding summary
 - assumptions
@@ -45,7 +48,7 @@ If approved, write and validate canonical `todo.json`.
 - canonical `context.*` paths including `forge_session_path`
 - `plan_refs`
 - `research_refs`
-- `memory_refs`
+- `memory_refs`, selected from the planning memory digest for each task; if none apply, preserve the explicit empty list plus rationale in `handoff_notes`
 - executable steps, commands, expected results, and verification
 - explicit `execution_policy.commit_policy`
 - every generated task starts as actionable current-scope work; do not carry forward `completed` tasks from older drafts or broader plans
