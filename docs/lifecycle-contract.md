@@ -63,6 +63,13 @@ These gates are mandatory:
 - implementation must stay within declared task boundaries or stop and replan
 - `todo.json` status updates happen at task boundaries unless blocker evidence requires immediate persistence
 - durable learnings go to Memory v2; cycle-local summaries go to `forge-session.json`
+Follow `execution_policy.parallelism` and `docs/orchestration-protocol.md` for dispatch decisions:
+- probe capability at startup and record in `forge-session.json`
+- build dispatch plan from `depends_on` and `file_targets` disjointness
+- only the orchestrator writes to shared artifacts (`todo.json`, `forge-session.json`, `memory.*`)
+- workers own their declared `file_targets` exclusively
+- parallel and sequential modes must produce identical artifact outcomes
+- merge-back uses deterministic task-id order
 Follow `execution_policy.commit_policy` rather than a hardcoded commit pattern.
 - `per_task`: commit after each logical task
 - `per_phase`: commit once for the current phase handoff

@@ -50,7 +50,14 @@
     "active_task_ids": [],
     "blocked_task_ids": [],
     "last_completed_batch": [],
-    "pending_handoff_target": null
+    "pending_handoff_target": null,
+    "dispatch_mode": null,
+    "dispatch_plan": [],
+    "capability": {
+      "can_agent": null,
+      "can_worktree": null,
+      "probed_at": null
+    }
   },
   "chat_optimization": {
     "packet_fragments": []

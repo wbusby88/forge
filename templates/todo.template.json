@@ -19,7 +19,12 @@
   ],
   "execution_policy": {
     "batch_size": 1,
-    "parallelism": "none",
+    "parallelism": {
+      "mode": "auto",
+      "max_concurrent": 3,
+      "isolation": "worktree",
+      "fallback": "sequential"
+    },
     "on_missing_required_field": "hard_fail",
     "on_scope_expansion": "stop_and_replan",
     "commit_policy": "per_phase",

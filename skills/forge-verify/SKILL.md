@@ -9,13 +9,14 @@ Read:
 - `research.md`
 - `implementation-review.md`
 - root memory artifacts as needed
-1. run and record the required test evidence
-2. compare acceptance criteria against implementation evidence
-3. present any gaps in chat
-4. require either a fix path or explicit risk acceptance for each gap
-5. write `verification.md`
-6. refresh `forge-session.json`
-7. ask for explicit completion confirmation
+1. probe capability (Agent tool availability) per `docs/orchestration-protocol.md`
+2. run and record the required test evidence; when multiple tasks have independent `verification.checks` and the Agent tool is available, dispatch verification commands in parallel via subagents and collect results; when unavailable, run checks sequentially
+3. compare acceptance criteria against implementation evidence
+4. present any gaps in chat
+5. require either a fix path or explicit risk acceptance for each gap
+6. write `verification.md` (synthesize parallel results into a single document when parallel dispatch was used)
+7. refresh `forge-session.json` including `execution_state.dispatch_mode`
+8. ask for explicit completion confirmation
 Ask exactly:
 "Do you confirm this work is complete based on this verification report?"
 Only after explicit confirmation:

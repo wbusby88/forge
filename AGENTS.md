@@ -25,6 +25,9 @@ This repository contains forge lifecycle skills.
 - Missing required todo fields cause hard fail and stop
 - Post-implement corrections before verify should route through `forge-iterate`
 - Completion requires verification evidence in `verification.md`
+- Orchestration follows `docs/orchestration-protocol.md`: multi-agent first with single-agent fallback
+- `execution_policy.parallelism` controls dispatch mode; skills probe capability at startup
+- Only the orchestrator writes shared artifacts; workers own declared `file_targets` exclusively
 
 ## Testing
 

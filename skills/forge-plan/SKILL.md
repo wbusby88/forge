@@ -15,14 +15,16 @@ Then resolve or create the active plan folder and canonical planning artifacts:
 - `forge-session.json`
 1. Ask the first high-value functional question as soon as startup context is sufficient.
 2. Run shallow project research in parallel when possible.
-3. Keep questions concise and one at a time.
-4. Create or update `research.md` continuously once the active plan folder is ready.
-5. Build an Understanding Lock summary before design output.
-6. Present the review packet before asking for approval.
-7. Generate a fresh `todo.json` only after approval.
-8. Validate `todo.json` before handoff.
-9. Update `forge-session.json` with normalized digests, current phase, and packet fragments.
-10. Ensure the memory digest materially influences plan scope, task boundaries, and `memory_refs` selection rather than appearing as a clerical appendix.
+3. When multiple independent research questions are identified, dispatch parallel research subagents via the Agent tool. Each subagent explores one research thread and returns findings. Synthesize results sequentially. When the Agent tool is unavailable, execute research threads sequentially.
+4. Keep questions concise and one at a time.
+5. Create or update `research.md` continuously once the active plan folder is ready.
+6. Build an Understanding Lock summary before design output.
+7. Present the review packet before asking for approval.
+8. Generate a fresh `todo.json` only after approval.
+9. When generating `todo.json`, analyze task `depends_on` relationships and `file_targets` to determine the appropriate `execution_policy.parallelism` value. Emit the structured parallelism object per `docs/orchestration-protocol.md`. Default to `"mode": "auto"` when the task graph has independent tasks with disjoint file targets. Use `"mode": "none"` when all tasks are sequential or share file targets.
+10. Validate `todo.json` before handoff.
+11. Update `forge-session.json` with normalized digests, current phase, and packet fragments.
+12. Ensure the memory digest materially influences plan scope, task boundaries, and `memory_refs` selection rather than appearing as a clerical appendix.
 Before design output, show:
 - understanding summary
 - assumptions

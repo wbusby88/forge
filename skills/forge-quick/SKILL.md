@@ -15,12 +15,13 @@ Then resolve or create the active plan folder and canonical artifacts:
 - `forge-session.json`
 1. Treat the user request as the planning baseline.
 2. Ask clarifying questions only when contradictions or blockers require them.
-3. Run shallow project research.
+3. Run shallow project research. When multiple independent research questions are identified and the Agent tool is available, dispatch parallel research subagents. Otherwise, research sequentially.
 4. Write concise `research.md` and `plan.md`.
 5. Present the quick review packet.
 6. After approval, generate and validate canonical `todo.json`.
-7. Update `forge-session.json` with normalized digests and handoff state.
-8. Carry the selected memory ids into task-level `memory_refs` so `forge-implement` can stay in targeted-read mode safely.
+7. When generating `todo.json`, analyze task `depends_on` relationships and `file_targets` to determine `execution_policy.parallelism`. Emit the structured parallelism object per `docs/orchestration-protocol.md`. Default to `"mode": "auto"` when independent tasks exist. Use `"mode": "none"` when all tasks are sequential.
+8. Update `forge-session.json` with normalized digests and handoff state.
+9. Carry the selected memory ids into task-level `memory_refs` so `forge-implement` can stay in targeted-read mode safely.
 Present exactly these sections before approval:
 1. `Scope and Assumptions`
 2. `Files to change`

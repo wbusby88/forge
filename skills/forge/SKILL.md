@@ -35,6 +35,7 @@ Always report:
 2. evidence used
 3. active blockers
 4. recommended next skill
+5. dispatch capability (probe Agent tool and worktree availability; report `can_agent` and `can_worktree` so the recommended skill can plan its dispatch mode)
 - never edit artifacts in this skill
 - never guess paths when canonical artifacts exist
 - never route around missing review or verification evidence

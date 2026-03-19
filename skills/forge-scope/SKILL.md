@@ -13,6 +13,7 @@ Read:
 - prefer multiple-choice questions
 - keep a running decision log in chat
 - do research when an unknown materially affects scope
+- when multiple independent research questions are identified and the Agent tool is available, dispatch parallel research subagents per `docs/orchestration-protocol.md`; synthesize results sequentially; when unavailable, research sequentially
 1. scope brief
 2. options with trade-offs and recommendation
 3. research notes
