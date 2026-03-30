@@ -39,4 +39,4 @@ Forge intentionally aligns behavior with three reference styles while staying or
 - Cross-plan learnings are appended to root `memory.md` after each planning and verification cycle.
 - `todo.json` is canonical executable spec, not a status-only tracker.
 - Task-level references back to `plan.md` and `research.md` are mandatory for deterministic handoff.
-- Post-implementation corrections before verify use `forge-iterate`, which requires synchronized `research.md`, `plan.md`, and `todo.json` updates before resumed execution.
+- Review-approved, in-scope remediation can hand off directly back to `forge-implement`; `forge-iterate` is reserved for scope-changing or user-requested post-implementation rework that needs synchronized artifact updates before execution resumes.

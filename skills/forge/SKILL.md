@@ -17,9 +17,9 @@ Read in this order:
 - `uninitialized`: required memory artifacts are incomplete
 - `initialized`: memory exists but no approved planning artifacts exist
 - `planned`: `research.md`, `plan.md`, and valid `todo.json` exist but no review decision exists
-- `reviewed`: review evidence exists and executable tasks remain
+- `reviewed`: review evidence exists and executable tasks remain for the current approved scope, including review-approved remediation tasks
 - `implemented`: all tasks are complete and implementation review evidence is missing
-- `implementation-reviewed`: implementation review exists and verification evidence is missing
+- `implementation-reviewed`: implementation review exists, no accepted follow-up implementation tasks remain, and verification evidence is missing
 - `iterating`: the user requests post-implementation changes before verification
 - `verified`: verification evidence exists and is current
 - `uninitialized` -> `forge-init`
@@ -38,4 +38,5 @@ Always report:
 5. dispatch capability (probe Agent tool and worktree availability; report `can_agent` and `can_worktree` so the recommended skill can plan its dispatch mode)
 - never edit artifacts in this skill
 - never guess paths when canonical artifacts exist
+- when implementation review exists and `todo.json` still contains actionable follow-up tasks for the approved scope, route to `forge-implement` instead of `forge-verify`
 - never route around missing review or verification evidence

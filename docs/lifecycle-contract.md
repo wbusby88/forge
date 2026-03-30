@@ -14,9 +14,9 @@ Optional or phase-specific artifacts in the same plan folder:
 - `uninitialized`: required memory artifacts are incomplete
 - `initialized`: memory exists but no approved plan artifacts exist
 - `planned`: `research.md`, `plan.md`, and valid `todo.json` exist but no review decision exists
-- `reviewed`: plan review evidence exists and executable tasks remain
+- `reviewed`: plan or implementation review evidence exists and executable tasks remain for the current approved scope
 - `implemented`: all implementation tasks are complete and implementation review evidence is missing
-- `implementation-reviewed`: implementation review exists and verification evidence is missing
+- `implementation-reviewed`: implementation review exists, no accepted follow-up implementation tasks remain, and verification evidence is missing
 - `iterating`: user requested post-implementation changes before verification
 - `verified`: verification evidence exists and is current for the present scope
 1. Read root memory artifacts.

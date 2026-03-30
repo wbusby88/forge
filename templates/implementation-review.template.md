@@ -78,4 +78,6 @@ Use `Hxx` ids and a severity of `low|medium|high|critical`.
 
 ## Approval Gate
 
-Do you approve this reviewed implementation state before verification?
+- no accepted follow-up work: Do you approve this reviewed implementation state before verification?
+- accepted in-scope follow-up work: Move straight to applying the accepted fixes now? (yes/no)
+- accepted scope-changing follow-up work: Continue into `forge-iterate` to synchronize and apply the approved changes? (yes/no)

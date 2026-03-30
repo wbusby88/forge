@@ -2,7 +2,7 @@
 
 ## Setup
 
-- `forge-review-implementation` already accepted concrete improvement sets and routed here
+- `forge-review-implementation` already accepted concrete improvement sets whose follow-up was classified as `iterate-required`
 - `plan.md` includes a `forge-iterate` handoff classification marked `standard-ready`
 - the handoff records `hard triggers: none` and a weighted risk score below `7`
 - no new evidence in `forge-iterate` contradicts that handoff

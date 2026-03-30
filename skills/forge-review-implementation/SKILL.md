@@ -135,8 +135,13 @@ If the user accepts one or more actionable findings:
 
 - record the accepted sets in `implementation-review.md`
 - update `research.md`, `plan.md`, and `todo.json` with synchronized follow-up deltas
-- include the implementation review decision summary and `forge-iterate` handoff classification in `plan.md`
+- include the implementation review decision summary and the follow-up execution path in `plan.md`
 - validate changed `todo.json` before handoff
+
+Classify accepted follow-up work as one of:
+
+- `direct-implement`: corrections stay within approved intent, scope semantics, non-goals, acceptance criteria, and task boundary shape
+- `iterate-required`: corrections require scope, acceptance-criteria, task-graph, or major risk reclassification before execution resumes
 
 If the user declines a finding:
 
@@ -153,10 +158,13 @@ After the queue is complete, present a reviewed-implementation summary packet wi
 
 ## Exit
 
-Ask for final approval of the reviewed implementation state before verification handoff.
+Ask for the final next-step decision after the reviewed-implementation summary:
 
 - approved state with no follow-up work -> recommend or invoke `forge-verify`
-- accepted follow-up work -> recommend or invoke `forge-iterate`
+- accepted `direct-implement` follow-up work -> ask `Move straight to applying the accepted fixes now? (yes/no)`
+  - `yes` -> recommend or invoke `forge-implement`
+  - `no` -> stop after sync and recommend `forge-implement` as the next skill when the user is ready
+- accepted `iterate-required` follow-up work -> recommend or invoke `forge-iterate`
 - unapproved state with no accepted follow-up work -> continue discussion one finding at a time
 
 Never implement in this skill.

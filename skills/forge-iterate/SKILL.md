@@ -1,6 +1,6 @@
 ---
 name: forge-iterate
-description: Synchronize artifacts for post-implementation changes before resuming execution.
+description: Synchronize artifacts for scope-changing or user-requested post-implementation changes before resuming execution.
 ---
 Read:
 - `todo.json`
@@ -16,6 +16,7 @@ Read:
 3. synchronize `research.md`, `plan.md`, `todo.json`, and `iteration.md` as needed, carrying forward any updated memory digest and task `memory_refs`
 4. update `forge-session.json`
 5. ask one authorization gate before resuming implementation
+Use this skill when the user requests new post-implementation change/refactor/redo work, or when implementation review follow-up changes approved intent, acceptance criteria, task graph, or iteration risk enough that direct resume would be unsafe.
 If the change alters approved intent, scope, or acceptance criteria, show the impact summary and ask for explicit confirmation before regenerating implementation tasks.
 After summarizing the synchronized changes, ask for one combined decision:
 - `yes` = continue to implementation

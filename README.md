@@ -24,7 +24,7 @@ Per active plan folder:
 - `plan.md`
 - `todo.json`
 - `forge-session.json`
-- `iteration.md` when iteration is used
+- `iteration.md` when scope-changing or user-requested iteration is used
 - `implementation-review.md` after implementation review
 - `verification.md` for completion evidence
 - `todo.json` schema `2.0` is the canonical execution source
