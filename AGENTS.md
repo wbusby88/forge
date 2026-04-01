@@ -8,6 +8,7 @@ This repository contains forge lifecycle skills.
 - forge-init: Initialize or normalize root `memory.md` for new or existing projects (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-init/SKILL.md`)
 - forge-scope: Scope vague ideas with project context + research and produce a promotion packet to `forge-plan` / `forge-quick` (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-scope/SKILL.md`)
 - forge-plan: Run brainstorming-style planning and produce canonical `todo.json` v2 with task-level references (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-plan/SKILL.md`)
+- forge-write-plan: Produce full implementation-ready planning artifacts without a brainstorming-style interview loop (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-write-plan/SKILL.md`)
 - forge-quick: Run accelerated planning from user intent, produce canonical `research.md`/`plan.md`/`todo.json`, and hand off to `forge-implement` after approval (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-quick/SKILL.md`)
 - forge-implement: Execute canonical todo v2 in one pass by default with TDD defaults and hard-fail validation (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-implement/SKILL.md`)
 - forge-debug: Handle implementation/iteration errors with artifact-aware debugging, test-first defaults, and explicit user verification before closure (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-debug/SKILL.md`)

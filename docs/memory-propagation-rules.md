@@ -14,8 +14,8 @@ Persist durable items in `memory.index.json` when they are likely to matter beyo
 Promote an item into `memory.md` only when it is high-frequency or high-risk and has clear compliance guidance.
 Do not store cycle-local packet summaries, execution batch state, or temporary handoff context in root memory artifacts. Those belong in `forge-session.json` inside the active plan folder.
 - `forge-init`: normalize canonical memory artifacts
-- `forge-plan` and `forge-quick`: read working set and add durable candidates to the index
-- `forge-plan` and `forge-quick`: convert relevant memory selections into planning digest content and task-level `memory_refs`
+- `forge-plan`, `forge-write-plan`, and `forge-quick`: read working set and add durable candidates to the index
+- `forge-plan`, `forge-write-plan`, and `forge-quick`: convert relevant memory selections into planning digest content and task-level `memory_refs`
 - `forge-review-plan`: add durable review discoveries to the index when needed
 - `forge-implement`, `forge-iterate`, and `forge-debug`: retrieve relevant indexed and archived memory for the current scope, and record only durable cross-cycle lessons
 - `forge-review-implementation`: record durable quality or operability lessons

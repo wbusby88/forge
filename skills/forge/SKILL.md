@@ -23,7 +23,7 @@ Read in this order:
 - `iterating`: the user requests post-implementation changes before verification
 - `verified`: verification evidence exists and is current
 - `uninitialized` -> `forge-init`
-- `initialized` -> `forge-plan` or `forge-quick` when the user explicitly asks for the accelerated path
+- `initialized` -> `forge-plan` by default, `forge-write-plan` when the user explicitly asks to skip the planning interview, or `forge-quick` when the user explicitly asks for the accelerated path
 - `planned` -> `forge-review-plan`
 - `reviewed` -> `forge-implement`
 - `implemented` -> `forge-review-implementation`

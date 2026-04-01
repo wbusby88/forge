@@ -39,6 +39,7 @@ Full artifact intake is required for:
 - `forge-review-implementation`
 Targeted-read mode is the default for:
 - `forge-plan`
+- `forge-write-plan`
 - `forge-quick`
 - `forge-implement`
 - `forge-iterate`

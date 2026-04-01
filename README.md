@@ -2,12 +2,13 @@ Forge is a lifecycle skill system for project work:
 1. `forge-init`
 2. `forge-scope` (optional scoping and research)
 3. `forge-plan`
-4. `forge-quick`
-5. `forge-review-plan`
-6. `forge-implement`
-7. `forge-iterate`
-8. `forge-review-implementation`
-9. `forge-verify`
+4. `forge-write-plan`
+5. `forge-quick`
+6. `forge-review-plan`
+7. `forge-implement`
+8. `forge-iterate`
+9. `forge-review-implementation`
+10. `forge-verify`
 Optional router: `forge`.
 Optional execution helper: `forge-debug`.
 - Keep durable project context in bounded Memory v2 artifacts

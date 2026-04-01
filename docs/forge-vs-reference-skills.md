@@ -13,6 +13,13 @@ Forge intentionally aligns behavior with three reference styles while staying or
 - decision log during design
 - deterministic in-chat review packet before approval
 
+`forge-write-plan` keeps the same durable artifact quality as `forge-plan`, but swaps the interview loop for request-driven assumptions plus repo research:
+
+- no default brainstorming question sequence
+- clarifying questions only for contradictions or blockers
+- Understanding Lock still required before final design
+- deterministic in-chat review packet before approval
+
 ## Writing-Plans Alignment
 
 `forge-plan` generates detailed implementation artifacts:
