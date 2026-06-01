@@ -1,14 +1,15 @@
 Forge is a lifecycle skill system for project work:
 1. `forge-init`
 2. `forge-scope` (optional scoping and research)
-3. `forge-plan`
-4. `forge-write-plan`
-5. `forge-quick`
-6. `forge-review-plan`
-7. `forge-implement`
-8. `forge-iterate`
-9. `forge-review-implementation`
-10. `forge-verify`
+3. `forge-roadmap` (optional project/sprint/epic roadmap management)
+4. `forge-plan`
+5. `forge-write-plan`
+6. `forge-quick`
+7. `forge-review-plan`
+8. `forge-implement`
+9. `forge-iterate`
+10. `forge-review-implementation`
+11. `forge-verify`
 Optional router: `forge`.
 Optional execution helper: `forge-debug`.
 - Keep durable project context in bounded Memory v2 artifacts
@@ -20,6 +21,10 @@ Project root:
 - `memory.md`
 - `memory.index.json`
 - `memory.archive.md`
+Roadmap artifacts:
+- `docs/roadmaps/<roadmap-name>/roadmap.md` by default
+- roadmap artifacts are Markdown-only macro planning state
+- roadmap artifacts can promote work into normal Forge planning, but do not replace `todo.json`
 Per active plan folder:
 - `research.md`
 - `plan.md`

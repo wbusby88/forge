@@ -7,6 +7,7 @@ This repository contains forge lifecycle skills.
 - forge: Route to the correct forge lifecycle stage using project artifacts (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge/SKILL.md`)
 - forge-init: Initialize or normalize root `memory.md` for new or existing projects (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-init/SKILL.md`)
 - forge-scope: Scope vague ideas with project context + research and produce a promotion packet to `forge-plan` / `forge-quick` (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-scope/SKILL.md`)
+- forge-roadmap: Create, update, summarize, pivot, and promote milestone-first roadmap artifacts (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-roadmap/SKILL.md`)
 - forge-plan: Run brainstorming-style planning and produce canonical `todo.json` v2 with task-level references (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-plan/SKILL.md`)
 - forge-write-plan: Produce full implementation-ready planning artifacts without a brainstorming-style interview loop (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-write-plan/SKILL.md`)
 - forge-quick: Run accelerated planning from user intent, produce canonical `research.md`/`plan.md`/`todo.json`, and hand off to `forge-implement` after approval (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-quick/SKILL.md`)
@@ -18,6 +19,8 @@ This repository contains forge lifecycle skills.
 ## Core Contract
 
 - Root `memory.md` is mandatory
+- Roadmap artifacts live in named folders under `docs/roadmaps` by default (`docs/roadmaps/<roadmap-name>/roadmap.md`)
+- Roadmap artifacts are Markdown-only macro planning state and do not replace executable plan-cycle artifacts
 - Planning artifacts live in user-selected plans folder
 - `research.md` is written during planning/research
 - `plan.md` is the narrative implementation design source

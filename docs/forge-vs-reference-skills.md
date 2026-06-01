@@ -47,3 +47,4 @@ Forge intentionally aligns behavior with three reference styles while staying or
 - `todo.json` is canonical executable spec, not a status-only tracker.
 - Task-level references back to `plan.md` and `research.md` are mandatory for deterministic handoff.
 - Review-approved, in-scope remediation can hand off directly back to `forge-implement`; `forge-iterate` is reserved for scope-changing or user-requested post-implementation rework that needs synchronized artifact updates before execution resumes.
+- `forge-roadmap` is a macro planning layer: it stores milestone-first progress in `docs/roadmaps/<roadmap-name>/roadmap.md` and promotes roadmap items into normal planning, but never generates executable `todo.json` directly.

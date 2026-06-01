@@ -2,6 +2,10 @@ Required project-root memory:
 - `memory.md`
 - `memory.index.json`
 - `memory.archive.md`
+Optional roadmap artifacts:
+- `docs/roadmaps/<roadmap-name>/roadmap.md` by default
+- roadmaps are Markdown-only macro planning artifacts managed by `forge-roadmap`
+- roadmap items may link to plan-cycle folders, but executable work still requires `todo.json`
 Required plan-cycle artifacts in the active plan folder:
 - `research.md`
 - `plan.md`
