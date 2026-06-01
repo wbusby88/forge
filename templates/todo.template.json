@@ -6,6 +6,7 @@
     "memory_path": "memory.md",
     "memory_index_path": "memory.index.json",
     "memory_archive_path": "memory.archive.md",
+    "requirements_path": "plans/requirements.md",
     "plan_path": "plans/plan.md",
     "research_path": "plans/research.md",
     "iteration_artifact_path": "plans/iteration.md",

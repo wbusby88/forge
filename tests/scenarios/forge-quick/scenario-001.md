@@ -14,6 +14,7 @@
 - startup memory digest is selected from `memory.index.json` using request scope, likely file surfaces, and `tags` / `applies_to`
 - `memory.archive.md` is opened when a selected index summary is too thin for compressed planning
 - Skill resolves the active plan folder and creates canonical artifacts
+- If the active plan folder contains `requirements.md`, skill reads it as the compressed scope baseline and maps requirements into planning artifacts or blockers
 - `research.md`, `plan.md`, and `forge-session.json` are created or refreshed
 - `todo.json` schema `2.0` is generated as the canonical executable plan
 - generated tasks include relevant `memory_refs` or an explicit empty-list rationale in `handoff_notes`

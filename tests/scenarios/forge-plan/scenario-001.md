@@ -20,6 +20,7 @@
 - Asks one clarifying question at a time
 - Asks the first functional clarifying question immediately after startup Gate A (AGENTS + memory + user request), without waiting for full plans-root/artifact setup
 - Completes plans-root resolution, folder creation, shallow project scan, and artifact bootstrapping before Understanding Lock and before writing planning artifacts
+- If `requirements.md` exists from `forge-scope`, reads it before drafting planning artifacts and reuses that named plan folder
 - Creates/updates `research.md` once startup Gate B completes (including flushing any staged early Q&A)
 - Keeps questions focused on requested functionality and contradictions
 - Uses a soft cap of 5 planning questions by default

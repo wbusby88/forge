@@ -14,3 +14,6 @@
 | "We should ask where the roadmap belongs" | `forge-roadmap` assumes `docs/roadmaps/<roadmap-name>/roadmap.md` unless the user explicitly specifies another root or folder. |
 | "Roadmap progress can just be inferred from todo files" | Macro roadmap progress lives directly in `roadmap.md`; executable task progress stays in plan-cycle artifacts. |
 | "Moving a feature is just a quick edit" | Feature moves are pivots and require an append-only change-log entry with affected items and plans to refresh. |
+| "The scope promotion packet in chat is enough" | `forge-scope` writes `requirements.md` in the named plan folder when promoting to planning. |
+| "Planning can recreate requirements from memory later" | Planning tools must read `requirements.md` when present and map every requirement into artifacts, deferred items, or blockers. |
+| "Passing tests prove the original requirements" | Review and verification skills must show requirement-by-requirement evidence from `requirements.md` when it exists. |

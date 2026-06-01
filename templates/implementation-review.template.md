@@ -7,6 +7,7 @@
 - Reviewer:
 - todo.task_id:
 - todo.path:
+- requirements_path:
 - plan_path:
 - research_path:
 
@@ -31,6 +32,14 @@ Use this section header for each review pass so the router can detect review evi
 ## Alignment Coverage
 
 Use `Axx` ids for alignment rows.
+
+## Original Requirements Coverage
+
+Use this matrix when `requirements.md` exists. Every original requirement must have one row.
+
+| Requirement ID | Requirement Summary | Implementation Evidence | Test/Evidence Refs | Status (`covered|deferred|blocked|contradicted|missing`) | Follow-up / Risk Decision |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
 
 ### A01: [Title]
 

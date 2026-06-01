@@ -5,6 +5,7 @@
     "memory_path": "memory.md",
     "memory_index_path": "memory.index.json",
     "memory_archive_path": "memory.archive.md",
+    "requirements_path": "plans/requirements.md",
     "research_path": "plans/research.md",
     "plan_path": "plans/plan.md",
     "todo_path": "plans/todo.json",
@@ -13,6 +14,11 @@
     "verification_path": "plans/verification.md"
   },
   "artifact_state": {
+    "requirements": {
+      "exists": false,
+      "hash": null,
+      "last_loaded_at": null
+    },
     "research": {
       "exists": true,
       "hash": "sha256:replace-me",
@@ -38,6 +44,7 @@
     "startup_context": [],
     "memory_refs_in_scope": [],
     "project_specific_considerations": [],
+    "requirements_coverage": [],
     "objective_scope_digest": []
   },
   "review_state": {

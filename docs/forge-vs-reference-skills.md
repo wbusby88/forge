@@ -25,6 +25,7 @@ Forge intentionally aligns behavior with three reference styles while staying or
 `forge-plan` generates detailed implementation artifacts:
 
 - explicit objective, scope, acceptance criteria, and test strategy
+- optional `requirements.md` intake from `forge-scope` mapped into research, plan, deferred items, or blockers
 - exact files and commands where possible
 - atomic execution tasks
 - TDD-first steps in task definitions
@@ -42,6 +43,8 @@ Forge intentionally aligns behavior with three reference styles while staying or
 ## Deliberate Differences
 
 - `research.md` is written continuously during brainstorming and research, not only held in context.
+- `forge-scope` can write `requirements.md` in a named plan folder as the concise scope baseline for downstream planning.
+- Review and verification phases treat `requirements.md` as the original-requirements baseline and require requirement-level coverage evidence.
 - Plan destination folder is user-selected per project and persisted in `memory.md`.
 - Cross-plan learnings are appended to root `memory.md` after each planning and verification cycle.
 - `todo.json` is canonical executable spec, not a status-only tracker.

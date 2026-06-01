@@ -11,11 +11,14 @@ Read in this order:
    - `plan.md`
    - `todo.json`
    - `forge-session.json`
+   - `requirements.md`
    - `implementation-review.md`
    - `verification.md`
 4. if `todo.json.context.*` exists, treat those paths as canonical
+If no `todo.json.context.*` exists, resolve the active plan folder from persisted memory/artifact paths or the conventional plans root; include folders that only contain `requirements.md`.
 - `uninitialized`: required memory artifacts are incomplete
 - `initialized`: memory exists but no approved planning artifacts exist
+- `scoped`: a named plan folder contains `requirements.md`, but `research.md`, `plan.md`, and `todo.json` are not approved/present yet
 - `planned`: `research.md`, `plan.md`, and valid `todo.json` exist but no review decision exists
 - `reviewed`: review evidence exists and executable tasks remain for the current approved scope, including review-approved remediation tasks
 - `implemented`: all tasks are complete and implementation review evidence is missing
@@ -24,6 +27,7 @@ Read in this order:
 - `verified`: verification evidence exists and is current
 - `uninitialized` -> `forge-init`
 - `initialized` -> `forge-plan` by default, `forge-write-plan` when the user explicitly asks to skip the planning interview, or `forge-quick` when the user explicitly asks for the accelerated path
+- `scoped` -> `forge-plan` by default, `forge-write-plan` when the user explicitly asks to skip the planning interview, or `forge-quick` when the user explicitly asks for the accelerated path; tell the planning skill to reuse the named folder containing `requirements.md`
 - `planned` -> `forge-review-plan`
 - `reviewed` -> `forge-implement`
 - `implemented` -> `forge-review-implementation`

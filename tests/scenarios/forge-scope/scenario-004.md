@@ -9,11 +9,14 @@
 ## Expected Behavior
 
 - recommends promoting to `forge-plan` (vs `forge-quick`) with a short rationale
+- resolves or creates the named plan folder that `forge-plan` should continue using
+- writes `requirements.md` in that named plan folder
 - outputs a copy-paste **Promotion Packet** block for `forge-plan` that includes:
+  - named plan folder and `requirements.md` path
   - Scope Brief (objective, scope in/out, constraints, success criteria, unknowns)
   - Options considered + recommended option
   - Decision Log
   - Research Notes (findings + sources list)
   - explicit unresolved questions that `forge-plan` must ask next
   - explicit contradictions/blockers (if any)
-
+- does not create `research.md`, `plan.md`, or `todo.json`

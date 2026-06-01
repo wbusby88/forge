@@ -66,6 +66,7 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
 Use this section for `forge-review-plan` findings and mitigation decisions.
 
 - Artifact intake summary:
+- Original requirements coverage (when `requirements.md` exists):
 - Alignment coverage (`Axx`, status, severity, refs, recommended correction):
 - Hardening findings (`Hxx`, severity, evidence refs):
 - Mitigation options and decisions:

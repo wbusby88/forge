@@ -17,6 +17,7 @@ Keep the review agent-led and concise. Restore clerical fidelity drift automatic
 Read fully:
 
 - root `memory.md`
+- `requirements.md` when present in the active plan folder
 - `research.md`
 - `plan.md`
 - `todo.json`
@@ -29,6 +30,7 @@ If `todo.json.context.*` paths exist, treat them as canonical for locating downs
 
 1. Summarize the full intent chain:
    - objective and scope
+   - scoped requirements baseline when present
    - explicit non-goals
    - key research decisions and assumptions
    - acceptance-criteria coverage shape
@@ -45,6 +47,8 @@ If `todo.json.context.*` paths exist, treat them as canonical for locating downs
 Check, at minimum:
 
 - research decisions missing from the plan
+- scoped requirements missing from research, plan, todo, deferred items, or unresolved blockers
+- when `requirements.md` exists, every original requirement has a visible status: `covered`, `deferred`, `blocked`, `contradicted`, or `missing`
 - plan claims unsupported by research or approved intent
 - acceptance criteria without task or verification coverage
 - tasks without acceptance-criteria or decision linkage
@@ -73,6 +77,7 @@ Never auto-sync changes that would alter:
 Show this in chat before hardening:
 
 - artifact intake summary
+- requirement-by-requirement coverage matrix when `requirements.md` exists
 - alignment status counts
 - auto-synced fidelity repairs
 - ranked actionable alignment findings
@@ -83,6 +88,7 @@ Invalid behavior:
 
 - hardening critique before the packet
 - claiming alignment without showing counts
+- claiming original requirements are satisfied without requirement-level coverage
 - rewriting plan intent to erase a real mismatch
 
 ## Hardening Critique
@@ -95,6 +101,7 @@ Cover at least:
 - weakest assumption
 - where implementers could diverge
 - under-specified acceptance criteria or verification
+- original requirements that depend on weak acceptance criteria, vague evidence, or deferred decisions
 - dependency/order/scope issues likely to cause rework
 
 ## Actionable Findings Gate
@@ -154,5 +161,6 @@ Ask for final approval of the reviewed plan state before implementation handoff.
 - approved state -> recommend or invoke `forge-implement`
 - unapproved state with accepted mitigation work -> continue through the synchronized artifact updates, then hand off
 - unapproved state with no accepted mitigation work -> continue discussion one finding at a time
+- do not hand off to implementation while any original requirement from `requirements.md` remains missing, contradicted, or unaccounted for without explicit deferral, blocker, or accepted residual risk
 
 Never implement in this skill.

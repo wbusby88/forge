@@ -11,6 +11,7 @@
 - Reads `AGENTS.md`, `memory.md`, and `memory.index.json` first
 - builds a startup memory digest from request scope, likely repo surfaces, and `tags` / `applies_to`
 - dereferences `memory.archive.md` when selected summaries are too thin to support task boundaries or acceptance criteria
+- if `requirements.md` exists in the active plan folder, reads it as the request baseline and reuses that named plan folder
 - treats the user request as the planning baseline instead of starting a brainstorming interview
 - runs repo research and writes `research.md`, `plan.md`, and `forge-session.json`
 - presents Understanding Lock, review packet, and approval gate before generating `todo.json`

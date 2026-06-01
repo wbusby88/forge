@@ -17,6 +17,7 @@ Keep the review agent-led and concise. Do not pre-apply actionable follow-up wor
 Read fully:
 
 - root `memory.md`
+- `requirements.md` when present in the active plan folder
 - `research.md`
 - `plan.md`
 - `todo.json`
@@ -32,6 +33,7 @@ If `implementation-review.md` is missing, create it from `../../templates/implem
 
 1. Summarize the approved intent chain:
    - objective and implemented scope
+   - original requirements baseline when present
    - explicit non-goals
    - key research decisions and assumptions
    - acceptance-criteria coverage shape
@@ -48,6 +50,8 @@ If `implementation-review.md` is missing, create it from `../../templates/implem
 Check, at minimum:
 
 - approved decisions not reflected in implementation
+- original requirements from `requirements.md` without implementation evidence, test evidence, deferred status, blocker, or accepted residual risk
+- when `requirements.md` exists, every original requirement has a visible status: `covered`, `deferred`, `blocked`, `contradicted`, or `missing`
 - acceptance criteria with weak or missing evidence
 - completed tasks without observable code or test outcomes
 - implemented behavior that exceeds or contradicts approved scope
@@ -76,6 +80,7 @@ Never auto-sync changes that would:
 Show this in chat before hardening:
 
 - artifact intake summary
+- requirement-by-requirement coverage matrix when `requirements.md` exists
 - alignment status counts
 - auto-synced fidelity repairs
 - ranked actionable alignment findings
@@ -86,6 +91,7 @@ Invalid behavior:
 
 - hardening critique before the packet
 - claiming alignment without showing counts
+- claiming original requirements are implemented without requirement-level evidence
 - treating passing tests as sufficient evidence when intent is still unproven
 
 ## Hardening Critique
@@ -95,6 +101,7 @@ Answer the critique directly from artifacts, code, tests, and evidence. Do not a
 Cover at least:
 
 - partially implemented acceptance criteria
+- original requirements that pass through weak tests, indirect evidence, or undocumented deferrals
 - likely edge-condition divergence from plan
 - weak, missing, flaky, or overfit tests
 - refactor debt that creates near-term defect risk
@@ -151,6 +158,7 @@ If the user declines a finding:
 After the queue is complete, present a reviewed-implementation summary packet with:
 
 - alignment summary
+- original requirements coverage summary
 - selected and declined improvement sets
 - acceptance-criteria or task deltas
 - added verification requirements
@@ -166,5 +174,6 @@ Ask for the final next-step decision after the reviewed-implementation summary:
   - `no` -> stop after sync and recommend `forge-implement` as the next skill when the user is ready
 - accepted `iterate-required` follow-up work -> recommend or invoke `forge-iterate`
 - unapproved state with no accepted follow-up work -> continue discussion one finding at a time
+- do not route to `forge-verify` while any original requirement from `requirements.md` remains missing, contradicted, or unaccounted for without explicit deferral, blocker, or accepted residual risk
 
 Never implement in this skill.

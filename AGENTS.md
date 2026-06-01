@@ -6,7 +6,7 @@ This repository contains forge lifecycle skills.
 
 - forge: Route to the correct forge lifecycle stage using project artifacts (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge/SKILL.md`)
 - forge-init: Initialize or normalize root `memory.md` for new or existing projects (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-init/SKILL.md`)
-- forge-scope: Scope vague ideas with project context + research and produce a promotion packet to `forge-plan` / `forge-quick` (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-scope/SKILL.md`)
+- forge-scope: Scope vague ideas with project context + research, write scoped `requirements.md`, and produce a promotion packet to `forge-plan` / `forge-write-plan` / `forge-quick` (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-scope/SKILL.md`)
 - forge-roadmap: Create, update, summarize, pivot, and promote milestone-first roadmap artifacts (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-roadmap/SKILL.md`)
 - forge-plan: Run brainstorming-style planning and produce canonical `todo.json` v2 with task-level references (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-plan/SKILL.md`)
 - forge-write-plan: Produce full implementation-ready planning artifacts without a brainstorming-style interview loop (file: `/Users/will.busby/WebstormProjects/forge-skills/skills/forge-write-plan/SKILL.md`)
@@ -22,12 +22,14 @@ This repository contains forge lifecycle skills.
 - Roadmap artifacts live in named folders under `docs/roadmaps` by default (`docs/roadmaps/<roadmap-name>/roadmap.md`)
 - Roadmap artifacts are Markdown-only macro planning state and do not replace executable plan-cycle artifacts
 - Planning artifacts live in user-selected plans folder
+- `requirements.md` is an optional pre-planning scope baseline from `forge-scope` in the named plan folder
 - `research.md` is written during planning/research
 - `plan.md` is the narrative implementation design source
 - `todo.json` is canonical executable spec and must use schema `2.0`
 - Full-mode tasks must include `plan_refs` and `research_refs`
 - Missing required todo fields cause hard fail and stop
 - Scope-changing or user-requested post-implement corrections before verify should route through `forge-iterate`; review-approved in-scope fixes can resume via `forge-implement`
+- Review and verification skills must use any existing `requirements.md` to demonstrate every original requirement is covered, deferred, blocked, or explicitly accepted as residual risk
 - Completion requires verification evidence in `verification.md`
 - Orchestration follows `docs/orchestration-protocol.md`: multi-agent first with single-agent fallback
 - `execution_policy.parallelism` controls dispatch mode; skills probe capability at startup

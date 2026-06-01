@@ -5,6 +5,7 @@
 - Feature/Task:
 - Date:
 - Verifier:
+- requirements_path:
 
 ## Test Summary
 
@@ -18,11 +19,19 @@
 | --- | --- | --- |
 |  |  |  |
 
+## Original Requirements Coverage
+
+Use this matrix when `requirements.md` exists. Every original requirement must have one row.
+
+| Requirement ID | Requirement Summary | Verification Evidence | Implementation Evidence | Status (`covered|deferred|blocked|contradicted|missing`) | Follow-up / Risk Decision |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
+
 ## Gap Decisions (If Any)
 
-If any criteria are `fail` or `unknown`, record the decision for each:
+If any criteria or original requirements are `fail`, `unknown`, `missing`, or `contradicted`, record the decision for each:
 
-| Criterion | Decision (fix/accept) | Rationale | Follow-up |
+| Criterion / Requirement | Decision (fix/accept/defer/block) | Rationale | Follow-up |
 | --- | --- | --- | --- |
 |  |  |  |  |
 

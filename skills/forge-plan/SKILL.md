@@ -10,6 +10,7 @@ Read first:
 - build a relevant memory digest by filtering index entries using current request, likely files/surfaces, and known constraints against `tags` and `applies_to`
 - read `memory.archive.md` for any selected ids whose index summaries are insufficient for planning decisions, acceptance criteria, or task boundaries
 Then resolve or create the active plan folder and canonical planning artifacts:
+- `requirements.md` when present from `forge-scope`
 - `research.md`
 - `plan.md`
 - `forge-session.json`
@@ -25,6 +26,13 @@ Then resolve or create the active plan folder and canonical planning artifacts:
 10. Validate `todo.json` before handoff.
 11. Update `forge-session.json` with normalized digests, current phase, and packet fragments.
 12. Ensure the memory digest materially influences plan scope, task boundaries, and `memory_refs` selection rather than appearing as a clerical appendix.
+If `requirements.md` exists in the active plan folder:
+- keep that named plan folder instead of creating a new folder for the same scoped work
+- read `requirements.md` before drafting `research.md` or `plan.md`
+- treat it as the scope and acceptance baseline, not as a replacement for planning artifacts
+- map each requirement to `research.md` findings, `plan.md` scope/acceptance criteria, an explicit deferred item, or an unresolved blocker
+- call out contradictions between requirements, memory, and repo evidence before plan approval
+- preserve the `requirements.md` path in `forge-session.json.paths.requirements_path`
 Before design output, show:
 - understanding summary
 - assumptions
@@ -36,12 +44,13 @@ Before plan approval, present:
 2. scope in / scope out
 3. constraints and clarifications
 4. memory digest
-5. key decisions and rejected alternatives
-6. risks and mitigations
-7. acceptance criteria checklist
-8. file change inventory
-9. todo preview
-10. unresolved user decisions
+5. requirements coverage when `requirements.md` is present
+6. key decisions and rejected alternatives
+7. risks and mitigations
+8. acceptance criteria checklist
+9. file change inventory
+10. todo preview
+11. unresolved user decisions
 Ask exactly:
 "Do you approve this plan before implementation?"
 If approved, write and validate canonical `todo.json`.

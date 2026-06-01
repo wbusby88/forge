@@ -12,11 +12,13 @@ Required plan-cycle artifacts in the active plan folder:
 - `todo.json`
 - `forge-session.json`
 Optional or phase-specific artifacts in the same plan folder:
+- `requirements.md` from `forge-scope`; scoped input for planning, not executable state
 - `iteration.md`
 - `implementation-review.md`
 - `verification.md`
 - `uninitialized`: required memory artifacts are incomplete
 - `initialized`: memory exists but no approved plan artifacts exist
+- `scoped`: `requirements.md` exists in a named plan folder and planning artifacts are not approved/present yet
 - `planned`: `research.md`, `plan.md`, and valid `todo.json` exist but no review decision exists
 - `reviewed`: plan or implementation review evidence exists and executable tasks remain for the current approved scope
 - `implemented`: all implementation tasks are complete and implementation review evidence is missing
@@ -33,6 +35,7 @@ Optional or phase-specific artifacts in the same plan folder:
 - resolved canonical paths
 - artifact freshness hashes
 - phase summary and blockers
+- requirements coverage from `requirements.md` when present
 - startup digest and project-specific considerations
 - normalized planning, review, and verification packet fragments
 - active execution batch state
@@ -57,6 +60,8 @@ Targeted-read mode must fall back to broader intake when:
 These gates are mandatory:
 - Understanding Lock before planning design output
 - explicit plan approval before finalized `todo.json`
+- `requirements.md` from `forge-scope` must be mapped into planning artifacts, deferred items, or explicit blockers before approval
+- review and verification phases must use `requirements.md` when present and record requirement-by-requirement coverage before handoff or completion
 - review decisions for findings that change approved intent
 - verification gap handling before completion
 - explicit completion confirmation after verification packet

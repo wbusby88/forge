@@ -12,6 +12,6 @@
 ## Expected Skill Behavior
 
 - resolves artifact location from context or persisted memory first
-- falls back to `docs/plans/` when it exists
+- falls back to `docs/plans/` when it exists, including folders that only contain `requirements.md`
 - in linked-worktree contexts, also checks the primary/root project worktree before asking
 - asks the user for plan folder location only when no valid folder can be resolved

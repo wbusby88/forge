@@ -10,6 +10,7 @@ Read first:
 - build a startup memory digest by filtering index entries using request intent, likely repo surfaces, and known constraints against `tags` and `applies_to`
 - read `memory.archive.md` for selected ids when the summary is too thin to safely compress planning
 Then resolve or create the active plan folder and canonical artifacts:
+- `requirements.md` when present from `forge-scope`
 - `research.md`
 - `plan.md`
 - `forge-session.json`
@@ -22,11 +23,19 @@ Then resolve or create the active plan folder and canonical artifacts:
 7. When generating `todo.json`, analyze task `depends_on` relationships and `file_targets` to determine `execution_policy.parallelism`. Emit the structured parallelism object per `docs/orchestration-protocol.md`. Default to `"mode": "auto"` when independent tasks exist. Use `"mode": "none"` when all tasks are sequential.
 8. Update `forge-session.json` with normalized digests and handoff state.
 9. Carry the selected memory ids into task-level `memory_refs` so `forge-implement` can stay in targeted-read mode safely.
+If `requirements.md` exists in the active plan folder:
+- keep that named plan folder instead of creating a new folder for the same scoped work
+- read `requirements.md` before drafting `research.md` or `plan.md`
+- use it as the compressed scope baseline unless the user explicitly supersedes it
+- map each requirement to `research.md` findings, `plan.md` scope/acceptance criteria, an explicit deferred item, or an unresolved blocker
+- call out contradictions between requirements, memory, and repo evidence before approval
+- preserve the `requirements.md` path in `forge-session.json.paths.requirements_path`
 Present exactly these sections before approval:
 1. `Scope and Assumptions`
 2. `Files to change`
 3. `Risks and pitfalls`
 4. `Project Specific Considerations`
+5. `Requirements coverage` when `requirements.md` is present
 Then ask exactly:
 "Do you approve this quick plan and continue to `forge-implement`?"
 - finalized `todo.json` must use top-level `tasks`; legacy `items` is invalid

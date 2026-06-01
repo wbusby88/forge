@@ -2,14 +2,16 @@
 
 ## Setup
 
-- `memory.md`, `research.md`, `plan.md`, and `todo.json` (schema `2.0`) exist
+- `memory.md`, optional `requirements.md`, `research.md`, `plan.md`, and `todo.json` (schema `2.0`) exist
 - plan has known risks but no dedicated review pass yet
 
 ## Expected Skill Behavior
 
 - reads all required artifacts
+- reads `requirements.md` when present
 - summarizes the full intent chain before critique
 - runs an explicit alignment coverage pass across research, plan, and `todo.json`
+- includes requirement-by-requirement coverage when `requirements.md` exists
 - presents the alignment packet in chat before any adversarial findings
 - includes alignment status counts and any auto-synced fidelity repairs in that packet
 - runs critical review questions itself and answers with evidence after alignment

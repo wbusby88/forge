@@ -3,13 +3,14 @@
 ## Setup
 
 - implementation tasks are complete for current scope
-- `memory.md`, `research.md`, `plan.md`, and `todo.json` exist
+- `memory.md`, optional `requirements.md`, `research.md`, `plan.md`, and `todo.json` exist
 - no `implementation-review.md` review pass yet
 
 ## Expected Skill Behavior
 
 - summarizes the full approved intent chain before critique
 - runs an explicit alignment coverage pass across research, plan, `todo.json`, code, tests, and execution evidence
+- includes requirement-by-requirement implementation coverage when `requirements.md` exists
 - presents the alignment packet in chat before any adversarial findings
 - includes alignment status counts in that packet and explicitly calls out unsupported or extra implemented behavior
 - answers critical interrogation questions itself with evidence refs after alignment
