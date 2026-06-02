@@ -5,7 +5,10 @@
 - Feature/Task:
 - Date:
 - Verifier:
-- requirements_path:
+- requirements_path: `todo.json.context.requirements_path` / `forge-session.json.paths.requirements_path` / `<active-plan-folder>/requirements.md` / `none found`
+- requirements_discovery: checked before completion gate
+- roadmap_path: `todo.json.context.roadmap_path` / `forge-session.json.paths.roadmap_path` / `docs/roadmaps/*/roadmap.md` / `none found`
+- roadmap_discovery: checked before completion gate
 
 ## Test Summary
 
@@ -21,17 +24,31 @@
 
 ## Original Requirements Coverage
 
-Use this matrix when `requirements.md` exists. Every original requirement must have one row.
+Use this matrix when `requirements.md` exists after the discovery check. Every original requirement with a stable requirement id must have one row.
 
 | Requirement ID | Requirement Summary | Verification Evidence | Implementation Evidence | Status (`covered|deferred|blocked|contradicted|missing`) | Follow-up / Risk Decision |
 | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |
 
+## Roadmap Sync
+
+Use this matrix when a related roadmap exists after the discovery check. `verified` is the roadmap completion status.
+
+| Roadmap Item ID | Roadmap Mention / Acceptance Note | Verification Evidence | Intended Status Update | Status (`matched|mismatch|ambiguous|stale|not-applicable`) | Follow-up / Risk Decision |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
+
+Milestone status updates:
+
+| Milestone ID | Child Item Status Summary | Intended Status Update | Rationale |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
 ## Gap Decisions (If Any)
 
-If any criteria or original requirements are `fail`, `unknown`, `missing`, or `contradicted`, record the decision for each:
+If any criteria, original requirements, or roadmap mentions are `fail`, `unknown`, `missing`, `contradicted`, `mismatch`, `ambiguous`, `stale`, or unaccounted for, record the decision for each:
 
-| Criterion / Requirement | Decision (fix/accept/defer/block) | Rationale | Follow-up |
+| Criterion / Requirement / Roadmap Item | Decision (fix/accept/defer/block) | Rationale | Follow-up |
 | --- | --- | --- | --- |
 |  |  |  |  |
 

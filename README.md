@@ -25,6 +25,7 @@ Roadmap artifacts:
 - `docs/roadmaps/<roadmap-name>/roadmap.md` by default
 - roadmap artifacts are Markdown-only macro planning state
 - roadmap artifacts can promote work into normal Forge planning, but do not replace `todo.json`
+- verification can sync related roadmap features and milestones to `verified` after evidence matches and completion is confirmed
 Per active plan folder:
 - `requirements.md` when `forge-scope` promotes scoped requirements into planning
 - `research.md`
@@ -38,7 +39,8 @@ Per active plan folder:
 - `plan_refs` and `research_refs` must resolve to explicit anchors
 - `forge-session.json` is cycle-local, derived, and regenerable
 - `requirements.md` is a refined pre-planning scope baseline from `forge-scope` brainstorming, research, and decisions; planning skills consume it and still produce normal `research.md`, `plan.md`, and `todo.json`
-- Review and verification skills use `requirements.md` when present to prove each original requirement is covered, deferred, blocked, or explicitly accepted as residual risk
+- Review and verification skills use `requirements.md` when present to prove each original requirement is covered, deferred, blocked, or explicitly accepted as residual risk; verification must actively check configured and active-folder requirements paths before treating requirement coverage as not applicable
+- Verification checks configured and related roadmap paths, compares roadmap mentions against verification evidence, and applies `verified` roadmap status updates only after explicit completion confirmation
 - Router and review phases perform full artifact intake
 - Planning, implementation, iteration, debug, and verification reuse `forge-session.json` when freshness checks pass
 - Missing required fields or broken refs hard-fail the current phase

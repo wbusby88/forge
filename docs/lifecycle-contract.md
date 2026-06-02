@@ -6,6 +6,7 @@ Optional roadmap artifacts:
 - `docs/roadmaps/<roadmap-name>/roadmap.md` by default
 - roadmaps are Markdown-only macro planning artifacts managed by `forge-roadmap`
 - roadmap items may link to plan-cycle folders, but executable work still requires `todo.json`
+- verification may sync related roadmap item and milestone statuses to `verified` after explicit completion confirmation
 Required plan-cycle artifacts in the active plan folder:
 - `research.md`
 - `plan.md`
@@ -62,6 +63,9 @@ These gates are mandatory:
 - explicit plan approval before finalized `todo.json`
 - `requirements.md` from `forge-scope` must be mapped into planning artifacts, deferred items, or explicit blockers before approval
 - review and verification phases must use `requirements.md` when present and record requirement-by-requirement coverage before handoff or completion
+- verification must actively check `todo.json.context.requirements_path`, `forge-session.json.paths.requirements_path`, and `<active-plan-folder>/requirements.md` before treating original-requirements coverage as not applicable
+- verification must actively check `todo.json.context.roadmap_path`, `forge-session.json.paths.roadmap_path`, and related `docs/roadmaps/*/roadmap.md` files before treating roadmap sync as not applicable
+- related roadmap mentions must match verification evidence before `forge-verify` records or applies `verified` status updates
 - review decisions for findings that change approved intent
 - verification gap handling before completion
 - explicit completion confirmation after verification packet

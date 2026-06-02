@@ -53,3 +53,27 @@
 - Scenario: ambiguous or research-dependent scope requests that need requirements for planning.
 - Expected behavior: `forge-scope` runs the normal scoping loop first, refines candidate requirements from decisions and research, runs Understanding Lock, then writes `requirements.md`.
 - Actual behavior: `forge-scope`, the requirements template, scenarios, and rationalization guards now encode requirements as refined scoping output.
+
+## RED (Without Skill) - Requirements Discovery During Verification
+
+- Scenario: `tests/scenarios/forge-verify/scenario-005.md`
+- Observed failure: verification could interpret an unloaded or unreferenced `requirements.md` as absent because the skill said "when present" without requiring an active discovery check.
+- Rationalization quotes: "No requirements file is in context"; "tests passed, so requirements must be covered"; "verification only needs the acceptance criteria in todo."
+
+## GREEN (With Skill) - Requirements Discovery During Verification
+
+- Scenario: verification after implementation where a requirements file may exist via todo context, session paths, or the active plan folder.
+- Expected behavior: `forge-verify` checks `todo.json.context.requirements_path`, `forge-session.json.paths.requirements_path`, and `<active-plan-folder>/requirements.md`; records the resolved path or explicit absence; and blocks completion until every original requirement is covered or has an accepted disposition.
+- Actual behavior: `forge-verify`, the verification template, scenario coverage, and rationalization guards now encode the discovery gate and requirement-level completion block.
+
+## RED (Without Skill) - Roadmap Sync During Verification
+
+- Scenario: `tests/scenarios/forge-verify/scenario-006.md`
+- Observed failure: verification could ignore a related roadmap or mark roadmap progress from passing checks without comparing the roadmap's linked feature, milestone, acceptance notes, and linked plan folder.
+- Rationalization quotes: "The roadmap can be updated later"; "tests passed so the milestone is complete"; "the current plan proves the roadmap item."
+
+## GREEN (With Skill) - Roadmap Sync During Verification
+
+- Scenario: verification where a roadmap links to the active plan folder or roadmap item ids.
+- Expected behavior: `forge-verify` discovers related roadmaps, compares roadmap mentions against verified evidence, records intended feature/task-like item and milestone updates, blocks on mismatches or ambiguity, and applies `verified` updates only after explicit completion confirmation.
+- Actual behavior: `forge-verify`, `forge-roadmap`, templates, lifecycle docs, scenario coverage, and rationalization guards now encode verification-driven roadmap progress sync.

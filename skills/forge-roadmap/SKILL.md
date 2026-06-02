@@ -83,8 +83,16 @@ Use for:
 - adding or correcting linked plan folders
 - current focus changes
 - progress note clarification
+- verification-driven progress sync from `forge-verify`
 
 Normal updates may edit the affected item, milestone rollup, and `Current Focus`. They do not require a new change-log entry.
+
+When `forge-verify` applies a verification-driven progress sync:
+- use `verified` as the completion status; do not introduce `complete`
+- mark only roadmap features or task-like items with direct verification evidence, accepted deferral, blocker, or explicit residual-risk acceptance
+- mark a milestone `verified` only when every child feature or task-like item is `verified`, `deferred`, or explicitly outside the verified scope
+- leave unmatched, ambiguous, stale, or unrelated roadmap items unchanged
+- treat the sync as a normal update unless scope, success criteria, dependency direction, priority, or item placement changed
 
 ### Pivot
 

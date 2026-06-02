@@ -5,6 +5,7 @@
     "memory_path": "memory.md",
     "memory_index_path": "memory.index.json",
     "memory_archive_path": "memory.archive.md",
+    "roadmap_path": "docs/roadmaps/example/roadmap.md",
     "requirements_path": "plans/requirements.md",
     "research_path": "plans/research.md",
     "plan_path": "plans/plan.md",
@@ -14,6 +15,11 @@
     "verification_path": "plans/verification.md"
   },
   "artifact_state": {
+    "roadmap": {
+      "exists": false,
+      "hash": null,
+      "last_loaded_at": null
+    },
     "requirements": {
       "exists": false,
       "hash": null,
@@ -45,6 +51,7 @@
     "memory_refs_in_scope": [],
     "project_specific_considerations": [],
     "requirements_coverage": [],
+    "roadmap_sync": [],
     "objective_scope_digest": []
   },
   "review_state": {

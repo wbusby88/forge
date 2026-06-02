@@ -18,3 +18,5 @@
 | "Planning can recreate requirements from memory later" | Planning tools must read `requirements.md` when present and map every requirement into artifacts, deferred items, or blockers. |
 | "Passing tests prove the original requirements" | Review and verification skills must show requirement-by-requirement evidence from `requirements.md` when it exists. |
 | "The first prompt is enough to generate requirements" | `forge-scope` must brainstorm, research, and refine first when ambiguity or material unknowns remain. |
+| "No requirements file is in context, so there are no original requirements to check" | `forge-verify` must actively check `todo.json.context.requirements_path`, `forge-session.json.paths.requirements_path`, and `<active-plan-folder>/requirements.md` before treating requirement coverage as not applicable. |
+| "Roadmap progress can be inferred from passing verification" | `forge-verify` must actively discover related roadmaps, compare roadmap mentions against verification evidence, and apply only directly evidenced `verified` status updates after completion confirmation. |
