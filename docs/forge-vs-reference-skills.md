@@ -43,7 +43,7 @@ Forge intentionally aligns behavior with three reference styles while staying or
 ## Deliberate Differences
 
 - `research.md` is written continuously during brainstorming and research, not only held in context.
-- `forge-scope` can write `requirements.md` in a named plan folder as the concise scope baseline for downstream planning.
+- `forge-scope` can write `requirements.md` in a named plan folder as the concise scope baseline refined through brainstorming, research, trade-off discussion, and decisions.
 - Review and verification phases treat `requirements.md` as the original-requirements baseline and require requirement-level coverage evidence.
 - Plan destination folder is user-selected per project and persisted in `memory.md`.
 - Cross-plan learnings are appended to root `memory.md` after each planning and verification cycle.

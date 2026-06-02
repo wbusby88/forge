@@ -44,6 +44,13 @@
 - Recommended option:
 - Decision log:
 
+## Refinement Notes
+
+- Questions asked:
+- User confirmations/corrections:
+- Requirements changed by research or trade-off discussion:
+- Rejected candidate requirements:
+
 ## Research Notes
 
 - Finding:

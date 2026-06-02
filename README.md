@@ -37,7 +37,7 @@ Per active plan folder:
 - `todo.json` schema `2.0` is the canonical execution source
 - `plan_refs` and `research_refs` must resolve to explicit anchors
 - `forge-session.json` is cycle-local, derived, and regenerable
-- `requirements.md` is a pre-planning scope baseline; planning skills consume it and still produce normal `research.md`, `plan.md`, and `todo.json`
+- `requirements.md` is a refined pre-planning scope baseline from `forge-scope` brainstorming, research, and decisions; planning skills consume it and still produce normal `research.md`, `plan.md`, and `todo.json`
 - Review and verification skills use `requirements.md` when present to prove each original requirement is covered, deferred, blocked, or explicitly accepted as residual risk
 - Router and review phases perform full artifact intake
 - Planning, implementation, iteration, debug, and verification reuse `forge-session.json` when freshness checks pass

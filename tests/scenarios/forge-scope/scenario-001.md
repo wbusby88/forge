@@ -13,6 +13,7 @@
 - opens `memory.archive.md` for any selected entry whose index summary is too thin to support safe scoping
 - asks one clarifying question at a time (back-and-forth, iterative narrowing)
 - proposes 2–3 **tentative** options early (clearly labeled tentative), each with trade-offs and “decision drivers”
+- refines candidate requirements from the scoping conversation instead of treating the first prompt as final requirements
 - performs proactive external research when unknowns materially affect scope/approach selection
   - summarizes: what was searched + key findings + sources list
   - follows query safety rules (no private repo identifiers/secrets/customer details)
@@ -21,4 +22,4 @@
 - does not write artifacts before promotion by default (no `requirements.md`, `research.md`, `plan.md`, `todo.json`)
 - before producing the final Scope Brief / Promotion Packet, runs Understanding Lock and asks:
   - “Does this Understanding Lock Summary accurately reflect your intent? Please confirm or correct before I produce the Scope Brief + handoff packet.”
-- produces: Scope Brief + Options + Research Notes + Decision Log + Promotion Packet to `forge-plan`, `forge-write-plan`, or `forge-quick`
+- produces: Scope Brief + Options + Research Notes + Decision Log + refined requirements + Promotion Packet to `forge-plan`, `forge-write-plan`, or `forge-quick`

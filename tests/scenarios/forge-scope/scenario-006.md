@@ -10,7 +10,7 @@
 ## Expected Behavior
 
 - resolves or creates a named plan folder using the same convention that `forge-plan` would use
-- writes `requirements.md` in that named plan folder before final promotion
+- writes `requirements.md` in that named plan folder only after scoping/refinement and Understanding Lock confirmation
 - keeps `requirements.md` full but concise: objective, functional requirements, non-functional requirements, constraints, scope in/out, acceptance criteria, unresolved questions, research notes, decision log, and memory ids to carry forward
 - includes the `requirements.md` path in the Promotion Packet for `forge-plan`
 - does not create `research.md`, `plan.md`, or `todo.json`

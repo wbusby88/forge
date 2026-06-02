@@ -41,3 +41,15 @@
 - Scenario: plan review, implementation review, and verification with existing `requirements.md`.
 - Expected behavior: every original requirement is demonstrably covered, deferred, blocked, contradicted, missing, or explicitly accepted as residual risk before handoff/completion.
 - Actual behavior: review/verification skills, templates, lifecycle docs, and scenarios now require requirement-level coverage evidence.
+
+## RED (Without Skill) - Requirements Refinement
+
+- Scenario: `tests/scenarios/forge-scope/scenario-007.md`
+- Observed failure: `forge-scope` could treat `requirements.md` as a direct transcription of the initial prompt instead of the output of brainstorming, research, and decision refinement.
+- Rationalization quotes: "The user asked for requirements"; "planning can refine it later"; "the first prompt is clear enough."
+
+## GREEN (With Skill) - Requirements Refinement
+
+- Scenario: ambiguous or research-dependent scope requests that need requirements for planning.
+- Expected behavior: `forge-scope` runs the normal scoping loop first, refines candidate requirements from decisions and research, runs Understanding Lock, then writes `requirements.md`.
+- Actual behavior: `forge-scope`, the requirements template, scenarios, and rationalization guards now encode requirements as refined scoping output.

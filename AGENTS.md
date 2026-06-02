@@ -22,7 +22,7 @@ This repository contains forge lifecycle skills.
 - Roadmap artifacts live in named folders under `docs/roadmaps` by default (`docs/roadmaps/<roadmap-name>/roadmap.md`)
 - Roadmap artifacts are Markdown-only macro planning state and do not replace executable plan-cycle artifacts
 - Planning artifacts live in user-selected plans folder
-- `requirements.md` is an optional pre-planning scope baseline from `forge-scope` in the named plan folder
+- `requirements.md` is an optional refined pre-planning scope baseline from `forge-scope` in the named plan folder
 - `research.md` is written during planning/research
 - `plan.md` is the narrative implementation design source
 - `todo.json` is canonical executable spec and must use schema `2.0`

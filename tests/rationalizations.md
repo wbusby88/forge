@@ -17,3 +17,4 @@
 | "The scope promotion packet in chat is enough" | `forge-scope` writes `requirements.md` in the named plan folder when promoting to planning. |
 | "Planning can recreate requirements from memory later" | Planning tools must read `requirements.md` when present and map every requirement into artifacts, deferred items, or blockers. |
 | "Passing tests prove the original requirements" | Review and verification skills must show requirement-by-requirement evidence from `requirements.md` when it exists. |
+| "The first prompt is enough to generate requirements" | `forge-scope` must brainstorm, research, and refine first when ambiguity or material unknowns remain. |
