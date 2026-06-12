@@ -9,7 +9,7 @@ Run an alignment-gated, memory-informed review:
 
 1. `memory`: retrieve relevant durable constraints, decisions, pitfalls, and learnings
 2. `alignment`: prove code, tests, and evidence still match approved intent
-3. `hardening`: dispatch three reviewer roles to critique the aligned implementation for residual defect risk
+3. `hardening`: dispatch four reviewer roles to critique the aligned implementation for residual defect risk and security exposure
 
 Keep the review agent-led and concise. Do not pre-apply actionable follow-up work before the user explicitly accepts the proposed improvement set.
 
@@ -45,7 +45,7 @@ If `implementation-review.md` is missing, create it from `../../templates/implem
 3. Run alignment coverage across research, plan, todo, code, tests, and execution evidence.
 4. Auto-sync clerical review-artifact drift that preserves approved intent and observed evidence.
 5. Present the alignment packet in chat before any hardening critique.
-6. Probe dispatch capability and run the Three-Reviewer Hardening Flow only after the alignment packet is shown.
+6. Probe dispatch capability and run the Four-Reviewer Hardening Flow only after the alignment packet is shown.
 7. Synthesize reviewer outputs into deduplicated actionable findings with concrete improvement sets.
 8. Present actionable findings with concrete improvement sets.
 9. Capture durable review learnings according to Memory v2 rules.
@@ -72,28 +72,31 @@ Before alignment, retrieve applicable durable knowledge:
 
 Pass the Memory Digest into the alignment packet and every hardening reviewer context. Do not copy long archive text into chat or review artifacts; cite ids and anchors.
 
-## Three-Reviewer Hardening Flow
+## Four-Reviewer Hardening Flow
 
-After showing the alignment packet, run exactly three hardening reviewer passes:
+After showing the alignment packet, run exactly four hardening reviewer passes:
 
 1. `correctness`
    - Checks code, tests, execution evidence, requirements, acceptance criteria, plan decisions, task graph, dependencies, blockers, and verification coverage.
    - Looks for behavior defects, plan drift, weak tests, missing evidence, invalid sequencing, and likely edge-condition failures.
-2. `maintainability`
+2. `security`
+   - Checks code, tests, execution evidence, trust boundaries, auth/authz, input validation, injection, XSS/CSRF/SSRF exposure, data leakage, secrets handling, crypto usage, dependency/supply-chain risk, insecure defaults, audit/logging of sensitive data, and security verification coverage.
+   - Treats severe flaws as first-class blockers when implementation could plausibly introduce critical vulnerabilities, privilege escalation, data exposure, or paths around authorization.
+3. `maintainability`
    - Checks DRY, SOLID, project principles, simplicity, scope boundaries, over-abstraction, duplicated work, test maintainability, and near-term refactor risk.
    - Treats maintainability findings as actionable only when they create concrete defect risk, future implementation friction, or meaningful rework.
-3. `project-standards`
+4. `project-standards`
    - Checks `AGENTS.md`, `CLAUDE.md`, `README.md`, `docs/`, templates, lifecycle contract, memory rules, and repository conventions relevant to the implementation.
    - Reads only standards sections relevant to changed artifacts and implemented file types.
 
 ### Dispatch Rules
 
 - Probe `can_agent` and `can_worktree` following `docs/orchestration-protocol.md`; record capability in `forge-session.json`.
-- When `can_agent` is true, dispatch the three reviewers in parallel as read-only subagents.
-- When `can_agent` is false, run the same three reviewer prompts sequentially in the main thread.
+- When `can_agent` is true, dispatch the four reviewers in parallel as read-only subagents.
+- When `can_agent` is false, run the same four reviewer prompts sequentially in the main thread.
 - Reviewers are read-only. They must not edit artifacts, change branches, commit, push, create issues, or update memory.
 - The orchestrator owns all writes to `implementation-review.md`, `research.md`, `plan.md`, `todo.json`, `memory.index.json`, and `forge-session.json`.
-- Failed or timed-out reviewers do not block synthesis by default; record them in coverage. If `correctness` fails, rerun it once sequentially before deciding whether review evidence is too degraded to continue.
+- Failed or timed-out reviewers do not block synthesis by default; record them in coverage. If `correctness` or `security` fails, rerun the failed reviewer once sequentially before deciding whether review evidence is too degraded to continue.
 
 ### Reviewer Context Envelope
 
@@ -115,7 +118,7 @@ Each reviewer returns normalized findings:
 
 ```json
 {
-  "reviewer": "correctness|maintainability|project-standards",
+  "reviewer": "correctness|security|maintainability|project-standards",
   "findings": [
     {
       "id": "C01",
@@ -138,7 +141,7 @@ Each reviewer returns normalized findings:
 }
 ```
 
-Use reviewer-specific ids before synthesis (`Cxx`, `Mxx`, `Sxx`). The orchestrator assigns final `Axx` or `Hxx` ids after deduplication.
+Use reviewer-specific ids before synthesis (`Cxx`, `SECxx`, `Mxx`, `Sxx`). The orchestrator assigns final `Axx` or `Hxx` ids after deduplication.
 
 ## Reviewer Synthesis
 
@@ -147,6 +150,7 @@ Merge reviewer outputs before presenting findings:
 - Deduplicate findings with the same code/artifact anchor and same required improvement.
 - Preserve cross-reviewer agreement in the final finding evidence.
 - Keep the highest severity when reviewers disagree, unless evidence shows the higher severity is speculative.
+- Preserve plausible `high` or `critical` security findings unless follow-up inspection disproves the exploit path or exposure.
 - Demote low-confidence maintainability-only findings to non-blocking hygiene debt unless they create concrete defect risk or meaningful rework.
 - Convert project-standards findings into actionable improvements only when they cite a specific standard and concrete drift.
 - Include reviewer coverage, failed reviewers, fallback mode, and memory ids used in the review pass.
@@ -206,7 +210,7 @@ Invalid behavior:
 
 ## Hardening Critique
 
-Answer the critique directly from artifacts, code, tests, evidence, and the three reviewer outputs. Do not ask the user to perform discovery.
+Answer the critique directly from artifacts, code, tests, evidence, and the four reviewer outputs. Do not ask the user to perform discovery.
 
 Cover at least:
 

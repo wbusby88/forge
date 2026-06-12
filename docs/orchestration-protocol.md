@@ -207,7 +207,7 @@ These skills have explicit parallel dispatch opportunities:
 - **forge-verify**: Verification check parallelism (independent test suite commands run simultaneously).
 - **forge-scope**: Research thread parallelism during feature scoping.
 - **forge-debug**: Hypothesis testing parallelism (competing theories tested in isolated contexts).
-- **forge-review-plan / forge-review-implementation**: Read-only reviewer dispatch after the alignment packet is shown. The orchestrator runs exactly three hardening reviewers (`correctness`, `maintainability`, `project-standards`) in parallel when `can_agent` is true and sequentially otherwise, then owns synthesis and all artifact writes.
+- **forge-review-plan / forge-review-implementation**: Read-only reviewer dispatch after the alignment packet is shown. The orchestrator runs exactly four hardening reviewers (`correctness`, `security`, `maintainability`, `project-standards`) in parallel when `can_agent` is true and sequentially otherwise, then owns synthesis and all artifact writes.
 
 ### Sequential-Only Skills
 

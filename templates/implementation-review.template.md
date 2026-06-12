@@ -69,7 +69,7 @@ Use `Hxx` ids and a severity of `low|medium|high|critical`.
 
 - Mode: `parallel|sequential`
 - Capability: `can_agent=<true|false>`, `can_worktree=<true|false>`
-- Reviewers completed: `correctness`, `maintainability`, `project-standards`
+- Reviewers completed: `correctness`, `security`, `maintainability`, `project-standards`
 - Failed or degraded reviewers:
 - Deduplication summary:
 

@@ -87,5 +87,5 @@
 ## GREEN (With Skill) - Review Dispatch and Memory Learnings
 
 - Scenario: plan and implementation reviews with subagent capability and relevant Memory v2 entries.
-- Expected behavior: review skills preserve alignment-first gates, pass a Memory Digest to exactly three read-only reviewers (`correctness`, `maintainability`, `project-standards`), synthesize normalized findings, and capture durable review learning candidates without bloating `memory.md`.
-- Actual behavior: review skills, templates, orchestration docs, lifecycle docs, memory propagation rules, and scenario coverage now encode the three-reviewer flow and memory-learning contract.
+- Expected behavior: review skills preserve alignment-first gates, pass a Memory Digest to exactly four read-only reviewers (`correctness`, `security`, `maintainability`, `project-standards`), synthesize normalized findings, and capture durable review learning candidates without bloating `memory.md`.
+- Actual behavior: review skills, templates, orchestration docs, lifecycle docs, memory propagation rules, and scenario coverage now encode the four-reviewer flow and memory-learning contract.

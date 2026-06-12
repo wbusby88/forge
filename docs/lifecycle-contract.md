@@ -64,7 +64,7 @@ These gates are mandatory:
 - `requirements.md` from `forge-scope` must be mapped into planning artifacts, deferred items, or explicit blockers before approval
 - review and verification phases must use `requirements.md` when present and record requirement-by-requirement coverage before handoff or completion
 - review phases must retrieve relevant Memory v2 entries before alignment, pass the resulting Memory Digest to hardening reviewers, and record durable review learning candidates without bloating root `memory.md`
-- review hardening uses exactly three reviewer roles (`correctness`, `maintainability`, `project-standards`) with parallel subagent dispatch when available and sequential fallback when unavailable
+- review hardening uses exactly four reviewer roles (`correctness`, `security`, `maintainability`, `project-standards`) with parallel subagent dispatch when available and sequential fallback when unavailable
 - verification must actively check `todo.json.context.requirements_path`, `forge-session.json.paths.requirements_path`, and `<active-plan-folder>/requirements.md` before treating original-requirements coverage as not applicable
 - verification must actively check `todo.json.context.roadmap_path`, `forge-session.json.paths.roadmap_path`, and related `docs/roadmaps/*/roadmap.md` files before treating roadmap sync as not applicable
 - related roadmap mentions must match verification evidence before `forge-verify` records or applies `verified` status updates
