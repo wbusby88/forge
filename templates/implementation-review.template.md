@@ -33,6 +33,13 @@ Use this section header for each review pass so the router can detect review evi
 
 Use `Axx` ids for alignment rows.
 
+## Memory Digest
+
+- Selected memory ids:
+- Why they apply:
+- Archive anchors read:
+- Guidance applied by reviewers:
+
 ## Original Requirements Coverage
 
 Use this matrix when `requirements.md` exists. Every original requirement must have one row.
@@ -58,9 +65,18 @@ Use this matrix when `requirements.md` exists. Every original requirement must h
 
 Use `Hxx` ids and a severity of `low|medium|high|critical`.
 
+## Reviewer Dispatch
+
+- Mode: `parallel|sequential`
+- Capability: `can_agent=<true|false>`, `can_worktree=<true|false>`
+- Reviewers completed: `correctness`, `maintainability`, `project-standards`
+- Failed or degraded reviewers:
+- Deduplication summary:
+
 ### H01: [Title]
 
 - Category: `hardening`
+- Reviewer(s):
 - Critical question answered:
 - Severity:
 - Summary:
@@ -70,6 +86,12 @@ Use `Hxx` ids and a severity of `low|medium|high|critical`.
 - Decision (yes/no):
 - Selected set:
 - Residual risk accepted (if no):
+
+## Memory Learning Candidates
+
+- Candidate to add/update in `memory.index.json`:
+- Rationale for candidate durability:
+- Working-set promotion needed? (`yes|no`, preserve 12-entry cap):
 
 ## Decision Ledger
 
@@ -82,6 +104,9 @@ Use `Hxx` ids and a severity of `low|medium|high|critical`.
 - decision: `reviewed|skipped`
 - alignment summary:
 - selected sets:
+- reviewer coverage:
+- memory ids applied:
+- memory candidates created/updated:
 - rationale:
 - residual risks acknowledged:
 

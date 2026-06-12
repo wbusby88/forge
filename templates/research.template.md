@@ -58,15 +58,20 @@ Use explicit HTML anchors so `todo.json.research_refs` can be stable.
 
 ## Memory Candidates
 
-- Finding to append to `memory.md`:
-- Pitfall to append to `memory.md`:
+- Candidate to add/update in `memory.index.json`:
+- Rationale for candidate durability:
+- Working-set promotion needed? (`yes|no`, preserve 12-entry cap):
 
 ## Review Pass - <YYYY-MM-DD>
 
 Use this section for `forge-review-plan` findings and mitigation decisions.
 
 - Artifact intake summary:
+- Memory Digest:
 - Original requirements coverage (when `requirements.md` exists):
 - Alignment coverage (`Axx`, status, severity, refs, recommended correction):
-- Hardening findings (`Hxx`, severity, evidence refs):
+- Reviewer dispatch (`parallel|sequential`, capability, failed reviewers):
+- Reviewer coverage (`correctness`, `maintainability`, `project-standards`):
+- Hardening findings (`Hxx`, reviewer, severity, evidence refs):
 - Mitigation options and decisions:
+- Memory candidates created/updated:

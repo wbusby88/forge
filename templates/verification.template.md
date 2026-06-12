@@ -72,8 +72,9 @@ If any criteria, original requirements, or roadmap mentions are `fail`, `unknown
 
 ## Memory Updates
 
-- Learning to append to `memory.md`:
-- Pitfall to append to `memory.md`:
+- Candidate to add/update in `memory.index.json`:
+- Working-set promotion needed? (`yes|no`, preserve 12-entry cap):
+- Cycle-local notes kept in `forge-session.json`:
 
 ## Completion Gate
 

@@ -77,3 +77,15 @@
 - Scenario: verification where a roadmap links to the active plan folder or roadmap item ids.
 - Expected behavior: `forge-verify` discovers related roadmaps, compares roadmap mentions against verified evidence, records intended feature/task-like item and milestone updates, blocks on mismatches or ambiguity, and applies `verified` updates only after explicit completion confirmation.
 - Actual behavior: `forge-verify`, `forge-roadmap`, templates, lifecycle docs, scenario coverage, and rationalization guards now encode verification-driven roadmap progress sync.
+
+## RED (Without Skill) - Review Dispatch and Memory Learnings
+
+- Scenario: `tests/scenarios/forge-review-plan/scenario-009.md`, `tests/scenarios/forge-review-plan/scenario-010.md`, `tests/scenarios/forge-review-implementation/scenario-009.md`, and `tests/scenarios/forge-review-implementation/scenario-010.md`
+- Observed failure: review skills used a single hardening critique and did not require memory-index retrieval, reviewer-specific outputs, or durable learning capture.
+- Rationalization quotes: "The main agent can review everything"; "memory was already read at startup"; "review notes can stay in chat."
+
+## GREEN (With Skill) - Review Dispatch and Memory Learnings
+
+- Scenario: plan and implementation reviews with subagent capability and relevant Memory v2 entries.
+- Expected behavior: review skills preserve alignment-first gates, pass a Memory Digest to exactly three read-only reviewers (`correctness`, `maintainability`, `project-standards`), synthesize normalized findings, and capture durable review learning candidates without bloating `memory.md`.
+- Actual behavior: review skills, templates, orchestration docs, lifecycle docs, memory propagation rules, and scenario coverage now encode the three-reviewer flow and memory-learning contract.

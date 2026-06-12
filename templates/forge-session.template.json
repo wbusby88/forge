@@ -49,6 +49,7 @@
   "digests": {
     "startup_context": [],
     "memory_refs_in_scope": [],
+    "review_memory_digest": [],
     "project_specific_considerations": [],
     "requirements_coverage": [],
     "roadmap_sync": [],
@@ -58,6 +59,13 @@
     "understanding_lock_summary": [],
     "alignment_summary": [],
     "hardening_summary": [],
+    "reviewer_dispatch": {
+      "mode": null,
+      "reviewers": [],
+      "failed_reviewers": [],
+      "memory_ids_applied": []
+    },
+    "memory_update_candidates": [],
     "verification_summary": []
   },
   "execution_state": {
