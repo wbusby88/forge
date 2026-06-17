@@ -41,15 +41,16 @@ If `implementation-review.md` is missing, create it from `../../templates/implem
    - key research decisions and assumptions
    - acceptance-criteria coverage shape
    - completed task and evidence shape
-2. Run the Memory Learning Scan and produce a concise Memory Digest.
-3. Run alignment coverage across research, plan, todo, code, tests, and execution evidence.
-4. Auto-sync clerical review-artifact drift that preserves approved intent and observed evidence.
-5. Present the alignment packet in chat before any hardening critique.
-6. Probe dispatch capability and run the Four-Reviewer Hardening Flow only after the alignment packet is shown.
-7. Synthesize reviewer outputs into deduplicated actionable findings with concrete improvement sets.
-8. Present actionable findings with concrete improvement sets.
-9. Capture durable review learnings according to Memory v2 rules.
-10. Write the review pass and normalized findings to `implementation-review.md` and `forge-session.json`.
+2. Ask the two Session Learning Scan opt-in questions (current session, then past transcripts). Resolve them before the actionable findings decision queue so they never compete with finding decisions.
+3. Run the Memory Learning Scan and produce a concise Memory Digest.
+4. Run alignment coverage across research, plan, todo, code, tests, and execution evidence.
+5. Auto-sync clerical review-artifact drift that preserves approved intent and observed evidence.
+6. Present the alignment packet in chat before any hardening critique.
+7. Probe dispatch capability and run the Four-Reviewer Hardening Flow only after the alignment packet is shown.
+8. Synthesize reviewer outputs into deduplicated actionable findings with concrete improvement sets.
+9. Present actionable findings with concrete improvement sets.
+10. Capture durable review learnings according to Memory v2 rules, including opted-in session learnings.
+11. Write the review pass and normalized findings to `implementation-review.md` and `forge-session.json`.
 
 ## Memory Learning Scan
 
@@ -71,6 +72,45 @@ Before alignment, retrieve applicable durable knowledge:
    - items considered but excluded when exclusion affects review scope
 
 Pass the Memory Digest into the alignment packet and every hardening reviewer context. Do not copy long archive text into chat or review artifacts; cite ids and anchors.
+
+## Session Learning Scan
+
+Durable learnings come from three sources. The first is always on; the other two are separately gated because each adds time and token usage and is often unnecessary.
+
+1. **Default learnings (always on).** Capture durable lessons from artifacts, code, tests, execution evidence, and reviewer output. This is the baseline and requires no question.
+2. **Current session scan (gated).** Analyze this session's chat log for ad hoc learnings the user gave inline via prompts.
+3. **Past transcript scan (gated).** Analyze prior harness sessions for relevant learnings beyond this conversation.
+
+Both scans surface ad hoc learnings — corrections, constraints, preferences, rejected approaches, and gotchas that never reached `requirements.md`, `research.md`, `plan.md`, or `memory.*`. Both are opt-in and off by default.
+
+Ask each gated question separately, early in the Review Flow, before the actionable findings decision queue begins. Use the harness blocking question tool when available (`AskUserQuestion` in Claude Code; call `ToolSearch` with `select:AskUserQuestion` first if its schema is not loaded). Fall back to a plain chat question only when no blocking tool exists or the call errors. Never silently skip a question, never default either scan to on, and never collapse the two into a single question.
+
+### Current Session Scan
+
+Ask:
+
+`Also analyze this session's chat log for ad hoc learnings you gave via prompts? This adds time and token usage. (yes/no)`
+
+When accepted, scan the active session conversation for durable signals the artifacts do not already record:
+
+- explicit corrections or course changes the user issued inline
+- constraints, conventions, or preferences stated in prompts
+- decisions made or approaches rejected in discussion but never written to an artifact
+- recurring pitfalls or gotchas the user flagged during the work
+
+### Past Transcript Scan
+
+Ask only after the current session question is answered:
+
+`Also analyze past harness sessions for relevant learnings? This searches prior transcripts and adds more time and token usage. (yes/no)`
+
+When accepted, retrieve relevant prior-session context (for example via a session-history skill such as `ce-sessions` when available) scoped to this implementation's artifacts, files, and concerns. Keep the search bounded; prefer learnings directly relevant to the reviewed work and ignore unrelated activity from the same sessions or branches. When no session-history retrieval mechanism exists in the harness, report that the past transcript scan is unavailable instead of guessing.
+
+### Capture Rules
+
+When the user declines a scan, skip it and record it as declined in the review pass. The default learnings still apply.
+
+Treat all scan-derived signals as learning candidates only. Route them through the Memory v2 rules in Memory Learning Capture; never copy raw conversation or transcript text into memory or review artifacts. Tag candidates by origin (current session or past transcript) and skip anything the artifacts or `memory.*` already represent.
 
 ## Four-Reviewer Hardening Flow
 
@@ -276,6 +316,7 @@ If the user declines a finding:
 After reviewer synthesis and decision logging, capture durable review discoveries:
 
 - If a reviewer surfaces a recurring constraint, decision, pitfall, or learning likely to apply beyond this cycle, add or update an item in `memory.index.json` with `status: "candidate"` unless it is already represented.
+- When either Session Learning Scan was accepted, fold its candidates (current session and past transcript) into this capture under the same rules. Apply the same duplicate, promotion, and working-set-cap checks; never create an entry the artifacts or existing memory already represent. Tag candidates by origin and cite the prompt or transcript context rather than copying raw text.
 - Promote into root `memory.md` only when the learning is high-frequency or high-risk, and only while preserving the 12-entry working-set cap.
 - Store cycle-local review summaries, reviewer coverage, declined findings, and temporary handoff notes in `forge-session.json`, not root memory.
 - If a new memory candidate affects accepted follow-up work, add the new id to affected `todo.json.tasks[].memory_refs` during artifact sync.
@@ -287,6 +328,7 @@ After the queue is complete, present a reviewed-implementation summary packet wi
 - original requirements coverage summary
 - selected and declined improvement sets
 - reviewer coverage and dispatch mode
+- session learning scan status for each scan (current session and past transcript: declined, unavailable, or run with candidate count)
 - memory ids applied and memory candidates created/updated
 - acceptance-criteria or task deltas
 - added verification requirements
