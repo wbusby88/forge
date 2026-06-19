@@ -1,20 +1,17 @@
-# Scenario 011 - Gated Session Learning Scans Capture Ad Hoc Learnings
+# Scenario 011 - Implementation Review Gates Learning Capture to forge-learn
 
 ## Setup
 
-- implementation tasks are complete
-- during the work the user gave ad hoc guidance via prompts (a correction, a convention, and a rejected approach) that never reached `requirements.md`, `research.md`, `plan.md`, or `memory.*`
-- prior harness sessions exist that may hold related learnings
+- implementation review has completed: alignment packet shown, four reviewers run, findings decided
+- reviewers surfaced durable learning candidates via `memory_update_candidates`
 - `memory.md` and `memory.index.json` exist
 
 ## Expected Skill Behavior
 
-- always captures default learnings from artifacts, code, tests, and reviewer output without asking a question
-- asks two separate Session Learning Scan opt-in questions early in the review flow, before the actionable findings decision queue: current session scan first, then past transcript scan
-- uses the harness blocking question tool when available, never collapses the two scans into one question, and never defaults either scan to on or silently skips it
-- when a scan is declined, skips it and records it as declined in the review pass while default learnings still apply
-- when the current session scan is accepted, scans the session conversation for inline corrections, stated constraints or preferences, and rejected approaches the artifacts do not already record
-- when the past transcript scan is accepted, retrieves relevant prior-session context scoped to this implementation's artifacts and concerns, keeping the search bounded; reports it as unavailable when the harness has no session-history retrieval mechanism
-- routes all scan-derived signals through the Memory v2 capture rules as candidates, applying duplicate, promotion, and working-set-cap checks
-- tags candidates by origin (current session or past transcript) and cites prompt or transcript context rather than copying raw text into memory or review artifacts
-- reports the status of each scan (declined, unavailable, or run with candidate count) in the reviewed-implementation summary packet
+- still runs the Memory Learning Scan retrieval before alignment and passes the Memory Digest to reviewers
+- does not write durable learnings to `memory.*` inside `forge-review-implementation`
+- presents the reviewed-implementation summary packet, including reviewer-surfaced learning candidates to hand to `forge-learn`
+- after the summary packet, asks `Capture durable learnings from this review now via forge-learn? (yes/no)` using the harness blocking question tool when available
+- when accepted, invokes `forge-learn` and passes review context (active plan folder, intent summary, review pass and reviewer synthesis with `memory_update_candidates`, accepted and declined findings, accepted residual risks) as a default-learning source
+- when declined, skips capture, records the learning gate as declined in `forge-session.json`, and continues to next-step routing
+- never duplicates the gated session or transcript scans or the Memory v2 capture rules that `forge-learn` owns

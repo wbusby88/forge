@@ -18,7 +18,8 @@ Do not store cycle-local packet summaries, execution batch state, or temporary h
 - `forge-plan`, `forge-write-plan`, and `forge-quick`: convert relevant memory selections into planning digest content and task-level `memory_refs`
 - `forge-review-plan`: retrieve relevant memory before alignment, pass a Memory Digest to hardening reviewers, and add durable review discoveries to the index when needed
 - `forge-implement`, `forge-iterate`, and `forge-debug`: retrieve relevant indexed and archived memory for the current scope, and record only durable cross-cycle lessons
-- `forge-review-implementation`: retrieve relevant memory before alignment, pass a Memory Digest to hardening reviewers, and record durable quality or operability lessons
+- `forge-review-implementation`: retrieve relevant memory before alignment, pass a Memory Digest to hardening reviewers, and delegate durable learning capture to `forge-learn` through an end-of-review gate
+- `forge-learn`: capture durable cross-cycle learnings into the index from default sources (artifacts, code, evidence, caller-supplied reviewer context) plus separately gated current-session chat-log and past-transcript scans; runs standalone or as a review follow-up
 - `forge-verify`: promotion and compaction point for working-set updates
 Each todo task must include:
 - `memory_refs`

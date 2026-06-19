@@ -53,6 +53,7 @@ Targeted-read mode is the default for:
 - `forge-iterate`
 - `forge-debug`
 - `forge-verify`
+- `forge-learn`
 Targeted-read mode must fall back to broader intake when:
 - `forge-session.json` is missing
 - a required artifact hash changed
@@ -63,7 +64,8 @@ These gates are mandatory:
 - explicit plan approval before finalized `todo.json`
 - `requirements.md` from `forge-scope` must be mapped into planning artifacts, deferred items, or explicit blockers before approval
 - review and verification phases must use `requirements.md` when present and record requirement-by-requirement coverage before handoff or completion
-- review phases must retrieve relevant Memory v2 entries before alignment, pass the resulting Memory Digest to hardening reviewers, and record durable review learning candidates without bloating root `memory.md`
+- review phases must retrieve relevant Memory v2 entries before alignment, pass the resulting Memory Digest to hardening reviewers, and capture durable review learning candidates without bloating root `memory.md`; `forge-review-implementation` delegates that capture to `forge-learn` through an end-of-review gate
+- `forge-learn` owns durable learning capture into Memory v2 (default sources plus separately gated current-session and past-transcript scans); it runs standalone or as a review follow-up and never runs alignment, hardening, or implementation
 - review hardening uses exactly four reviewer roles (`correctness`, `security`, `maintainability`, `project-standards`) with parallel subagent dispatch when available and sequential fallback when unavailable
 - verification must actively check `todo.json.context.requirements_path`, `forge-session.json.paths.requirements_path`, and `<active-plan-folder>/requirements.md` before treating original-requirements coverage as not applicable
 - verification must actively check `todo.json.context.roadmap_path`, `forge-session.json.paths.roadmap_path`, and related `docs/roadmaps/*/roadmap.md` files before treating roadmap sync as not applicable

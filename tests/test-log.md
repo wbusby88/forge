@@ -89,3 +89,15 @@
 - Scenario: plan and implementation reviews with subagent capability and relevant Memory v2 entries.
 - Expected behavior: review skills preserve alignment-first gates, pass a Memory Digest to exactly four read-only reviewers (`correctness`, `security`, `maintainability`, `project-standards`), synthesize normalized findings, and capture durable review learning candidates without bloating `memory.md`.
 - Actual behavior: review skills, templates, orchestration docs, lifecycle docs, memory propagation rules, and scenario coverage now encode the four-reviewer flow and memory-learning contract.
+
+## RED (Without Skill) - Standalone Learning Capture
+
+- Scenario: `tests/scenarios/forge-learn/scenario-001.md` through `scenario-003.md`, and `tests/scenarios/forge-review-implementation/scenario-011.md`
+- Observed failure: learning capture lived only inside `forge-review-implementation`, so harvesting durable learnings required running the full alignment and four-reviewer flow, and ad hoc session/transcript learnings had no standalone capture path.
+- Rationalization quotes: "Just run the whole review to get the learnings"; "session chat learnings can wait for the next review"; "one combined question is enough."
+
+## GREEN (With Skill) - Standalone Learning Capture
+
+- Scenario: standalone `forge-learn` runs and `forge-review-implementation` end-of-review gate.
+- Expected behavior: `forge-learn` owns three-tier capture (always-on default learnings, separately gated current-session scan, separately gated past-transcript scan) under Memory v2 rules; it runs standalone or accepts caller context; `forge-review-implementation` keeps Memory Learning Scan retrieval and gates `forge-learn` at the end instead of capturing inline.
+- Actual behavior: new `skills/forge-learn/SKILL.md`, trimmed `forge-review-implementation` with a learning gate, lifecycle and memory-propagation docs, README, and scenario coverage now encode the separated learning-capture contract.
