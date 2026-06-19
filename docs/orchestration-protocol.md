@@ -15,14 +15,26 @@ This protocol defines how forge skills detect parallel capability, construct dis
 
 At skill startup, before any dispatch decisions:
 
-1. Check whether the runtime supports the Agent tool (subagent spawning).
+1. Check whether the runtime supports an explicit subagent spawning tool surface.
 2. Check whether git worktrees are available (`git worktree list` succeeds and the repo is not in a detached or conflicted state).
 3. Set capability flags:
-   - `can_agent`: Agent tool is available for subagent spawning
+   - `can_agent`: an explicit subagent spawning tool is available
    - `can_worktree`: git worktrees can be created for isolated execution
 4. Record capability in `forge-session.json` under `execution_state.capability`.
 
 When `can_agent` is false, all dispatch falls back to sequential inline execution. When `can_agent` is true but `can_worktree` is false, parallelism is limited to read-only or non-filesystem tasks (research, verification checks).
+
+### Runtime-Specific Agent Probe
+
+Do not infer Codex subagent support from Claude compatibility names such as `Task`, `Subagent`, or `Agent`. In Codex, explicitly discover the multi-agent tool surface:
+
+1. Call `tool_search` with a query for spawning or managing sub-agents.
+2. If `multi_agent_v1.spawn_agent` and `multi_agent_v1.wait_agent` are available, set `can_agent: true`.
+3. If those tools are absent or the probe errors, set `can_agent: false` and use the sequential fallback.
+
+When Codex subagents are available for read-only dispatch, call `multi_agent_v1.spawn_agent` once per independent reviewer or research thread before waiting for any result. Then call `multi_agent_v1.wait_agent` over the active spawned agent ids, remove completed ids from the pending set, and repeat until every spawned agent has completed or timed out. Synthesize the returned outputs in the orchestrator. The orchestrator remains the only writer to shared artifacts.
+
+If repository instructions map Claude `Task` or `Subagent` references to sequential main-thread work, that mapping does not disable Codex-native `multi_agent_v1` tools. It only applies when the runtime lacks an explicit subagent tool surface.
 
 ## Dispatch Plan Construction
 
@@ -207,7 +219,7 @@ These skills have explicit parallel dispatch opportunities:
 - **forge-verify**: Verification check parallelism (independent test suite commands run simultaneously).
 - **forge-scope**: Research thread parallelism during feature scoping.
 - **forge-debug**: Hypothesis testing parallelism (competing theories tested in isolated contexts).
-- **forge-review-plan / forge-review-implementation**: Read-only reviewer dispatch after the alignment packet is shown. The orchestrator runs exactly four hardening reviewers (`correctness`, `security`, `maintainability`, `project-standards`) in parallel when `can_agent` is true and sequentially otherwise, then owns synthesis and all artifact writes.
+- **forge-review-plan / forge-review-implementation**: Read-only reviewer dispatch after the alignment packet is shown. The orchestrator runs exactly four hardening reviewers (`correctness`, `security`, `maintainability`, `project-standards`) in parallel when `can_agent` is true and sequentially otherwise, then owns synthesis and all artifact writes. In Codex, this means explicit `multi_agent_v1.spawn_agent` calls for the four reviewers, followed by repeated `multi_agent_v1.wait_agent` calls until all reviewers complete or time out; inline persona simulation is only the fallback when `can_agent` is false.
 
 ### Sequential-Only Skills
 

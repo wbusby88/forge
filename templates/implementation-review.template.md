@@ -69,6 +69,10 @@ Use `Hxx` ids and a severity of `low|medium|high|critical`.
 
 - Mode: `parallel|sequential`
 - Capability: `can_agent=<true|false>`, `can_worktree=<true|false>`
+- Tool surface: `multi_agent_v1.spawn_agent|multi_agent_v1.wait_agent|none`
+- Spawned reviewer agent ids:
+- Wait result status:
+- Fallback reason:
 - Reviewers completed: `correctness`, `security`, `maintainability`, `project-standards`
 - Failed or degraded reviewers:
 - Deduplication summary:

@@ -92,11 +92,14 @@ After showing the alignment packet, run exactly four hardening reviewer passes:
 ### Dispatch Rules
 
 - Probe `can_agent` and `can_worktree` following `docs/orchestration-protocol.md`; record capability in `forge-session.json`.
-- When `can_agent` is true, dispatch the four reviewers in parallel as read-only subagents.
+- In Codex, probe subagent capability by calling `tool_search` for the multi-agent tool surface. Set `can_agent: true` only when `multi_agent_v1.spawn_agent` and `multi_agent_v1.wait_agent` are available.
+- When `can_agent` is true, dispatch the four reviewers in parallel as read-only subagents. Spawn all four reviewers before waiting for any one reviewer result.
+- In Codex, dispatch means four explicit `multi_agent_v1.spawn_agent` calls, one each for `correctness`, `security`, `maintainability`, and `project-standards`, followed by repeated `multi_agent_v1.wait_agent` calls over the pending spawned agent ids until every reviewer completes or times out. Do not satisfy this step by roleplaying the reviewers sequentially in the main thread.
 - When `can_agent` is false, run the same four reviewer prompts sequentially in the main thread.
 - Reviewers are read-only. They must not edit artifacts, change branches, commit, push, create issues, or update memory.
 - The orchestrator owns all writes to `implementation-review.md`, `research.md`, `plan.md`, `todo.json`, `memory.index.json`, and `forge-session.json`.
 - Failed or timed-out reviewers do not block synthesis by default; record them in coverage. If `correctness` or `security` fails, rerun the failed reviewer once sequentially before deciding whether review evidence is too degraded to continue.
+- If repository instructions map Claude `Task` or `Subagent` references to sequential main-thread work, treat that as a fallback mapping only. Prefer Codex-native `multi_agent_v1` tools when discovered.
 
 ### Reviewer Context Envelope
 
@@ -111,6 +114,8 @@ Each reviewer receives:
 - completed task ids, file target inventory, and verification plan
 - the reviewer role definition above
 - normalized output schema below
+
+For Codex `multi_agent_v1.spawn_agent`, use a self-contained message that includes this envelope and explicitly states: "Read-only review. Do not edit files, commit, push, create issues, or update memory. Return only the normalized JSON-compatible reviewer output."
 
 ### Reviewer Output Schema
 

@@ -70,7 +70,7 @@ Use this section for `forge-review-plan` findings and mitigation decisions.
 - Memory Digest:
 - Original requirements coverage (when `requirements.md` exists):
 - Alignment coverage (`Axx`, status, severity, refs, recommended correction):
-- Reviewer dispatch (`parallel|sequential`, capability, failed reviewers):
+- Reviewer dispatch (`parallel|sequential`, capability, tool surface, spawned reviewer agent ids, wait status, fallback reason, failed reviewers):
 - Reviewer coverage (`correctness`, `security`, `maintainability`, `project-standards`):
 - Hardening findings (`Hxx`, reviewer, severity, evidence refs):
 - Mitigation options and decisions:

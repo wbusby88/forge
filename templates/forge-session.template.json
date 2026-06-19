@@ -61,7 +61,11 @@
     "hardening_summary": [],
     "reviewer_dispatch": {
       "mode": null,
+      "tool_surface": null,
       "reviewers": [],
+      "spawned_agent_ids": {},
+      "wait_result_status": null,
+      "fallback_reason": null,
       "failed_reviewers": [],
       "memory_ids_applied": []
     },
@@ -78,6 +82,7 @@
     "capability": {
       "can_agent": null,
       "can_worktree": null,
+      "agent_tool_surface": null,
       "probed_at": null
     }
   },
