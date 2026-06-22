@@ -101,3 +101,15 @@
 - Scenario: standalone `forge-learn` runs and `forge-review-implementation` end-of-review gate.
 - Expected behavior: `forge-learn` owns three-tier capture (always-on default learnings, separately gated current-session scan, separately gated past-transcript scan) under Memory v2 rules; it runs standalone or accepts caller context; `forge-review-implementation` keeps Memory Learning Scan retrieval and gates `forge-learn` at the end instead of capturing inline.
 - Actual behavior: new `skills/forge-learn/SKILL.md`, trimmed `forge-review-implementation` with a learning gate, lifecycle and memory-propagation docs, README, and scenario coverage now encode the separated learning-capture contract.
+
+## RED (Without Skill) - Accepted Fixes Blocked by Learning Prompt
+
+- Scenario: `tests/scenarios/forge-review-implementation/scenario-012.md`
+- Observed failure: after the user accepted implementation-review findings, `forge-review-implementation` asked whether to capture durable learnings before routing the accepted fixes to implementation.
+- Rationalization quotes: "Learning capture is the next step in Exit"; "ask about learnings while the review context is fresh"; "the user can choose implementation after this optional prompt."
+
+## GREEN (With Skill) - Accepted Fixes Before Learning Capture
+
+- Scenario: implementation reviews with accepted `direct-implement` or `iterate-required` follow-up work and reviewer-surfaced learning candidates.
+- Expected behavior: accepted follow-up work is routed to `forge-implement` or `forge-iterate` immediately after artifact sync; the learning-capture gate is deferred until the accepted fix path completes or returns control.
+- Actual behavior: `forge-review-implementation` now routes accepted follow-up work before the optional `forge-learn` prompt, and scenario/template wording no longer asks for learning capture or extra implementation confirmation before accepted fixes run.

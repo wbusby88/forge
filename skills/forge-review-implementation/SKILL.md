@@ -49,7 +49,8 @@ If `implementation-review.md` is missing, create it from `../../templates/implem
 7. Synthesize reviewer outputs into deduplicated actionable findings with concrete improvement sets.
 8. Present actionable findings with concrete improvement sets.
 9. Write the review pass and normalized findings to `implementation-review.md` and `forge-session.json`.
-10. Gate durable learning capture and run `forge-learn` only when the user accepts.
+10. If the user accepted follow-up work, route that work before any durable learning prompt.
+11. Gate durable learning capture and run `forge-learn` only when no accepted follow-up work is waiting, or after accepted follow-up execution returns.
 
 ## Memory Learning Scan
 
@@ -293,7 +294,9 @@ After the decision queue and artifact sync, present a reviewed-implementation su
 
 This skill delegates durable learning capture to `forge-learn` and never writes durable learnings to `memory.*` itself. Memory retrieval for the review still happens in the Memory Learning Scan; only capture is delegated.
 
-After the summary packet, gate learning capture. Use the harness blocking question tool when available (`AskUserQuestion` in Claude Code; call `ToolSearch` with `select:AskUserQuestion` first if its schema is not loaded). Fall back to a plain chat question only when none exists or it errors.
+Learning capture is optional and must never block accepted follow-up execution. If any accepted follow-up work remains, skip this gate for now and route that work first. Return to this gate only after the accepted `direct-implement` or `iterate-required` path completes or explicitly hands control back.
+
+When no accepted follow-up work is waiting, gate learning capture after the summary packet. Use the harness blocking question tool when available (`AskUserQuestion` in Claude Code; call `ToolSearch` with `select:AskUserQuestion` first if its schema is not loaded). Fall back to a plain chat question only when none exists or it errors.
 
 Ask:
 
@@ -307,18 +310,16 @@ When the user accepts, invoke `forge-learn` and pass review context as a default
 
 `forge-learn` owns the gated current-session and past-transcript scans, the Memory v2 capture rules, and the learning summary. Do not duplicate that capture here.
 
-When the user declines, skip capture, record the learning gate as declined in `forge-session.json`, and continue to Exit.
+When the user declines, skip capture, record the learning gate as declined in `forge-session.json`, and continue to next-step routing.
 
 ## Exit
 
-Run the Learning Capture Gate first, then ask for the final next-step decision:
+Route accepted follow-up work before the Learning Capture Gate:
 
-- approved state with no follow-up work -> recommend or invoke `forge-verify`
-- accepted `direct-implement` follow-up work -> ask `Move straight to applying the accepted fixes now? (yes/no)`
-  - `yes` -> recommend or invoke `forge-implement`
-  - `no` -> stop after sync and recommend `forge-implement` as the next skill when the user is ready
-- accepted `iterate-required` follow-up work -> recommend or invoke `forge-iterate`
+- accepted `direct-implement` follow-up work -> invoke `forge-implement` immediately after artifact sync; if invocation is unavailable, hand off to `forge-implement` as the next required step without asking a learning-capture question first, and do not ask a second "move straight to applying fixes" question after the user already accepted the improvement sets
+- accepted `iterate-required` follow-up work -> invoke `forge-iterate` before the learning-capture question; if invocation is unavailable, hand off to `forge-iterate` as the next required step without asking for learning capture first, because scope/task synchronization must happen before durable review-learning capture
+- approved state with no follow-up work -> run the Learning Capture Gate, then recommend or invoke `forge-verify`
 - unapproved state with no accepted follow-up work -> continue discussion one finding at a time
 - do not route to `forge-verify` while any original requirement from `requirements.md` remains missing, contradicted, or unaccounted for without explicit deferral, blocker, or accepted residual risk
 
-Never implement in this skill.
+Never apply code fixes inside this skill; hand accepted fix execution to `forge-implement` or `forge-iterate` according to the follow-up classification. After that downstream skill completes or returns control, resume the Learning Capture Gate if review learning candidates remain.

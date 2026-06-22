@@ -12,7 +12,7 @@ Forge is a lifecycle skill system for project work:
 11. `forge-verify`
 Optional router: `forge`.
 Optional execution helper: `forge-debug`.
-Optional learning capture: `forge-learn` (durable Memory v2 capture; standalone or gated at the end of `forge-review-implementation`).
+Optional learning capture: `forge-learn` (durable Memory v2 capture; standalone, or gated by `forge-review-implementation` only when no accepted fixes are waiting).
 - Keep durable project context in bounded Memory v2 artifacts
 - Keep planning and execution deterministic through canonical artifacts
 - Reuse cycle-local context through a plan-folder `forge-session.json`

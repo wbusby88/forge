@@ -11,6 +11,6 @@
 - updates `research.md`, `plan.md`, and `todo.json` with improvement deltas
 - writes `## Implementation Review Decision - <YYYY-MM-DD>` to `plan.md` with alignment summary, selected sets, decision ledger, and a `direct-implement` follow-up classification
 - validates changed `todo.json` schema and required fields
-- appends durable implementation learnings to root `memory.md`
-- asks whether to move straight to applying the accepted fixes now
-- routes to `forge-implement` when the user says yes
+- routes directly to `forge-implement` after artifact sync
+- does not ask the learning-capture question before applying accepted fixes
+- resumes the learning-capture gate only after accepted fix execution returns control

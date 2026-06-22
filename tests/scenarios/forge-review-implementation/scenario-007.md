@@ -11,5 +11,5 @@
 - updates `research.md`, `plan.md`, and `todo.json` with synchronized follow-up deltas
 - writes `## Implementation Review Decision - <YYYY-MM-DD>` to `plan.md` with alignment summary, selected sets, decision ledger, and an `iterate-required` follow-up classification
 - validates changed `todo.json` schema and required fields
-- appends durable implementation learnings to root `memory.md`
-- routes to `forge-iterate` for synchronized rework
+- routes to `forge-iterate` for synchronized rework before asking the learning-capture question
+- resumes the learning-capture gate only after accepted rework synchronization returns control
