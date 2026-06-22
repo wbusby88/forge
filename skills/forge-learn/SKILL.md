@@ -54,6 +54,18 @@ Ask only after the current session question is answered:
 
 When accepted, retrieve relevant prior-session context (for example via a session-history skill such as `ce-sessions` when available) scoped to this work's artifacts, files, and concerns. Keep the search bounded; prefer learnings directly relevant to the harvested work and ignore unrelated activity from the same sessions or branches. When no session-history retrieval mechanism exists in the harness, report that the past transcript scan is unavailable instead of guessing.
 
+In Codex, the retrieval mechanism is the local transcript store at `~/.codex/sessions/YYYY/MM/DD/*.jsonl`. This path is outside any project workspace, so the workspace-write sandbox blocks reads of it by default and the scan fails with an access-denied error. When that happens, do not silently fall back to "unavailable" — surface the cause and offer the fix:
+
+1. Tell the user the scan was blocked because `~/.codex/sessions` sits outside the workspace sandbox, and that granting read access is a one-time config change.
+2. Ask before editing the user's machine, using the harness blocking question tool when available:
+
+   `The past-transcript scan was denied — Codex can't read ~/.codex/sessions from this workspace. Add it as an allowed root in ~/.codex/config.toml so future scans work? This edits your global Codex config. (yes/no)`
+
+3. When accepted, add (or extend) a `[sandbox_workspace_write]` table in `~/.codex/config.toml` so `writable_roots` includes `~/.codex/sessions` (use the absolute home path). Preserve any existing `writable_roots` entries and validate the file still parses as TOML. Tell the user the change takes effect on the next Codex session and that the current session may still prompt once to approve the out-of-workspace read.
+4. When declined, report the past transcript scan as unavailable for this run and continue with the remaining sources.
+
+After access is granted, read the relevant `*.jsonl` transcripts under `~/.codex/sessions`, scope to this work's artifacts and concerns, and apply the same bounded-search and origin-tagging rules as any other source.
+
 ## Caller Context
 
 When another skill invokes `forge-learn`, accept and prefer caller-supplied context as a default-learning source:
